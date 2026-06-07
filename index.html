@@ -72,7 +72,8 @@
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 1.5cm 1cm;
+                /* Format: Atas, Kanan, Bawah, Kiri. Margin atas diperkecil agar kop naik */
+                margin: 0.5cm 1cm 1.5cm 1cm; 
             }
             html, body { 
                 height: auto !important; 
@@ -81,6 +82,8 @@
                 background: white !important; 
                 color: black !important; 
                 display: block !important;
+                margin: 0 !important; /* Hilangkan ruang kosong paksa */
+                padding: 0 !important; /* Hilangkan ruang kosong paksa */
             }
             /* Menghilangkan SELURUH elemen UI yang tidak perlu secara paksa */
             #sidebar, header, nav, aside, #splash-screen, #toast, #login-modal, #detail-modal, .no-print { 
