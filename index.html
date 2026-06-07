@@ -70,11 +70,52 @@
 
         /* Print Styles */
         @media print {
-            body { background: white !important; color: black !important; }
-            #sidebar, .mobile-nav, .no-print, header button { display: none !important; }
-            main { margin: 0 !important; padding: 0 !important; width: 100% !important; overflow: visible !important; }
-            .print-container { width: 100% !important; max-width: none !important; }
-            .print-card { box-shadow: none !important; border: 1px solid #ccc !important; break-inside: avoid; }
+            html, body { height: auto !important; overflow: visible !important; background: white !important; color: black !important; }
+            #sidebar, .mobile-nav, .no-print, header, nav { display: none !important; }
+            main, #view-container, .view-section { 
+                display: block !important; 
+                height: auto !important; 
+                overflow: visible !important; 
+                position: static !important; 
+                margin: 0 !important; 
+                padding: 0 !important; 
+                width: 100% !important;
+            }
+            /* Hanya tampilkan bagian yang ingin di-print */
+            .view-section:not(.print-container) { display: none !important; }
+            
+            /* Hapus bayangan dan lengkungan agar formal */
+            .print-card { 
+                border: none !important; 
+                box-shadow: none !important; 
+                padding: 0 !important;
+                border-radius: 0 !important;
+            }
+            
+            /* Format Kop Surat */
+            #print-header { 
+                display: flex !important; 
+                margin-bottom: 20px !important; 
+                border-bottom: 3px double black !important; 
+                padding-bottom: 15px !important; 
+            }
+            
+            /* Format Tabel Cetak */
+            .overflow-x-auto { overflow: visible !important; }
+            table { width: 100% !important; border-collapse: collapse !important; font-size: 11pt !important; }
+            th, td { 
+                border: 1px solid #000 !important; 
+                padding: 6px 8px !important; 
+                white-space: normal !important; 
+                word-wrap: break-word !important; 
+                color: black !important; 
+            }
+            thead { display: table-header-group !important; background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            tr { page-break-inside: avoid !important; }
+            
+            /* Sembunyikan checkbox saat cetak */
+            .chk-report { display: none !important; }
+            th:first-child, td:first-child { display: none !important; }
         }
     </style>
 </head>
@@ -971,6 +1012,23 @@
                 return { label: 'Perlu Pembinaan', color: 'bg-red-100 text-red-700 border-red-200' };
             },
 
+            // Mengonversi tanggal ke format YYYY-MM-DD agar mudah difilter
+            normalizeDate(dateStr) {
+                if (!dateStr) return '';
+                try {
+                    const d = new Date(dateStr);
+                    if (!isNaN(d.getTime())) {
+                        const year = d.getFullYear();
+                        const month = String(d.getMonth() + 1).padStart(2, '0');
+                        const day = String(d.getDate()).padStart(2, '0');
+                        return `${year}-${month}-${day}`;
+                    }
+                    return dateStr;
+                } catch(e) {
+                    return dateStr;
+                }
+            },
+
             formatDateTime(isoString) {
                 if (!isoString) return '-';
                 try {
@@ -1607,10 +1665,10 @@
                 });
                 if (classes.includes(currentKelas)) selectKelas.value = currentKelas;
 
-                // Populate Tahun (Extracted from data)
+                // Populate Tahun (Extracted from data using normalized date)
                 const selectTahun = document.getElementById('filter-tahun');
                 if (selectTahun) {
-                    const years = [...new Set(this.data.map(d => d.identitas.tanggal.substring(0, 4)))].sort((a,b) => b - a);
+                    const years = [...new Set(this.data.map(d => this.normalizeDate(d.identitas.tanggal).substring(0, 4)))].filter(y=>y).sort((a,b) => b - a);
                     const currentTahun = selectTahun.value;
                     selectTahun.innerHTML = '';
                     years.forEach(y => {
@@ -1662,20 +1720,21 @@
                 // 1. Filter Kelas
                 if (classFilter !== 'all') filtered = filtered.filter(d => d.identitas.kelas === classFilter);
                 
-                // 2. Filter Waktu / Periode
+                // 2. Filter Waktu / Periode (Gunakan Normalized Date)
                 if (tipeFilter === 'harian') {
                     const tgl = document.getElementById('filter-tanggal').value;
-                    if (tgl) filtered = filtered.filter(d => d.identitas.tanggal === tgl);
+                    if (tgl) filtered = filtered.filter(d => this.normalizeDate(d.identitas.tanggal) === tgl);
                 } else if (tipeFilter === 'bulanan') {
                     const bln = document.getElementById('filter-bulan').value; // Format: YYYY-MM
-                    if (bln) filtered = filtered.filter(d => d.identitas.tanggal.startsWith(bln));
+                    if (bln) filtered = filtered.filter(d => this.normalizeDate(d.identitas.tanggal).startsWith(bln));
                 } else if (tipeFilter === 'semester') {
                     const smt = document.getElementById('filter-semester').value;
                     const thn = document.getElementById('filter-tahun').value;
                     if (thn) {
                         filtered = filtered.filter(d => {
-                            if (!d.identitas.tanggal.startsWith(thn)) return false;
-                            const month = parseInt(d.identitas.tanggal.substring(5, 7), 10);
+                            const normDate = this.normalizeDate(d.identitas.tanggal);
+                            if (!normDate.startsWith(thn)) return false;
+                            const month = parseInt(normDate.substring(5, 7), 10);
                             if (smt === '1') return month >= 7 && month <= 12; // Ganjil (Juli - Desember)
                             if (smt === '2') return month >= 1 && month <= 6;  // Genap (Januari - Juni)
                             return true;
@@ -1683,7 +1742,7 @@
                     }
                 } else if (tipeFilter === 'tahunan') {
                     const thn = document.getElementById('filter-tahun').value;
-                    if (thn) filtered = filtered.filter(d => d.identitas.tanggal.startsWith(thn));
+                    if (thn) filtered = filtered.filter(d => this.normalizeDate(d.identitas.tanggal).startsWith(thn));
                 }
 
                 // Sort descending by date
@@ -1733,13 +1792,13 @@
                         const displayDate = this.formatDateTime(item.timestamp || item.identitas.tanggal);
                         
                         tbody.innerHTML += `
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/80 transition">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/80 transition text-sm">
                                 <td class="px-4 py-3 no-print text-center"><input type="checkbox" class="chk-report rounded text-primary focus:ring-primary h-4 w-4" value="${item.id}"></td>
                                 <td class="px-6 py-3 whitespace-normal min-w-[150px] leading-tight">${displayDate}</td>
                                 <td class="px-6 py-3 font-medium">${this.escapeHTML(item.identitas.nama)}</td>
                                 <td class="px-6 py-3">${this.escapeHTML(item.identitas.kelas)}</td>
-                                <td class="px-6 py-3 font-bold ${cat.color.split(' ')[1]}">${item.persentase}%</td>
-                                <td class="px-6 py-3"><span class="px-2 py-1 text-xs rounded border ${cat.color}">${cat.label}</span></td>
+                                <td class="px-6 py-3 font-bold ${cat.color.split(' ')[1]} print:text-black">${item.persentase}%</td>
+                                <td class="px-6 py-3"><span class="px-2 py-1 text-xs rounded border ${cat.color} print:border-none print:p-0 print:font-bold">${cat.label}</span></td>
                                 <td class="px-6 py-3 no-print text-right space-x-1">
                                     <button onclick="App.showDetail('${item.id}')" title="Detail" class="text-primary hover:bg-blue-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-eye"></i></button>
                                     <button onclick="App.editReport('${item.id}')" title="Edit" class="text-yellow-500 hover:bg-yellow-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-pen"></i></button>
@@ -2383,13 +2442,17 @@
                         if(!periodEl) {
                             periodEl = document.createElement('p');
                             periodEl.id = 'print-period-info';
-                            periodEl.className = 'text-sm mt-1 text-black font-medium';
+                            periodEl.className = 'text-sm mt-1 text-black font-medium pb-2';
                             document.getElementById('print-school-year').insertAdjacentElement('afterend', periodEl);
                         }
                         periodEl.innerText = 'Periode: ' + periodText + ' | Kelas: ' + (document.getElementById('filter-kelas').value === 'all' ? 'Semua Kelas' : document.getElementById('filter-kelas').value);
                     }
                 }
-                window.print();
+                
+                // Memberikan sedikit jeda agar DOM terupdate sempurna sebelum dialog print muncul
+                setTimeout(() => {
+                    window.print();
+                }, 300);
             },
 
             exportExcel() {
