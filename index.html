@@ -70,19 +70,33 @@
 
         /* Print Styles */
         @media print {
-            html, body { height: auto !important; overflow: visible !important; background: white !important; color: black !important; }
-            #sidebar, .mobile-nav, .no-print, header, nav { display: none !important; }
-            main, #view-container, .view-section { 
+            @page {
+                size: A4 portrait;
+                margin: 1.5cm 1cm;
+            }
+            html, body { 
+                height: auto !important; 
+                min-height: auto !important;
+                overflow: visible !important; 
+                background: white !important; 
+                color: black !important; 
+                display: block !important;
+            }
+            #sidebar, .mobile-nav, .no-print, header, nav, aside, #splash-screen { display: none !important; }
+            main, #view-container, .view-section, .print-card, .overflow-x-auto, .overflow-hidden { 
                 display: block !important; 
                 height: auto !important; 
+                min-height: auto !important;
                 overflow: visible !important; 
                 position: static !important; 
                 margin: 0 !important; 
                 padding: 0 !important; 
                 width: 100% !important;
             }
-            /* Hanya tampilkan bagian yang ingin di-print */
-            .view-section:not(.print-container) { display: none !important; }
+            
+            /* Hanya tampilkan bagian yang ingin di-print (Rekap) */
+            .view-section { display: none !important; }
+            #view-rekap { display: block !important; }
             
             /* Hapus bayangan dan lengkungan agar formal */
             .print-card { 
@@ -90,36 +104,55 @@
                 box-shadow: none !important; 
                 padding: 0 !important;
                 border-radius: 0 !important;
+                background: transparent !important;
             }
-            
+
             /* Format Kop Surat */
             #print-header { 
-                display: flex !important; 
-                margin-bottom: 20px !important; 
-                border-bottom: 3px double black !important; 
-                padding-bottom: 15px !important; 
+                display: block !important; 
+                page-break-after: avoid !important; 
             }
             
             /* Format Tabel Cetak */
-            .overflow-x-auto { overflow: visible !important; }
-            table { width: 100% !important; border-collapse: collapse !important; font-size: 11pt !important; }
+            table { 
+                width: 100% !important; 
+                border-collapse: collapse !important; 
+                font-size: 10pt !important; 
+                page-break-inside: auto !important;
+                border: 1px solid #000 !important;
+                color: black !important;
+            }
             th, td { 
                 border: 1px solid #000 !important; 
-                padding: 6px 8px !important; 
+                padding: 8px !important; 
                 white-space: normal !important; 
                 word-wrap: break-word !important; 
                 color: black !important; 
             }
-            thead { display: table-header-group !important; background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            tr { page-break-inside: avoid !important; }
+            thead { 
+                display: table-header-group !important; 
+            }
+            th {
+                background-color: #f3f4f6 !important; 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important;
+                font-weight: bold !important;
+                text-align: center !important;
+                vertical-align: middle !important;
+            }
+            tr { 
+                page-break-inside: avoid !important; 
+                page-break-after: auto !important; 
+            }
             
-            /* Sembunyikan checkbox saat cetak */
+            /* Sembunyikan checkbox dan tombol aksi saat cetak */
             .chk-report { display: none !important; }
             th:first-child, td:first-child { display: none !important; }
+            th:last-child, td:last-child { display: none !important; }
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 transition-colors duration-200 h-screen flex overflow-hidden">
+<body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 transition-colors duration-200 h-screen flex overflow-hidden print:h-auto print:overflow-visible print:block">
 
     <!-- Splash Screen -->
     <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white dark:bg-darkBg transition-all duration-700 ease-in-out opacity-100">
@@ -198,7 +231,7 @@
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col h-full relative min-w-0">
+    <main class="flex-1 flex flex-col h-full relative min-w-0 print:h-auto print:block print:overflow-visible">
         <!-- Mobile Header -->
         <header class="md:hidden flex items-center justify-between p-3 bg-white dark:bg-darkCard shadow-sm z-10 w-full relative shrink-0">
             <div class="flex items-center space-x-3 truncate">
@@ -256,7 +289,7 @@
         </nav>
 
         <!-- View Container -->
-        <div id="view-container" class="flex-1 overflow-y-auto p-4 pb-24 md:p-8 md:pb-8 relative">
+        <div id="view-container" class="flex-1 overflow-y-auto p-4 pb-24 md:p-8 md:pb-8 relative print:overflow-visible print:h-auto print:block print:p-0">
             
             <!-- 2. FORM JURNAL VIEW -->
             <section id="view-form" class="view-section slide-up w-full max-w-3xl mx-auto hidden print-container">
@@ -369,15 +402,19 @@
             <!-- 5. REKAP LAPORAN VIEW -->
             <section id="view-rekap" class="view-section slide-up w-full max-w-6xl mx-auto hidden print-container">
                 <!-- Header khusus untuk Cetak PDF -->
-                <div id="print-header" class="hidden print:flex items-center justify-between border-b-[3px] border-black pb-4 mb-6">
-                    <img id="print-logo" src="" class="h-20 w-20 object-contain" alt="Logo">
-                    <div class="text-center flex-1 px-4">
-                        <h2 id="print-school-name" class="text-xl font-bold uppercase tracking-wider text-black"></h2>
-                        <p id="print-school-address" class="text-sm text-black"></p>
-                        <p class="text-lg font-bold mt-2 text-black">REKAPITULASI JURNAL KAIH</p>
-                        <p id="print-school-year" class="text-xs text-black font-semibold"></p>
+                <div id="print-header" class="hidden print:block w-full mb-6">
+                    <div class="flex items-center justify-between border-b-4 border-double border-black pb-4">
+                        <img id="print-logo" src="" class="h-20 w-20 object-contain" alt="Logo">
+                        <div class="text-center flex-1 px-4">
+                            <h2 id="print-school-name" class="text-2xl font-bold uppercase tracking-wider text-black"></h2>
+                            <p id="print-school-address" class="text-sm text-black"></p>
+                        </div>
+                        <div class="h-20 w-20"></div> <!-- Placeholder Penyeimbang -->
                     </div>
-                    <div class="h-20 w-20"></div>
+                    <div class="text-center mt-6">
+                        <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">REKAPITULASI JURNAL KAIH</h3>
+                        <p id="print-school-year" class="text-sm text-black font-semibold mt-2"></p>
+                    </div>
                 </div>
 
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 no-print gap-4">
@@ -446,13 +483,13 @@
                 </div>
 
                 <!-- Teacher Data Table -->
-                <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden print-card">
-                    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden print-card print:overflow-visible print:border-none print:shadow-none print:rounded-none print:bg-transparent">
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800 no-print">
                         <h3 class="font-bold">Daftar Laporan</h3>
                         <button onclick="App.deleteBulkReports()" class="text-xs bg-red-100 text-red-600 hover:bg-red-200 px-3 py-1.5 rounded border border-red-200 transition font-medium no-print"><i class="fa-solid fa-trash-can mr-1"></i> Hapus Terpilih</button>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table id="teacher-table" class="w-full text-left text-sm whitespace-nowrap">
+                    <div class="overflow-x-auto print:overflow-visible">
+                        <table id="teacher-table" class="w-full text-left text-sm whitespace-nowrap print:whitespace-normal">
                             <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                                 <tr>
                                     <th class="px-4 py-3 w-10 no-print text-center"><input type="checkbox" id="check-all-reports" onchange="App.toggleCheckAllReports(this)" class="rounded text-primary focus:ring-primary h-4 w-4"></th>
