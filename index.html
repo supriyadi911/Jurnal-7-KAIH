@@ -72,11 +72,22 @@
         @media print {
             @page {
                 size: A4 portrait;
-                /* Format: Atas, Kanan, Bawah, Kiri. Margin atas diubah ke 0cm agar menempel ke ujung atas kertas */
+                /* Margin Atas diubah ke 0cm agar Kop menempel di pucuk kertas */
                 margin: 0cm 1cm 1cm 1cm; 
             }
-            html, body { 
-                zoom: 0.95; /* Skala diperkecil menjadi 95% */
+            
+            /* RESET AGRESIF: Mematikan semua animasi/transform layar yang menyebabkan ruang kosong melayang */
+            * {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+            }
+
+            html, body {
+                zoom: 0.95; /* Mengatur skala otomatis menjadi 95% */
+            }
+
+            html, body, main, #view-container, #view-rekap { 
                 height: auto !important; 
                 min-height: auto !important;
                 overflow: visible !important; 
@@ -85,22 +96,16 @@
                 display: block !important;
                 margin: 0 !important; 
                 padding: 0 !important; 
+                position: static !important;
+                width: 100% !important;
+                max-width: none !important;
             }
+            
             /* Menghilangkan SELURUH elemen UI yang tidak perlu secara paksa */
             #sidebar, header, nav, aside, #splash-screen, #toast, #login-modal, #detail-modal, .no-print { 
                 display: none !important; 
                 opacity: 0 !important;
                 visibility: hidden !important;
-            }
-            main, #view-container, .view-section, .print-card, .overflow-x-auto, .overflow-hidden { 
-                display: block !important; 
-                height: auto !important; 
-                min-height: auto !important;
-                overflow: visible !important; 
-                position: static !important; 
-                margin: 0 !important; 
-                padding: 0 !important; 
-                width: 100% !important;
             }
             
             /* Hanya tampilkan bagian yang ingin di-print (Rekap) */
@@ -112,11 +117,12 @@
                 border: none !important; 
                 box-shadow: none !important; 
                 padding: 0 !important;
+                margin: 0 !important;
                 border-radius: 0 !important;
                 background: transparent !important;
             }
 
-            /* Format Kop Surat */
+            /* Format Kop Surat merapat ke atas */
             #print-header { 
                 display: block !important; 
                 page-break-after: avoid !important; 
