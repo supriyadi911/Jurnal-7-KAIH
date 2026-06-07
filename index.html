@@ -72,18 +72,19 @@
         @media print {
             @page {
                 size: A4 portrait;
-                /* Format: Atas, Kanan, Bawah, Kiri. Margin atas diperkecil agar kop naik */
-                margin: 0.5cm 1cm 1.5cm 1cm; 
+                /* Format: Atas, Kanan, Bawah, Kiri. Margin atas ditekan ke 0.2cm agar kop naik maksimal */
+                margin: 0.2cm 1cm 1cm 1cm; 
             }
             html, body { 
+                zoom: 0.73; /* Trik otomatis menjadikan skala cetak 73% */
                 height: auto !important; 
                 min-height: auto !important;
                 overflow: visible !important; 
                 background: white !important; 
                 color: black !important; 
                 display: block !important;
-                margin: 0 !important; /* Hilangkan ruang kosong paksa */
-                padding: 0 !important; /* Hilangkan ruang kosong paksa */
+                margin: 0 !important; 
+                padding: 0 !important; 
             }
             /* Menghilangkan SELURUH elemen UI yang tidak perlu secara paksa */
             #sidebar, header, nav, aside, #splash-screen, #toast, #login-modal, #detail-modal, .no-print { 
@@ -119,6 +120,8 @@
             #print-header { 
                 display: block !important; 
                 page-break-after: avoid !important; 
+                margin-top: 0 !important;
+                padding-top: 0 !important;
             }
             
             /* Format Tabel Cetak */
