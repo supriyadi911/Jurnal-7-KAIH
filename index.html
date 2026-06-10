@@ -73,7 +73,7 @@
             @page {
                 size: A4 portrait;
                 /* Margin Atas diubah ke 0cm agar Kop menempel di pucuk kertas */
-                margin: 1cm 1cm 1cm 1cm; 
+                margin: 0cm 1cm 1cm 1cm; 
             }
             
             /* RESET AGRESIF: Mematikan semua animasi/transform layar yang menyebabkan ruang kosong melayang */
@@ -227,10 +227,10 @@
                 <button onclick="App.navigate('rekap')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="rekap">
                     <i class="fa-solid fa-table-list w-5"></i><span>Rekap Laporan</span>
                 </button>
-                <button onclick="App.navigate('data')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="data">
+                <button id="nav-btn-data-desktop" onclick="App.navigate('data')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="data">
                     <i class="fa-solid fa-users w-5"></i><span>Data Master</span>
                 </button>
-                <button onclick="App.navigate('settings')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-target="settings">
+                <button id="nav-btn-settings-desktop" onclick="App.navigate('settings')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-target="settings">
                     <i class="fa-solid fa-gear w-5"></i><span>Pengaturan</span>
                 </button>
                 <button onclick="App.logoutTeacher()" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors mt-2">
@@ -316,7 +316,7 @@
                 </div>
                 
                 <div class="mb-6 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 p-4 rounded-xl text-sm border border-blue-100 dark:border-blue-800 leading-relaxed no-print">
-                    <strong>Selamat Datang!</strong> Jurnal KAIH (Kebiasaan Anak Indonesia Hebat) bertujuan untuk mencatat dan memantau kebiasaan positifmu setiap hari. Isilah dengan jujur agar karakter hebatmu terus berkembang! Ketik atau pilih <strong>Nama Lengkap Siswa</strong> untuk mengisi data identitas lainnya secara otomatis.
+                    <strong>Selamat Datang!</strong> Jurnal KAIH (Kebiasaan Anak Indonesia Hebat) bertujuan untuk mencatat dan memantau kebiasaan positifmu setiap hari. Isilah dengan jujur agar karakter hebatmu terus berkembang! Pilih <strong>Kelas</strong> lalu pilih <strong>Nama Kamu</strong> untuk mengisi identitas secara otomatis.
                 </div>
 
                 <form id="jurnal-form" onsubmit="App.handleFormSubmit(event)" class="space-y-6">
@@ -325,25 +325,26 @@
                         <h3 class="text-lg font-bold mb-4 flex items-center text-gray-700 dark:text-gray-200"><i class="fa-solid fa-id-card text-primary mr-2"></i> Identitas Siswa</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
+                                <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Kelas *</label>
+                                <select id="inp-kelas" required onchange="App.onFormKelasChange()" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition appearance-none">
+                                    <option value="">-- Pilih Kelas --</option>
+                                </select>
+                            </div>
+                            <div>
                                 <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Nama Lengkap *</label>
-                                <input type="text" id="inp-nama" list="siswa-datalist" required oninput="App.autoFillByNama()" placeholder="Ketik atau pilih nama..." class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition">
-                                <datalist id="siswa-datalist">
-                                    <!-- Diisi secara dinamis melalui Javascript -->
-                                </datalist>
+                                <select id="inp-nama" required onchange="App.autoFillByNama()" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition appearance-none disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                    <option value="">-- Pilih Kelas Terlebih Dahulu --</option>
+                                </select>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">NIS / NISN *</label>
-                                <input type="text" id="inp-nis" required placeholder="Akan terisi otomatis..." class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Kelas *</label>
-                                <input type="text" id="inp-kelas" required placeholder="Contoh: 7A" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition">
+                                <input type="text" id="inp-nis" required readonly placeholder="Terisi otomatis..." class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 cursor-not-allowed focus:ring-0 outline-none transition">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Tanggal Laporan *</label>
                                 <input type="date" id="inp-tanggal" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition">
                             </div>
-                            <div>
+                            <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Nama Guru / Wali Kelas</label>
                                 <input type="text" id="inp-guru" placeholder="Bapak/Ibu Guru" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition">
                             </div>
@@ -540,17 +541,21 @@
                     <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-[650px]">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
                             <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-user-graduate text-primary"></i> Data Siswa</h3>
-                            <button onclick="App.clearSiswa()" class="text-xs text-red-500 hover:text-red-700 font-semibold"><i class="fa-solid fa-trash-can mr-1"></i> Kosongkan</button>
+                            <div class="space-x-1">
+                                <button onclick="App.deleteBulkSiswa()" class="text-xs bg-red-100 text-red-600 hover:bg-red-200 px-2 py-1.5 rounded border border-red-200 transition font-semibold"><i class="fa-solid fa-check-double mr-1"></i> Hapus Terpilih</button>
+                                <button onclick="App.clearSiswa()" class="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-1.5"><i class="fa-solid fa-trash-can mr-1"></i> Kosongkan</button>
+                            </div>
                         </div>
                         
                         <!-- Excel Copy Paste Import / Single Add -->
                         <div class="p-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 space-y-4">
                             <!-- Single Add Form -->
-                            <form onsubmit="App.addSiswa(event)" class="flex gap-2">
+                            <form onsubmit="App.submitSiswaForm(event)" class="flex gap-2">
                                 <input type="text" id="add-siswa-nisn" placeholder="NISN" required class="w-1/3 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
                                 <input type="text" id="add-siswa-nama" placeholder="Nama Siswa" required class="w-1/3 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
                                 <input type="text" id="add-siswa-kelas" placeholder="Kelas" required class="w-1/4 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
-                                <button type="submit" title="Tambah Satu Siswa" class="bg-primary text-white px-3 py-2 rounded text-sm hover:bg-blue-600 shrink-0"><i class="fa-solid fa-plus"></i></button>
+                                <button type="button" id="btn-cancel-siswa" onclick="App.cancelEditSiswa()" class="hidden bg-gray-500 text-white px-3 py-2 rounded text-sm hover:bg-gray-600 shrink-0"><i class="fa-solid fa-xmark"></i></button>
+                                <button type="submit" id="btn-submit-siswa" title="Simpan Siswa" class="bg-primary text-white px-3 py-2 rounded text-sm hover:bg-blue-600 shrink-0"><i class="fa-solid fa-plus"></i></button>
                             </form>
 
                             <!-- Copy Paste Box -->
@@ -568,6 +573,7 @@
                             <table class="w-full text-left text-sm whitespace-nowrap">
                                 <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-700">
                                     <tr>
+                                        <th class="pb-2 w-8"><input type="checkbox" id="check-all-siswa" onchange="App.toggleCheckAllSiswa(this)" class="rounded text-primary focus:ring-primary h-4 w-4"></th>
                                         <th class="pb-2">NISN</th>
                                         <th class="pb-2">Nama</th>
                                         <th class="pb-2">Kelas</th>
@@ -583,28 +589,38 @@
                     <!-- Data Guru -->
                     <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-[650px]">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
-                            <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-secondary"></i> Data Guru / Wali Kelas</h3>
-                            <button onclick="App.clearGuru()" class="text-xs text-red-500 hover:text-red-700 font-semibold"><i class="fa-solid fa-trash-can mr-1"></i> Kosongkan</button>
+                            <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-secondary"></i> Data & Akun Guru</h3>
+                            <div class="space-x-1">
+                                <button onclick="App.deleteBulkGuru()" class="text-xs bg-red-100 text-red-600 hover:bg-red-200 px-2 py-1.5 rounded border border-red-200 transition font-semibold"><i class="fa-solid fa-check-double mr-1"></i> Hapus Terpilih</button>
+                                <button onclick="App.clearGuru()" class="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-1.5"><i class="fa-solid fa-trash-can mr-1"></i> Kosongkan</button>
+                            </div>
                         </div>
                         
                         <!-- Excel Copy Paste Import / Single Add -->
                         <div class="p-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 space-y-4">
                             <!-- Single Add Form -->
-                            <form onsubmit="App.addGuru(event)" class="flex gap-2">
-                                <input type="text" id="add-guru-nip" placeholder="NIP/ID" required class="w-1/3 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
-                                <input type="text" id="add-guru-nama" placeholder="Nama Guru" required class="w-1/3 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
-                                <input type="text" id="add-guru-kelas" placeholder="Wali Kelas" required class="w-1/4 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
-                                <button type="submit" title="Tambah Satu Guru" class="bg-secondary text-white px-3 py-2 rounded text-sm hover:bg-red-600 shrink-0"><i class="fa-solid fa-plus"></i></button>
+                            <form onsubmit="App.submitGuruForm(event)" class="space-y-2">
+                                <div class="flex gap-2">
+                                    <input type="text" id="add-guru-nama" placeholder="Nama Guru *" required class="w-1/2 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
+                                    <input type="text" id="add-guru-kelas" placeholder="Wali Kelas *" required class="w-1/4 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
+                                    <input type="text" id="add-guru-nip" placeholder="NIP (Opsional)" class="w-1/4 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
+                                </div>
+                                <div class="flex gap-2">
+                                    <input type="text" id="add-guru-user" placeholder="Username Login *" required class="flex-1 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
+                                    <input type="text" id="add-guru-pass" placeholder="Password Login *" required class="flex-1 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
+                                    <button type="button" id="btn-cancel-guru" onclick="App.cancelEditGuru()" class="hidden bg-gray-500 text-white px-4 py-2 rounded text-sm hover:bg-gray-600 font-medium"><i class="fa-solid fa-xmark mr-1"></i></button>
+                                    <button type="submit" id="btn-submit-guru" title="Simpan Guru" class="bg-secondary text-white px-4 py-2 rounded text-sm hover:bg-red-600 shrink-0 font-medium"><i class="fa-solid fa-plus mr-1"></i> Tambah</button>
+                                </div>
                             </form>
 
                             <!-- Copy Paste Box -->
                             <div class="border-t border-gray-200 dark:border-gray-700 pt-3">
-                                <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1"><i class="fa-solid fa-file-import mr-1"></i> Impor dari Excel (Copy-Paste Kolom NIP, Nama Guru, Kelas Wali):</label>
+                                <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1"><i class="fa-solid fa-file-import mr-1"></i> Impor dari Excel (NIP, Nama, Kelas, Username, Password):</label>
                                 <div class="flex gap-2">
                                     <textarea id="import-guru-excel" rows="2" placeholder="Tempel/Paste kolom tabel Excel di sini..." class="w-full text-xs p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none resize-none"></textarea>
                                     <button onclick="App.importGuruExcel()" class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700 font-medium shrink-0 flex items-center justify-center" title="Impor Data"><i class="fa-solid fa-file-excel mr-1"></i> Impor</button>
                                 </div>
-                                <p class="text-[10px] text-gray-400 mt-1">Struktur kolom: [NIP] [TAB] [Nama Guru] [TAB] [Kelas Wali]</p>
+                                <p class="text-[10px] text-gray-400 mt-1">Struktur kolom: [NIP] [TAB] [Nama Guru] [TAB] [Kelas] [TAB] [Username] [TAB] [Password]</p>
                             </div>
                         </div>
 
@@ -612,9 +628,11 @@
                             <table class="w-full text-left text-sm whitespace-nowrap">
                                 <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-700">
                                     <tr>
-                                        <th class="pb-2">NIP</th>
+                                        <th class="pb-2 w-8"><input type="checkbox" id="check-all-guru" onchange="App.toggleCheckAllGuru(this)" class="rounded text-primary focus:ring-primary h-4 w-4"></th>
                                         <th class="pb-2">Nama Guru</th>
                                         <th class="pb-2">Kelas</th>
+                                        <th class="pb-2">Username</th>
+                                        <th class="pb-2">Password</th>
                                         <th class="pb-2 text-right">Aksi</th>
                                     </tr>
                                 </thead>
@@ -725,6 +743,13 @@
         </div>
     </div>
 
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 z-[120] bg-white/80 dark:bg-darkBg/80 backdrop-blur-sm hidden flex-col items-center justify-center transition-all duration-300 print:hidden">
+        <div class="w-16 h-16 border-4 border-gray-200 border-t-primary rounded-full animate-spin mb-4 shadow-sm"></div>
+        <h3 id="loading-title" class="text-xl font-bold text-gray-800 dark:text-white mb-2 tracking-wide">Memproses Data...</h3>
+        <p id="loading-text" class="text-sm font-semibold text-primary px-4 py-1.5 bg-blue-50 dark:bg-blue-900/30 rounded-full border border-blue-100 dark:border-blue-800">Silakan tunggu</p>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-50 px-6 py-3 rounded-xl shadow-lg font-medium text-white flex items-center space-x-2 print:hidden">
         <i id="toast-icon" class="fa-solid fa-check-circle"></i>
@@ -759,8 +784,11 @@
             ],
             chartInstance: null,
             isTeacherLoggedIn: false,
+            currentUser: null, // role: 'admin' | 'guru'
             targetPendingView: null,
             editingReportId: null,
+            editingSiswa: null, // object to hold edit state for siswa
+            editingGuru: null, // object to hold edit state for guru
 
             // Initialize
             init() {
@@ -781,7 +809,7 @@
                 this.renderHabitsForm();
                 this.setDefaultDate();
                 this.updateAuthUI();
-                this.updateStudentDatalist();
+                this.populateFormKelasDropdown();
                 this.updateAppHeader();
                 
                 // Auto sync in background without showing toast (Silent Sync)
@@ -801,6 +829,12 @@
                     this.targetPendingView = viewId;
                     this.openLoginModal();
                     return;
+                }
+                
+                // Restrict Settings and Data Master for regular teachers
+                if ((viewId === 'settings' || viewId === 'data') && this.currentUser && this.currentUser.role === 'guru') {
+                    this.showToast('Akses ditolak. Menu ini hanya untuk Super Admin.', 'error');
+                    viewId = 'dashboard';
                 }
 
                 // Hide all views first
@@ -846,8 +880,8 @@
 
                 // View specific init
                 if (viewId === 'form') {
+                    this.populateFormKelasDropdown();
                     this.populateProfileForm();
-                    this.updateStudentDatalist();
                 }
                 if (viewId === 'dashboard' || viewId === 'rekap') this.renderDashboard();
                 if (viewId === 'data') this.renderMasterData();
@@ -887,7 +921,10 @@
             submitLogin() {
                 const user = document.getElementById('login-user').value;
                 const pass = document.getElementById('login-pass').value;
+                
+                // Cek Super Admin
                 if (user === 'supriyadi' && pass === '291188') {
+                    this.currentUser = { role: 'admin', nama: 'Super Admin' };
                     this.isTeacherLoggedIn = true;
                     this.updateAuthUI();
                     this.closeLoginModal();
@@ -895,27 +932,42 @@
                         this.navigate(this.targetPendingView);
                         this.targetPendingView = null;
                     }
-                    this.showToast('Berhasil masuk ke Area Guru', 'success');
+                    this.showToast('Berhasil masuk sebagai Admin', 'success');
                 } else {
-                    document.getElementById('login-error').classList.remove('hidden');
+                    // Cek Akun Guru Spesifik
+                    const guruMatch = this.masterGuru.find(g => g.username === user && g.password === pass);
+                    if (guruMatch) {
+                        this.currentUser = { role: 'guru', nama: guruMatch.nama, kelas: guruMatch.kelas };
+                        this.isTeacherLoggedIn = true;
+                        this.updateAuthUI();
+                        this.closeLoginModal();
+                        
+                        // Arahkan otomatis ke Dashboard/Rekap, karena Data/Setting disembunyikan
+                        if (this.targetPendingView === 'dashboard' || this.targetPendingView === 'rekap') {
+                            this.navigate(this.targetPendingView);
+                        } else {
+                            this.navigate('dashboard');
+                        }
+                        this.targetPendingView = null;
+                        this.showToast(`Selamat datang, Wali Kelas ${guruMatch.kelas}`, 'success');
+                    } else {
+                        document.getElementById('login-error').classList.remove('hidden');
+                    }
                 }
             },
 
             logoutTeacher() {
                 this.isTeacherLoggedIn = false;
+                this.currentUser = null;
                 this.updateAuthUI();
-                this.showToast('Berhasil keluar dari mode Guru', 'info');
-                
-                // Jika sedang di halaman guru, kembali ke halaman jurnal form
-                const currentView = window.location.hash.replace('#', '');
-                if (currentView === 'dashboard' || currentView === 'settings' || currentView === 'rekap' || currentView === 'data') {
-                    this.navigate('form');
-                }
+                this.showToast('Berhasil keluar dari mode Guru/Admin', 'info');
             },
 
             updateAuthUI() {
                 const adminDesktop = document.getElementById('admin-menus-desktop');
                 const loginDesktop = document.getElementById('btn-login-desktop');
+                const dataDesktopBtn = document.getElementById('nav-btn-data-desktop');
+                const settingsDesktopBtn = document.getElementById('nav-btn-settings-desktop');
                 
                 const loginMobile = document.getElementById('btn-login-mobile');
                 const dashboardMobile = document.getElementById('nav-dashboard-mobile');
@@ -925,21 +977,27 @@
                 const logoutMobile = document.getElementById('btn-logout-mobile');
                 
                 if (this.isTeacherLoggedIn) {
+                    const isAdmin = this.currentUser && this.currentUser.role === 'admin';
+
                     // Tampilkan menu desktop
                     if (adminDesktop) adminDesktop.classList.remove('hidden');
                     if (loginDesktop) loginDesktop.classList.add('hidden');
+                    if (dataDesktopBtn) dataDesktopBtn.style.display = isAdmin ? 'flex' : 'none';
+                    if (settingsDesktopBtn) settingsDesktopBtn.style.display = isAdmin ? 'flex' : 'none';
                     
                     // Tampilkan menu mobile
                     if (loginMobile) loginMobile.classList.add('hidden');
                     if (dashboardMobile) dashboardMobile.classList.remove('hidden');
                     if (rekapMobile) rekapMobile.classList.remove('hidden');
-                    if (dataMobile) dataMobile.classList.remove('hidden');
-                    if (settingsMobile) settingsMobile.classList.remove('hidden');
+                    if (dataMobile) isAdmin ? dataMobile.classList.remove('hidden') : dataMobile.classList.add('hidden');
+                    if (settingsMobile) isAdmin ? settingsMobile.classList.remove('hidden') : settingsMobile.classList.add('hidden');
                     if (logoutMobile) logoutMobile.classList.remove('hidden');
                 } else {
                     // Sembunyikan menu desktop
                     if (adminDesktop) adminDesktop.classList.add('hidden');
                     if (loginDesktop) loginDesktop.classList.remove('hidden');
+                    if (dataDesktopBtn) dataDesktopBtn.style.display = 'flex';
+                    if (settingsDesktopBtn) settingsDesktopBtn.style.display = 'flex';
                     
                     // Sembunyikan menu mobile
                     if (loginMobile) loginMobile.classList.remove('hidden');
@@ -1014,7 +1072,7 @@
             saveMasterDataToLocal() {
                 localStorage.setItem('kaih_siswa', JSON.stringify(this.masterSiswa));
                 localStorage.setItem('kaih_guru', JSON.stringify(this.masterGuru));
-                this.updateStudentDatalist();
+                this.populateFormKelasDropdown();
             },
 
             saveSettingsToLocal() {
@@ -1064,6 +1122,25 @@
                 if (percentage >= 75) return { label: 'Baik', color: 'bg-blue-100 text-blue-700 border-blue-200' };
                 if (percentage >= 60) return { label: 'Cukup', color: 'bg-yellow-100 text-yellow-700 border-yellow-200' };
                 return { label: 'Perlu Pembinaan', color: 'bg-red-100 text-red-700 border-red-200' };
+            },
+
+            // Overlay Loading Helpers
+            showLoading(title, text) {
+                const overlay = document.getElementById('loading-overlay');
+                document.getElementById('loading-title').innerText = title;
+                document.getElementById('loading-text').innerText = text;
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+            },
+
+            updateLoading(text) {
+                document.getElementById('loading-text').innerText = text;
+            },
+
+            hideLoading() {
+                const overlay = document.getElementById('loading-overlay');
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
             },
 
             // Mengonversi tanggal ke format YYYY-MM-DD agar mudah difilter
@@ -1225,42 +1302,97 @@
             },
 
             populateProfileForm() {
-                if (this.profile.nama) {
-                    document.getElementById('inp-nama').value = this.profile.nama || '';
-                    document.getElementById('inp-nis').value = this.profile.nis || '';
-                    document.getElementById('inp-kelas').value = this.profile.kelas || '';
-                    document.getElementById('inp-guru').value = this.profile.guru || '';
+                if (this.profile.kelas && this.profile.nama) {
+                    const selectKelas = document.getElementById('inp-kelas');
+                    
+                    // Pastikan kelas ada di pilihan (mencegah error jika data terhapus)
+                    let classExists = Array.from(selectKelas.options).some(opt => opt.value === this.profile.kelas);
+                    if (!classExists) {
+                        selectKelas.innerHTML += `<option value="${this.profile.kelas}">${this.profile.kelas}</option>`;
+                    }
+                    
+                    selectKelas.value = this.profile.kelas;
+                    this.onFormKelasChange();
+                    
+                    const selectNama = document.getElementById('inp-nama');
+                    // Pastikan nama ada di pilihan
+                    let nameExists = Array.from(selectNama.options).some(opt => opt.value === this.profile.nama);
+                    if (!nameExists) {
+                        selectNama.innerHTML += `<option value="${this.profile.nama}">${this.profile.nama}</option>`;
+                        selectNama.disabled = false;
+                    }
+                    
+                    selectNama.value = this.profile.nama;
+                    this.autoFillByNama();
+                    
+                    if (this.profile.guru) {
+                        document.getElementById('inp-guru').value = this.profile.guru;
+                    }
                 }
             },
 
-            // Update HTML datalist with current masterSiswa values
-            updateStudentDatalist() {
-                const datalist = document.getElementById('siswa-datalist');
-                if (!datalist) return;
-                datalist.innerHTML = '';
-                this.masterSiswa.forEach(s => {
-                    const opt = document.createElement('option');
-                    opt.value = s.nama;
-                    opt.textContent = `NISN: ${s.nisn} - Kelas ${s.kelas}`;
-                    datalist.appendChild(opt);
+            populateFormKelasDropdown() {
+                const selectKelas = document.getElementById('inp-kelas');
+                if (!selectKelas) return;
+                
+                const currentVal = selectKelas.value;
+                selectKelas.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+                
+                const classes = [...new Set(this.masterSiswa.map(s => s.kelas))].filter(c => c && c !== '-').sort();
+                
+                classes.forEach(c => {
+                    selectKelas.innerHTML += `<option value="${c}">${c}</option>`;
                 });
+                
+                if (classes.includes(currentVal)) {
+                    selectKelas.value = currentVal;
+                }
             },
 
-            // Auto Fill logic when Nama Lengkap is typed or selected
-            autoFillByNama() {
-                const namaInput = document.getElementById('inp-nama').value.trim();
-                if (!namaInput) return;
+            onFormKelasChange() {
+                const kelas = document.getElementById('inp-kelas').value;
+                const selectNama = document.getElementById('inp-nama');
+                const inpNis = document.getElementById('inp-nis');
+                const inpGuru = document.getElementById('inp-guru');
+                
+                // Reset dependents
+                selectNama.innerHTML = '<option value="">-- Pilih Nama --</option>';
+                selectNama.disabled = true;
+                inpNis.value = '';
+                inpGuru.value = '';
+                
+                if (!kelas) return;
+                
+                // Filter siswa berdasarkan kelas
+                const studentsInClass = this.masterSiswa.filter(s => s.kelas === kelas).sort((a, b) => a.nama.localeCompare(b.nama));
+                
+                if (studentsInClass.length > 0) {
+                    selectNama.disabled = false;
+                    studentsInClass.forEach(s => {
+                        selectNama.innerHTML += `<option value="${s.nama}">${s.nama}</option>`;
+                    });
+                } else {
+                    selectNama.innerHTML = '<option value="">-- Siswa Kosong --</option>';
+                }
+                
+                // Auto isi Wali Kelas
+                const guru = this.masterGuru.find(g => g.kelas === kelas);
+                if (guru) {
+                    inpGuru.value = guru.nama;
+                }
+            },
 
-                const student = this.masterSiswa.find(s => s.nama.toLowerCase() === namaInput.toLowerCase());
+            autoFillByNama() {
+                const kelas = document.getElementById('inp-kelas').value;
+                const nama = document.getElementById('inp-nama').value;
+                const inpNis = document.getElementById('inp-nis');
+                
+                inpNis.value = '';
+                if (!nama || !kelas) return;
+
+                const student = this.masterSiswa.find(s => s.kelas === kelas && s.nama === nama);
                 if (student) {
-                    document.getElementById('inp-nis').value = student.nisn;
-                    document.getElementById('inp-kelas').value = student.kelas;
-                    
-                    // Auto fill guru based on class match
-                    const guru = this.masterGuru.find(g => g.kelas === student.kelas);
-                    if (guru) {
-                        document.getElementById('inp-guru').value = guru.nama;
-                    }
+                    inpNis.value = student.nisn;
                 }
             },
 
@@ -1269,7 +1401,7 @@
                     "Waktu Pengiriman": reportObj.timestamp,
                     "Tanggal Laporan": reportObj.identitas.tanggal,
                     "Nama Siswa": reportObj.identitas.nama,
-                    "NISN": reportObj.identitas.nis,
+                    "NISN": "'" + reportObj.identitas.nis, // Tanda kutip agar 0 di depan tidak terhapus
                     "Kelas": reportObj.identitas.kelas,
                     "Wali Kelas / Guru": reportObj.identitas.guru,
                     "Persentase (%)": reportObj.persentase + "%",
@@ -1427,9 +1559,24 @@
                 this.editingReportId = id;
                 
                 // Isi Form Identitas
-                document.getElementById('inp-nama').value = report.identitas.nama;
+                const selectKelas = document.getElementById('inp-kelas');
+                let classExists = Array.from(selectKelas.options).some(opt => opt.value === report.identitas.kelas);
+                if (!classExists && report.identitas.kelas) {
+                     selectKelas.innerHTML += `<option value="${report.identitas.kelas}">${report.identitas.kelas}</option>`;
+                }
+                selectKelas.value = report.identitas.kelas;
+                this.onFormKelasChange();
+                
+                const selectNama = document.getElementById('inp-nama');
+                let nameExists = Array.from(selectNama.options).some(opt => opt.value === report.identitas.nama);
+                if (!nameExists && report.identitas.nama) {
+                    selectNama.innerHTML += `<option value="${report.identitas.nama}">${report.identitas.nama}</option>`;
+                    selectNama.disabled = false;
+                }
+                selectNama.value = report.identitas.nama;
+                
+                // Force fill NISN, Tanggal & Guru
                 document.getElementById('inp-nis').value = report.identitas.nis;
-                document.getElementById('inp-kelas').value = report.identitas.kelas;
                 document.getElementById('inp-tanggal').value = report.identitas.tanggal;
                 document.getElementById('inp-guru').value = report.identitas.guru;
                 
@@ -1589,6 +1736,10 @@
                 // Script GAS secara otomatis akan menangkapnya sebagai Laporan Jurnal (backward compatibility)
                 const payload = {
                     ...report,
+                    identitas: {
+                        ...report.identitas,
+                        nis: "'" + report.identitas.nis // Tanda kutip agar 0 di depan tidak terhapus
+                    },
                     habits: report.habits.map(h => {
                         let additional = '';
                         if (h.id === 'h2' && h.prayers) {
@@ -1711,13 +1862,25 @@
             populateTeacherFilters() {
                 // Populate Kelas
                 const selectKelas = document.getElementById('filter-kelas');
-                const classes = [...new Set(this.data.map(d => d.identitas.kelas))].sort();
-                const currentKelas = selectKelas.value;
-                selectKelas.innerHTML = '<option value="all">Semua Kelas</option>';
-                classes.forEach(c => {
-                    selectKelas.innerHTML += `<option value="${c}">${c}</option>`;
-                });
-                if (classes.includes(currentKelas)) selectKelas.value = currentKelas;
+                
+                // Jika Login sebagai Guru Kelas Spesifik
+                if (this.currentUser && this.currentUser.role === 'guru') {
+                    selectKelas.innerHTML = `<option value="${this.currentUser.kelas}">Kelas ${this.currentUser.kelas} (Khusus Anda)</option>`;
+                    selectKelas.value = this.currentUser.kelas;
+                    selectKelas.disabled = true; // Kunci Dropdown
+                    selectKelas.classList.add('opacity-70', 'cursor-not-allowed');
+                } else {
+                    // Jika Login sebagai Super Admin
+                    const classes = [...new Set(this.data.map(d => d.identitas.kelas))].sort();
+                    const currentKelas = selectKelas.value;
+                    selectKelas.innerHTML = '<option value="all">Semua Kelas</option>';
+                    classes.forEach(c => {
+                        selectKelas.innerHTML += `<option value="${c}">${c}</option>`;
+                    });
+                    if (classes.includes(currentKelas)) selectKelas.value = currentKelas;
+                    selectKelas.disabled = false;
+                    selectKelas.classList.remove('opacity-70', 'cursor-not-allowed');
+                }
 
                 // Populate Tahun (Extracted from data using normalized date)
                 const selectTahun = document.getElementById('filter-tahun');
@@ -1766,7 +1929,8 @@
             },
 
             applyTeacherFilter() {
-                const classFilter = document.getElementById('filter-kelas').value;
+                // Jika Guru Kelas, Timpa Paksa filternya ke Kelas miliknya
+                const classFilter = (this.currentUser && this.currentUser.role === 'guru') ? this.currentUser.kelas : document.getElementById('filter-kelas').value;
                 const tipeFilter = document.getElementById('filter-tipe').value;
 
                 let filtered = this.data;
@@ -2083,7 +2247,7 @@
                     return;
                 }
                 
-                if (showToast) this.showToast('Menyinkronkan data dengan Spreadsheet...', 'info');
+                if (showToast) this.showLoading('Sinkronisasi Cloud', 'Menarik data terbaru dari Spreadsheet...');
                 
                 try {
                     // Fetch all needed data concurrently for speed
@@ -2125,8 +2289,10 @@
                         this.masterGuru = resGuru.data.map(d => ({
                             nip: String(d['NIP'] || d['nip'] || ''),
                             nama: String(d['Nama Guru'] || d['Nama'] || d['nama'] || ''),
-                            kelas: String(d['Kelas Wali'] || d['Kelas'] || d['kelas'] || '')
-                        })).filter(g => g.nip !== '');
+                            kelas: String(d['Kelas Wali'] || d['Kelas'] || d['kelas'] || ''),
+                            username: String(d['Username'] || d['username'] || ''),
+                            password: String(d['Password'] || d['password'] || '')
+                        })).filter(g => g.nama !== '');
                         masterUpdated = true;
                     }
 
@@ -2192,11 +2358,17 @@
                         this.applyTeacherFilter(); // Otomatis meng-update UI Rekap & Dashboard
                     }
 
-                    if (showToast) this.showToast('Sinkronisasi dengan Spreadsheet berhasil!', 'success');
+                    if (showToast) {
+                        this.hideLoading();
+                        this.showToast('Sinkronisasi dengan Spreadsheet berhasil!', 'success');
+                    }
 
                 } catch (e) {
                     console.error('Sync Error:', e);
-                    if (showToast) this.showToast('Gagal sinkronisasi. Periksa koneksi internet Anda.', 'error');
+                    if (showToast) {
+                        this.hideLoading();
+                        this.showToast('Gagal sinkronisasi. Periksa koneksi internet Anda.', 'error');
+                    }
                 }
             },
 
@@ -2209,39 +2381,74 @@
                 this.masterSiswa.forEach((s, idx) => {
                     siswaBody.innerHTML += `
                         <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            <td class="py-2"><input type="checkbox" class="chk-siswa rounded text-primary focus:ring-primary h-4 w-4" value="${this.escapeHTML(s.nisn)}"></td>
                             <td class="py-2">${this.escapeHTML(s.nisn)}</td>
                             <td class="py-2">${this.escapeHTML(s.nama)}</td>
                             <td class="py-2">${this.escapeHTML(s.kelas)}</td>
-                            <td class="py-2 text-right">
-                                <button onclick="App.deleteSiswa(${idx})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>
+                            <td class="py-2 text-right space-x-1">
+                                <button onclick="App.editSiswa(${idx})" title="Edit Siswa" class="text-yellow-500 hover:bg-yellow-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-pen"></i></button>
+                                <button onclick="App.deleteSiswa(${idx})" title="Hapus Siswa" class="text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>
                     `;
                 });
-                if (this.masterSiswa.length === 0) siswaBody.innerHTML = `<tr><td colspan="4" class="text-center text-gray-400 py-4">Belum ada data siswa</td></tr>`;
+                if (this.masterSiswa.length === 0) siswaBody.innerHTML = `<tr><td colspan="5" class="text-center text-gray-400 py-4">Belum ada data siswa</td></tr>`;
 
                 guruBody.innerHTML = '';
                 this.masterGuru.forEach((g, idx) => {
                     guruBody.innerHTML += `
                         <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                            <td class="py-2">${this.escapeHTML(g.nip)}</td>
+                            <td class="py-2"><input type="checkbox" class="chk-guru rounded text-primary focus:ring-primary h-4 w-4" value="${this.escapeHTML(g.nama)}"></td>
                             <td class="py-2">${this.escapeHTML(g.nama)}</td>
                             <td class="py-2">${this.escapeHTML(g.kelas)}</td>
-                            <td class="py-2 text-right">
-                                <button onclick="App.deleteGuru(${idx})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>
+                            <td class="py-2"><span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">${this.escapeHTML(g.username || '-')}</span></td>
+                            <td class="py-2"><span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs text-gray-500">${g.password ? '••••••' : '-'}</span></td>
+                            <td class="py-2 text-right space-x-1">
+                                <button onclick="App.editGuru(${idx})" title="Edit Guru" class="text-yellow-500 hover:bg-yellow-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-pen"></i></button>
+                                <button onclick="App.deleteGuru(${idx})" title="Hapus Guru" class="text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>
                     `;
                 });
-                if (this.masterGuru.length === 0) guruBody.innerHTML = `<tr><td colspan="4" class="text-center text-gray-400 py-4">Belum ada data guru</td></tr>`;
+                if (this.masterGuru.length === 0) guruBody.innerHTML = `<tr><td colspan="6" class="text-center text-gray-400 py-4">Belum ada data guru</td></tr>`;
             },
 
-            addSiswa(e) {
+            async submitSiswaForm(e) {
                 e.preventDefault();
                 const nisn = document.getElementById('add-siswa-nisn').value.trim();
                 const nama = document.getElementById('add-siswa-nama').value.trim();
                 const kelas = document.getElementById('add-siswa-kelas').value.trim();
                 
+                // JIKA MODE EDIT
+                if (this.editingSiswa) {
+                    const { idx, oldNisn } = this.editingSiswa;
+                    
+                    // Cek konflik NISN dengan siswa lain
+                    if (nisn !== oldNisn && this.masterSiswa.find(s => s.nisn === nisn)) {
+                        this.showToast('NISN sudah dipakai siswa lain!', 'error');
+                        return;
+                    }
+                    
+                    this.masterSiswa[idx] = { nisn, nama, kelas };
+                    this.saveMasterDataToLocal();
+                    this.renderMasterData();
+                    
+                    if (this.settings.sheetEndpoint) {
+                        this.showLoading('Menyimpan Edit', 'Menyinkronkan perubahan ke Cloud...');
+                        await this.apiCall('update', 'Data Siswa', { 
+                            keyField: 'NISN', 
+                            keyValue: "'" + oldNisn, 
+                            data: { "NISN": "'" + nisn, "Nama": nama, "Kelas": kelas } 
+                        });
+                        this.hideLoading();
+                    }
+                    
+                    this.showToast('Data siswa berhasil diperbarui', 'success');
+                    this.cancelEditSiswa();
+                    return;
+                }
+
+                // JIKA TAMBAH BARU
                 if (this.masterSiswa.find(s => s.nisn === nisn)) {
                     this.showToast('NISN sudah terdaftar!', 'error');
                     return;
@@ -2256,13 +2463,45 @@
                 
                 // Real-time Push to Cloud
                 if (this.settings.sheetEndpoint) {
-                    this.apiCall('create', 'Data Siswa', { data: { "NISN": nisn, "Nama": nama, "Kelas": kelas } });
+                    this.showLoading('Menyimpan Siswa', 'Menyinkronkan data ke Cloud...');
+                    await this.apiCall('create', 'Data Siswa', { data: { "NISN": "'" + nisn, "Nama": nama, "Kelas": kelas } });
+                    this.hideLoading();
                 }
 
-                this.showToast('Siswa berhasil ditambahkan');
+                this.showToast('Siswa berhasil ditambahkan', 'success');
             },
 
-            deleteSiswa(idx) {
+            editSiswa(idx) {
+                const s = this.masterSiswa[idx];
+                document.getElementById('add-siswa-nisn').value = s.nisn;
+                document.getElementById('add-siswa-nama').value = s.nama;
+                document.getElementById('add-siswa-kelas').value = s.kelas;
+                
+                this.editingSiswa = { idx, oldNisn: s.nisn };
+                
+                const btnSubmit = document.getElementById('btn-submit-siswa');
+                btnSubmit.innerHTML = '<i class="fa-solid fa-save"></i>';
+                btnSubmit.classList.replace('bg-primary', 'bg-yellow-500');
+                btnSubmit.classList.replace('hover:bg-blue-600', 'hover:bg-yellow-600');
+                
+                document.getElementById('btn-cancel-siswa').classList.remove('hidden');
+            },
+
+            cancelEditSiswa() {
+                this.editingSiswa = null;
+                document.getElementById('add-siswa-nisn').value = '';
+                document.getElementById('add-siswa-nama').value = '';
+                document.getElementById('add-siswa-kelas').value = '';
+                
+                const btnSubmit = document.getElementById('btn-submit-siswa');
+                btnSubmit.innerHTML = '<i class="fa-solid fa-plus"></i>';
+                btnSubmit.classList.replace('bg-yellow-500', 'bg-primary');
+                btnSubmit.classList.replace('hover:bg-yellow-600', 'hover:bg-blue-600');
+                
+                document.getElementById('btn-cancel-siswa').classList.add('hidden');
+            },
+
+            async deleteSiswa(idx) {
                 if(confirm('Hapus data siswa ini?')) {
                     const deletedNisn = this.masterSiswa[idx].nisn;
                     this.masterSiswa.splice(idx, 1);
@@ -2271,9 +2510,45 @@
                     
                     // Real-time Push to Cloud
                     if (this.settings.sheetEndpoint) {
-                        this.apiCall('delete', 'Data Siswa', { keyField: "NISN", keyValue: deletedNisn });
+                        this.showLoading('Menghapus Data', 'Menghapus siswa dari Cloud...');
+                        await this.apiCall('delete', 'Data Siswa', { keyField: "NISN", keyValue: "'" + deletedNisn });
+                        this.hideLoading();
+                    }
+                    this.showToast('Siswa berhasil dihapus', 'success');
+                }
+            },
+
+            toggleCheckAllSiswa(el) {
+                const checkboxes = document.querySelectorAll('.chk-siswa');
+                checkboxes.forEach(cb => cb.checked = el.checked);
+            },
+
+            async deleteBulkSiswa() {
+                const checkedNodes = document.querySelectorAll('.chk-siswa:checked');
+                if (checkedNodes.length === 0) {
+                    this.showToast('Centang setidaknya satu siswa untuk dihapus', 'error');
+                    return;
+                }
+                
+                if (!confirm(`Apakah Anda yakin ingin menghapus ${checkedNodes.length} data siswa secara massal?`)) return;
+                
+                this.showLoading('Menghapus Data', `Menghapus ${checkedNodes.length} siswa...`);
+                const nisnToDelete = Array.from(checkedNodes).map(cb => cb.value);
+                
+                this.masterSiswa = this.masterSiswa.filter(s => !nisnToDelete.includes(s.nisn));
+                this.saveMasterDataToLocal();
+                this.renderMasterData();
+                
+                if (this.settings.sheetEndpoint) {
+                    for (let i = 0; i < nisnToDelete.length; i++) {
+                        await this.apiCall('delete', 'Data Siswa', { keyField: "NISN", keyValue: "'" + nisnToDelete[i] });
+                        this.updateLoading(`Menghapus ${i + 1} dari ${nisnToDelete.length} data di Cloud...`);
                     }
                 }
+                
+                document.getElementById('check-all-siswa').checked = false;
+                this.hideLoading();
+                this.showToast(`${nisnToDelete.length} Data Siswa berhasil dihapus!`, 'success');
             },
 
             clearSiswa() {
@@ -2285,39 +2560,151 @@
                 }
             },
 
-            addGuru(e) {
+            async submitGuruForm(e) {
                 e.preventDefault();
                 const nip = document.getElementById('add-guru-nip').value.trim();
                 const nama = document.getElementById('add-guru-nama').value.trim();
                 const kelas = document.getElementById('add-guru-kelas').value.trim();
+                const user = document.getElementById('add-guru-user').value.trim();
+                const pass = document.getElementById('add-guru-pass').value.trim();
                 
-                this.masterGuru.push({ nip, nama, kelas });
+                // JIKA MODE EDIT
+                if (this.editingGuru) {
+                    const { idx, oldNama } = this.editingGuru;
+                    
+                    if (this.masterGuru.find((g, i) => g.username === user && i !== idx)) {
+                        this.showToast('Username sudah dipakai guru lain!', 'error');
+                        return;
+                    }
+                    
+                    this.masterGuru[idx] = { nip, nama, kelas, username: user, password: pass };
+                    this.saveMasterDataToLocal();
+                    this.renderMasterData();
+                    
+                    if (this.settings.sheetEndpoint) {
+                        this.showLoading('Menyimpan Edit', 'Menyinkronkan perubahan ke Cloud...');
+                        await this.apiCall('update', 'Data Guru', { 
+                            keyField: 'Nama Guru', 
+                            keyValue: oldNama, 
+                            data: { "NIP": "'" + nip, "Nama Guru": nama, "Kelas Wali": kelas, "Username": user, "Password": pass } 
+                        });
+                        this.hideLoading();
+                    }
+                    
+                    this.showToast('Data guru berhasil diperbarui', 'success');
+                    this.cancelEditGuru();
+                    return;
+                }
+
+                // JIKA TAMBAH BARU
+                if (this.masterGuru.find(g => g.username === user)) {
+                    this.showToast('Username sudah dipakai guru lain!', 'error');
+                    return;
+                }
+
+                this.masterGuru.push({ nip, nama, kelas, username: user, password: pass });
                 this.saveMasterDataToLocal();
                 this.renderMasterData();
                 document.getElementById('add-guru-nip').value = '';
                 document.getElementById('add-guru-nama').value = '';
                 document.getElementById('add-guru-kelas').value = '';
+                document.getElementById('add-guru-user').value = '';
+                document.getElementById('add-guru-pass').value = '';
                 
                 // Real-time Push to Cloud
                 if (this.settings.sheetEndpoint) {
-                    this.apiCall('create', 'Data Guru', { data: { "NIP": nip, "Nama Guru": nama, "Kelas Wali": kelas } });
+                    this.showLoading('Menyimpan Guru', 'Menyinkronkan akun guru ke Cloud...');
+                    await this.apiCall('create', 'Data Guru', { 
+                        data: { "NIP": "'" + nip, "Nama Guru": nama, "Kelas Wali": kelas, "Username": user, "Password": pass } 
+                    });
+                    this.hideLoading();
                 }
                 
-                this.showToast('Guru berhasil ditambahkan');
+                this.showToast('Akun Guru berhasil ditambahkan', 'success');
             },
 
-            deleteGuru(idx) {
-                if(confirm('Hapus data guru ini?')) {
-                    const deletedNip = this.masterGuru[idx].nip;
+            editGuru(idx) {
+                const g = this.masterGuru[idx];
+                document.getElementById('add-guru-nip').value = g.nip || '';
+                document.getElementById('add-guru-nama').value = g.nama || '';
+                document.getElementById('add-guru-kelas').value = g.kelas || '';
+                document.getElementById('add-guru-user').value = g.username || '';
+                document.getElementById('add-guru-pass').value = g.password || '';
+                
+                this.editingGuru = { idx, oldNama: g.nama };
+                
+                const btnSubmit = document.getElementById('btn-submit-guru');
+                btnSubmit.innerHTML = '<i class="fa-solid fa-save mr-1"></i> Simpan';
+                btnSubmit.classList.replace('bg-secondary', 'bg-yellow-500');
+                btnSubmit.classList.replace('hover:bg-red-600', 'hover:bg-yellow-600');
+                
+                document.getElementById('btn-cancel-guru').classList.remove('hidden');
+            },
+
+            cancelEditGuru() {
+                this.editingGuru = null;
+                document.getElementById('add-guru-nip').value = '';
+                document.getElementById('add-guru-nama').value = '';
+                document.getElementById('add-guru-kelas').value = '';
+                document.getElementById('add-guru-user').value = '';
+                document.getElementById('add-guru-pass').value = '';
+                
+                const btnSubmit = document.getElementById('btn-submit-guru');
+                btnSubmit.innerHTML = '<i class="fa-solid fa-plus mr-1"></i> Tambah';
+                btnSubmit.classList.replace('bg-yellow-500', 'bg-secondary');
+                btnSubmit.classList.replace('hover:bg-yellow-600', 'hover:bg-red-600');
+                
+                document.getElementById('btn-cancel-guru').classList.add('hidden');
+            },
+
+            async deleteGuru(idx) {
+                if(confirm('Hapus akun guru ini?')) {
+                    const deletedNama = this.masterGuru[idx].nama;
                     this.masterGuru.splice(idx, 1);
                     this.saveMasterDataToLocal();
                     this.renderMasterData();
                     
-                    // Real-time Push to Cloud
+                    // Real-time Push to Cloud (Menghapus menggunakan Nama sebagai acuan kunci)
                     if (this.settings.sheetEndpoint) {
-                        this.apiCall('delete', 'Data Guru', { keyField: "NIP", keyValue: deletedNip });
+                        this.showLoading('Menghapus Akun', 'Menghapus guru dari Cloud...');
+                        await this.apiCall('delete', 'Data Guru', { keyField: "Nama Guru", keyValue: deletedNama });
+                        this.hideLoading();
+                    }
+                    this.showToast('Akun Guru berhasil dihapus', 'success');
+                }
+            },
+
+            toggleCheckAllGuru(el) {
+                const checkboxes = document.querySelectorAll('.chk-guru');
+                checkboxes.forEach(cb => cb.checked = el.checked);
+            },
+
+            async deleteBulkGuru() {
+                const checkedNodes = document.querySelectorAll('.chk-guru:checked');
+                if (checkedNodes.length === 0) {
+                    this.showToast('Centang setidaknya satu guru untuk dihapus', 'error');
+                    return;
+                }
+                
+                if (!confirm(`Apakah Anda yakin ingin menghapus ${checkedNodes.length} data guru secara massal?`)) return;
+                
+                this.showLoading('Menghapus Guru', `Menghapus ${checkedNodes.length} guru...`);
+                const namaToDelete = Array.from(checkedNodes).map(cb => cb.value);
+                
+                this.masterGuru = this.masterGuru.filter(g => !namaToDelete.includes(g.nama));
+                this.saveMasterDataToLocal();
+                this.renderMasterData();
+                
+                if (this.settings.sheetEndpoint) {
+                    for (let i = 0; i < namaToDelete.length; i++) {
+                        await this.apiCall('delete', 'Data Guru', { keyField: "Nama Guru", keyValue: namaToDelete[i] });
+                        this.updateLoading(`Menghapus ${i + 1} dari ${namaToDelete.length} data di Cloud...`);
                     }
                 }
+                
+                document.getElementById('check-all-guru').checked = false;
+                this.hideLoading();
+                this.showToast(`${namaToDelete.length} Data Guru berhasil dihapus!`, 'success');
             },
 
             clearGuru() {
@@ -2330,7 +2717,7 @@
             },
 
             // Excel Copy Paste Import untuk Siswa
-            importSiswaExcel() {
+            async importSiswaExcel() {
                 const textarea = document.getElementById('import-siswa-excel');
                 const rawText = textarea.value.trim();
                 
@@ -2340,8 +2727,8 @@
                 }
 
                 const rows = rawText.split('\n');
-                let importedCount = 0;
                 let duplicateCount = 0;
+                const validData = [];
 
                 rows.forEach(row => {
                     if (!row.trim()) return;
@@ -2353,14 +2740,9 @@
                         const kelas = cols[2] ? cols[2].trim() : '';
 
                         if (nisn && nama) {
-                            if (!this.masterSiswa.find(s => s.nisn === nisn)) {
-                                this.masterSiswa.push({ nisn, nama, kelas: kelas || '-' });
-                                
-                                // Silent push to cloud
-                                if (this.settings.sheetEndpoint) {
-                                    this.apiCall('create', 'Data Siswa', { data: { "NISN": nisn, "Nama": nama, "Kelas": kelas || '-' } });
-                                }
-                                importedCount++;
+                            // Cek duplikasi di lokal dan di data yang sedang diproses
+                            if (!this.masterSiswa.find(s => s.nisn === nisn) && !validData.find(s => s.nisn === nisn)) {
+                                validData.push({ nisn, nama, kelas: kelas || '-' });
                             } else {
                                 duplicateCount++;
                             }
@@ -2368,20 +2750,43 @@
                     }
                 });
 
-                if (importedCount > 0) {
+                if (validData.length > 0) {
+                    // 1. Simpan ke lokal terlebih dahulu agar tabel langsung terupdate
+                    this.masterSiswa = [...this.masterSiswa, ...validData];
                     this.saveMasterDataToLocal();
                     this.renderMasterData();
                     textarea.value = '';
-                    let message = `Berhasil mengimpor ${importedCount} data siswa.`;
+                    
+                    let message = `Berhasil mengimpor ${validData.length} data lokal.`;
                     if (duplicateCount > 0) message += ` (${duplicateCount} duplikat diabaikan)`;
                     this.showToast(message, 'success');
+
+                    // 2. Push ke Cloud secara Berurutan (Sequential Await) agar Google Script tidak Time-Out
+                    if (this.settings.sheetEndpoint) {
+                        this.showLoading('Menyinkronkan Siswa', `Loading 0 dari ${validData.length} data tersinkron...`);
+                        let successCloud = 0;
+                        
+                        for (let i = 0; i < validData.length; i++) {
+                            const student = validData[i];
+                            const res = await this.apiCall('create', 'Data Siswa', { 
+                                data: { "NISN": "'" + student.nisn, "Nama": student.nama, "Kelas": student.kelas } 
+                            });
+                            
+                            if (res && res.status === 'success') successCloud++;
+                            
+                            this.updateLoading(`Loading ${i + 1} dari ${validData.length} data tersinkron...`);
+                        }
+                        
+                        this.hideLoading();
+                        this.showToast(`Sinkronisasi Selesai! ${successCloud} data siswa berhasil masuk ke Spreadsheet.`, 'success');
+                    }
                 } else {
                     this.showToast('Gagal mengimpor data. Format salah atau semua data duplikat.', 'error');
                 }
             },
 
             // Excel Copy Paste Import untuk Guru
-            importGuruExcel() {
+            async importGuruExcel() {
                 const textarea = document.getElementById('import-guru-excel');
                 const rawText = textarea.value.trim();
                 
@@ -2391,7 +2796,7 @@
                 }
 
                 const rows = rawText.split('\n');
-                let importedCount = 0;
+                const validData = [];
 
                 rows.forEach(row => {
                     if (!row.trim()) return;
@@ -2401,24 +2806,42 @@
                         const nip = cols[0] ? cols[0].trim() : '';
                         const nama = cols[1] ? cols[1].trim() : '';
                         const kelas = cols[2] ? cols[2].trim() : '';
+                        const user = cols[3] ? cols[3].trim() : '';
+                        const pass = cols[4] ? cols[4].trim() : '';
 
-                        if (nip && nama) {
-                            this.masterGuru.push({ nip, nama, kelas: kelas || '-' });
-                            
-                            // Silent push to cloud
-                            if (this.settings.sheetEndpoint) {
-                                this.apiCall('create', 'Data Guru', { data: { "NIP": nip, "Nama Guru": nama, "Kelas Wali": kelas || '-' } });
-                            }
-                            importedCount++;
+                        if (nama) {
+                            validData.push({ nip, nama, kelas: kelas || '-', username: user, password: pass });
                         }
                     }
                 });
 
-                if (importedCount > 0) {
+                if (validData.length > 0) {
+                    // 1. Simpan Lokal
+                    this.masterGuru = [...this.masterGuru, ...validData];
                     this.saveMasterDataToLocal();
                     this.renderMasterData();
                     textarea.value = '';
-                    this.showToast(`Berhasil mengimpor ${importedCount} data guru.`, 'success');
+                    this.showToast(`Berhasil mengimpor ${validData.length} data akun guru lokal.`, 'success');
+
+                    // 2. Push ke Cloud Berurutan
+                    if (this.settings.sheetEndpoint) {
+                        this.showLoading('Menyinkronkan Guru', `Loading 0 dari ${validData.length} data tersinkron...`);
+                        let successCloud = 0;
+                        
+                        for (let i = 0; i < validData.length; i++) {
+                            const guru = validData[i];
+                            const res = await this.apiCall('create', 'Data Guru', { 
+                                data: { "NIP": "'" + guru.nip, "Nama Guru": guru.nama, "Kelas Wali": guru.kelas, "Username": guru.username, "Password": guru.password } 
+                            });
+                            
+                            if (res && res.status === 'success') successCloud++;
+                            
+                            this.updateLoading(`Loading ${i + 1} dari ${validData.length} data tersinkron...`);
+                        }
+                        
+                        this.hideLoading();
+                        this.showToast(`Sinkronisasi Selesai! ${successCloud} data guru masuk ke Spreadsheet.`, 'success');
+                    }
                 } else {
                     this.showToast('Gagal mengimpor data. Periksa kembali format input Anda.', 'error');
                 }
