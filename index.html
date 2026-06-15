@@ -403,16 +403,31 @@
                         <h4 class="text-xl font-bold text-blue-500 truncate" id="stat-cat">-</h4>
                     </div>
                     <div class="bg-white dark:bg-darkCard p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm print-card">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Siswa Aktif</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Siswa Aktif Pelapor</p>
                         <h4 class="text-2xl font-bold text-orange-500" id="stat-students">0</h4>
                     </div>
                 </div>
 
-                <!-- Charts -->
-                <div class="bg-white dark:bg-darkCard p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card mb-6">
-                    <h3 class="font-bold mb-4">Grafik Keterlaksanaan Mingguan</h3>
-                    <div class="h-64 w-full">
-                        <canvas id="mainChart"></canvas>
+                <!-- Charts & Population -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <!-- Chart -->
+                    <div class="lg:col-span-2 bg-white dark:bg-darkCard p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card">
+                        <h3 class="font-bold mb-4">Grafik Keterlaksanaan Mingguan</h3>
+                        <div class="h-64 w-full">
+                            <canvas id="mainChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Populasi Siswa -->
+                    <div class="bg-white dark:bg-darkCard p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card flex flex-col h-[335px] no-print">
+                        <h3 class="font-bold mb-3 border-b border-gray-100 dark:border-gray-700 pb-3"><i class="fa-solid fa-users text-primary mr-2"></i> Populasi Siswa Master</h3>
+                        <div class="flex-1 overflow-y-auto pr-2">
+                            <table class="w-full text-left text-sm">
+                                <tbody id="dashboard-class-stats-body">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1857,6 +1872,59 @@
             renderDashboard() {
                 this.populateTeacherFilters();
                 this.applyTeacherFilter(); // This calculates stats, table, and chart
+                this.updateClassPopulationStats();
+            },
+
+            updateClassPopulationStats() {
+                const tbody = document.getElementById('dashboard-class-stats-body');
+                if (!tbody) return;
+
+                let classCounts = {};
+                let totalStudents = 0;
+
+                // Tentukan target kelas berdasarkan Role Login
+                let targetClass = 'all';
+                if (this.currentUser && this.currentUser.role === 'guru') {
+                    targetClass = this.currentUser.kelas;
+                }
+
+                // Hitung dari Data Master Siswa
+                this.masterSiswa.forEach(s => {
+                    const k = s.kelas || 'Tanpa Kelas';
+                    if (targetClass === 'all' || targetClass === k) {
+                        classCounts[k] = (classCounts[k] || 0) + 1;
+                        totalStudents++;
+                    }
+                });
+
+                // Urutkan kelas sesuai abjad
+                const sortedClasses = Object.keys(classCounts).sort();
+
+                let html = '';
+                if (sortedClasses.length === 0) {
+                    html = `<tr><td colspan="2" class="py-6 text-center text-gray-400 italic">Data Master Siswa masih kosong.</td></tr>`;
+                } else {
+                    sortedClasses.forEach(c => {
+                        html += `
+                            <tr class="border-b border-gray-100 dark:border-gray-700 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
+                                <td class="py-3 font-medium text-gray-700 dark:text-gray-300">Kelas ${this.escapeHTML(c)}</td>
+                                <td class="py-3 text-right"><span class="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 px-3 py-1.5 rounded-lg text-xs font-bold">${classCounts[c]} Siswa</span></td>
+                            </tr>
+                        `;
+                    });
+                    
+                    // Tambahkan baris Total Seluruhnya jika login sebagai Admin dan kelas lebih dari 1
+                    if (targetClass === 'all' && sortedClasses.length > 0) {
+                        html += `
+                            <tr class="bg-gray-50 dark:bg-gray-800/80 font-bold border-t-2 border-gray-200 dark:border-gray-600 sticky bottom-0">
+                                <td class="py-3 px-2 text-gray-800 dark:text-white">Total Seluruhnya</td>
+                                <td class="py-3 px-2 text-right text-primary">${totalStudents} Siswa</td>
+                            </tr>
+                        `;
+                    }
+                }
+
+                tbody.innerHTML = html;
             },
 
             populateTeacherFilters() {
