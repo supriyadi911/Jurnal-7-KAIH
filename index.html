@@ -1637,6 +1637,7 @@
                     
                     let prayersData = null;
                     let suratData = null;
+                    
                     if (habit.id === 'h2') {
                         prayersData = {
                             subuh: document.getElementById('prayer-subuh').checked,
@@ -1645,12 +1646,21 @@
                             maghrib: document.getElementById('prayer-maghrib').checked,
                             isya: document.getElementById('prayer-isya').checked
                         };
+                        
+                        // Perhitungan pecahan desimal untuk rincian salat
+                        let pCount = Object.values(prayersData).filter(Boolean).length;
+                        if (pCount > 0) {
+                            terlaksana += (pCount / 5);
+                        } else if (isChecked) {
+                            terlaksana += 1; // Untuk Non-Muslim / Ibadah Umum yang langsung centang utama
+                        }
                     } else if (habit.id === 'h6') {
                         const suratEl = document.getElementById(`surat-${habit.id}`);
                         if (suratEl) suratData = suratEl.value.trim();
+                        if (isChecked) terlaksana++;
+                    } else {
+                        if (isChecked) terlaksana++;
                     }
-
-                    if (isChecked) terlaksana++;
 
                     habitsData.push({
                         id: habit.id,
@@ -2799,7 +2809,7 @@
                         this.renderMasterData();
                     }
 
-                    // 3. Sinkronisasi Rekap Laporan Jurnal (Dilakukan Kalkulasi Ulang Akurat)
+                    // 3. Sinkronisasi Rekap Laporan Jurnal (Dilakukan Kalkulasi Ulang Akurat yang Menghitung Pecahan Salat)
                     if (resJurnal && resJurnal.status === 'success' && resJurnal.data) {
                         this.data = resJurnal.data.map(d => {
                             let terlaksanaSync = 0;
@@ -2808,26 +2818,55 @@
                                 const val = String(d[def.title] || '');
                                 const isSudah = val.startsWith('Sudah');
                                 
-                                if (isSudah) terlaksanaSync++;
+                                let prayersData = null;
+                                let suratData = null;
                                 
+                                if (def.id === 'h2') {
+                                    prayersData = {
+                                        subuh: val.toLowerCase().includes('subuh'),
+                                        dzuhur: val.toLowerCase().includes('dzuhur'),
+                                        ashar: val.toLowerCase().includes('ashar'),
+                                        maghrib: val.toLowerCase().includes('maghrib'),
+                                        isya: val.toLowerCase().includes('isya')
+                                    };
+                                    let pCount = Object.values(prayersData).filter(Boolean).length;
+                                    if (pCount > 0) {
+                                        terlaksanaSync += (pCount / 5);
+                                    } else if (isSudah) {
+                                        terlaksanaSync += 1;
+                                    }
+                                } else if (def.id === 'h6') {
+                                    const match = val.match(/\(Surat:\s*(.*?)\)/i);
+                                    if (match) suratData = match[1];
+                                    if (isSudah) terlaksanaSync++;
+                                } else {
+                                    if (isSudah) terlaksanaSync++;
+                                }
+                                
+                                // Bersihkan Teks Catatan dari tempelan Rincian Salat / Surat
                                 let noteStr = val;
-                                if (val === 'Sudah' || val === 'Belum') {
+                                if (val.includes('(Salat:')) noteStr = val.replace(/\(Salat:.*?\)/i, '').trim();
+                                if (val.includes('(Surat:')) noteStr = val.replace(/\(Surat:.*?\)/i, '').trim();
+                                
+                                if (noteStr === 'Sudah' || noteStr === 'Belum') {
                                     noteStr = '';
-                                } else if (val.startsWith('Sudah ')) {
-                                    noteStr = val.substring(6); // Menghapus kata awalan
-                                } else if (val.startsWith('Belum ')) {
-                                    noteStr = val.substring(6); // Menghapus kata awalan
+                                } else if (noteStr.startsWith('Sudah ')) {
+                                    noteStr = noteStr.substring(6).trim();
+                                } else if (noteStr.startsWith('Belum ')) {
+                                    noteStr = noteStr.substring(6).trim();
                                 }
                                 
                                 return {
                                     id: def.id,
                                     title: def.title,
                                     status: isSudah,
-                                    note: noteStr
+                                    note: noteStr,
+                                    prayers: prayersData,
+                                    surat: suratData
                                 };
                             });
 
-                            // HITUNG ULANG PERSENTASE & KATEGORI (Mencegah salah baca format "%" dari Spreadsheet)
+                            // HITUNG ULANG PERSENTASE & KATEGORI
                             const totalSync = App.habitsDefinition.length;
                             const pSync = Math.round((terlaksanaSync / totalSync) * 100);
                             const kSync = App.getCategory(pSync).label;
