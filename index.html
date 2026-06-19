@@ -108,9 +108,10 @@
                 visibility: hidden !important;
             }
             
-            /* Hanya tampilkan bagian yang ingin di-print (Rekap) */
+            /* Hanya tampilkan bagian yang ingin di-print (Rekap atau Rincian yang sedang aktif) */
             .view-section { display: none !important; }
-            #view-rekap { display: block !important; }
+            #view-rekap:not(.hidden) { display: block !important; }
+            #view-rincian:not(.hidden) { display: block !important; }
             
             /* Hapus bayangan dan lengkungan agar formal */
             .print-card { 
@@ -224,6 +225,9 @@
                 <button onclick="App.navigate('dashboard')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="dashboard">
                     <i class="fa-solid fa-chart-pie w-5"></i><span>Dashboard Guru</span>
                 </button>
+                <button id="nav-btn-rincian-desktop" onclick="App.navigate('rincian')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="rincian">
+                    <i class="fa-solid fa-chart-simple w-5"></i><span>Rincian Kategori</span>
+                </button>
                 <button onclick="App.navigate('rekap')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="rekap">
                     <i class="fa-solid fa-table-list w-5"></i><span>Rekap Laporan</span>
                 </button>
@@ -286,6 +290,10 @@
             <button id="nav-dashboard-mobile" onclick="App.navigate('dashboard')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="dashboard">
                 <i class="fa-solid fa-chart-pie text-lg mb-1"></i>
                 <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Dashboard</span>
+            </button>
+            <button id="nav-rincian-mobile" onclick="App.navigate('rincian')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="rincian">
+                <i class="fa-solid fa-chart-simple text-lg mb-1"></i>
+                <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Rincian</span>
             </button>
             <button id="nav-rekap-mobile" onclick="App.navigate('rekap')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="rekap">
                 <i class="fa-solid fa-table-list text-lg mb-1"></i>
@@ -427,6 +435,56 @@
                                     <!-- Injected by JS -->
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4.5 RINCIAN KATEGORI VIEW -->
+            <section id="view-rincian" class="view-section slide-up w-full max-w-6xl mx-auto hidden print-container">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 no-print gap-4">
+                    <h2 class="text-2xl font-bold border-l-4 border-secondary pl-3 text-gray-800 dark:text-white">Rincian Kategori Kebiasaan</h2>
+                    <button onclick="window.print()" class="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm hover:bg-gray-700 shadow-sm"><i class="fa-solid fa-print mr-1"></i> Cetak Laporan Rincian</button>
+                </div>
+
+                <!-- Filters -->
+                <div class="bg-white dark:bg-darkCard p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 no-print mb-6">
+                    <h3 class="font-bold mb-4"><i class="fa-solid fa-filter text-primary"></i> Filter Rincian</h3>
+                    <div class="flex flex-wrap gap-4 items-end">
+                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
+                            <label class="block text-sm mb-1">Kelas</label>
+                            <select id="rincian-filter-kelas" onchange="App.onRincianKelasChange()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
+                                <option value="all">Semua Kelas</option>
+                            </select>
+                        </div>
+                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
+                            <label class="block text-sm mb-1">Siswa</label>
+                            <select id="rincian-filter-siswa" onchange="App.applyRincianFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
+                                <option value="all">Semua Siswa</option>
+                            </select>
+                        </div>
+                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
+                            <label class="block text-sm mb-1">Bulan (Opsional)</label>
+                            <input type="month" id="rincian-filter-bulan" onchange="App.applyRincianFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <button onclick="App.resetRincianFilter()" class="w-full px-6 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition border border-red-200 dark:border-red-800">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats/Progress Bars -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card">
+                        <h3 class="font-bold mb-4 text-gray-800 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-3">Tingkat Keterlaksanaan Kategori</h3>
+                        <div id="rincian-progress-container" class="space-y-5">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-darkCard p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card flex flex-col">
+                        <h3 class="font-bold mb-4 text-gray-800 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-3">Grafik Batang Perbandingan</h3>
+                        <div class="flex-1 w-full min-h-[300px] flex items-center justify-center pt-2">
+                            <canvas id="rincianChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -798,6 +856,7 @@
                 { id: 'h7', title: 'G. Tidur Cepat', desc: 'Tidur tidak larut malam (maks 21:30)', icon: 'fa-moon', color: 'text-purple-500' }
             ],
             chartInstance: null,
+            rincianChartInstance: null,
             isTeacherLoggedIn: false,
             currentUser: null, // role: 'admin' | 'guru'
             targetPendingView: null,
@@ -840,7 +899,7 @@
             // Navigation
             navigate(viewId, updateHash = true) {
                 // Auth Check for Teacher Area
-                if ((viewId === 'dashboard' || viewId === 'settings' || viewId === 'rekap' || viewId === 'data') && !this.isTeacherLoggedIn) {
+                if ((viewId === 'dashboard' || viewId === 'settings' || viewId === 'rekap' || viewId === 'data' || viewId === 'rincian') && !this.isTeacherLoggedIn) {
                     this.targetPendingView = viewId;
                     this.openLoginModal();
                     return;
@@ -868,7 +927,7 @@
                 document.querySelectorAll('.nav-btn').forEach(btn => {
                     btn.classList.remove('bg-blue-50', 'text-primary', 'dark:bg-gray-800', 'bg-red-50', 'text-secondary', 'bg-gray-100');
                     if(btn.dataset.target === viewId) {
-                        if(viewId === 'dashboard' || viewId === 'rekap' || viewId === 'data') {
+                        if(viewId === 'dashboard' || viewId === 'rekap' || viewId === 'data' || viewId === 'rincian') {
                             btn.classList.add('bg-red-50', 'text-secondary', 'dark:bg-gray-800');
                         } else if(viewId === 'form') {
                             btn.classList.add('bg-blue-50', 'text-primary', 'dark:bg-gray-800');
@@ -885,7 +944,7 @@
                     btn.classList.add('text-gray-400');
                     if(btn.dataset.target === viewId) {
                         btn.classList.remove('text-gray-400');
-                        if(viewId === 'dashboard' || viewId === 'rekap' || viewId === 'data') btn.classList.add('text-secondary');
+                        if(viewId === 'dashboard' || viewId === 'rekap' || viewId === 'data' || viewId === 'rincian') btn.classList.add('text-secondary');
                         else if(viewId === 'form') btn.classList.add('text-primary');
                         else btn.classList.add('text-gray-800', 'dark:text-white');
                     }
@@ -899,6 +958,7 @@
                     this.populateProfileForm();
                 }
                 if (viewId === 'dashboard' || viewId === 'rekap') this.renderDashboard();
+                if (viewId === 'rincian') this.renderRincian();
                 if (viewId === 'data') this.renderMasterData();
                 if (viewId === 'settings') this.populateSettings();
 
@@ -983,10 +1043,12 @@
                 const loginDesktop = document.getElementById('btn-login-desktop');
                 const dataDesktopBtn = document.getElementById('nav-btn-data-desktop');
                 const settingsDesktopBtn = document.getElementById('nav-btn-settings-desktop');
+                const rincianDesktopBtn = document.getElementById('nav-btn-rincian-desktop');
                 
                 const loginMobile = document.getElementById('btn-login-mobile');
                 const dashboardMobile = document.getElementById('nav-dashboard-mobile');
                 const rekapMobile = document.getElementById('nav-rekap-mobile');
+                const rincianMobile = document.getElementById('nav-rincian-mobile');
                 const dataMobile = document.getElementById('nav-data-mobile');
                 const settingsMobile = document.getElementById('nav-settings-mobile');
                 const logoutMobile = document.getElementById('btn-logout-mobile');
@@ -999,11 +1061,13 @@
                     if (loginDesktop) loginDesktop.classList.add('hidden');
                     if (dataDesktopBtn) dataDesktopBtn.style.display = isAdmin ? 'flex' : 'none';
                     if (settingsDesktopBtn) settingsDesktopBtn.style.display = isAdmin ? 'flex' : 'none';
+                    if (rincianDesktopBtn) rincianDesktopBtn.style.display = 'flex';
                     
                     // Tampilkan menu mobile
                     if (loginMobile) loginMobile.classList.add('hidden');
                     if (dashboardMobile) dashboardMobile.classList.remove('hidden');
                     if (rekapMobile) rekapMobile.classList.remove('hidden');
+                    if (rincianMobile) rincianMobile.classList.remove('hidden');
                     if (dataMobile) isAdmin ? dataMobile.classList.remove('hidden') : dataMobile.classList.add('hidden');
                     if (settingsMobile) isAdmin ? settingsMobile.classList.remove('hidden') : settingsMobile.classList.add('hidden');
                     if (logoutMobile) logoutMobile.classList.remove('hidden');
@@ -1018,6 +1082,7 @@
                     if (loginMobile) loginMobile.classList.remove('hidden');
                     if (dashboardMobile) dashboardMobile.classList.add('hidden');
                     if (rekapMobile) rekapMobile.classList.add('hidden');
+                    if (rincianMobile) rincianMobile.classList.add('hidden');
                     if (dataMobile) dataMobile.classList.add('hidden');
                     if (settingsMobile) settingsMobile.classList.add('hidden');
                     if (logoutMobile) logoutMobile.classList.add('hidden');
@@ -1053,6 +1118,9 @@
                 if(this.chartInstance) {
                     this.renderDashboard();
                 }
+                if(this.rincianChartInstance) {
+                    this.applyRincianFilter();
+                }
             },
 
             // Data Management
@@ -1064,7 +1132,6 @@
                 if (savedSettings) {
                     const parsedSettings = JSON.parse(savedSettings);
                     this.settings = {...this.settings, ...parsedSettings};
-                    // Kembalikan ke URL default jika sempat terhapus/kosong
                     if (!this.settings.sheetEndpoint) {
                         this.settings.sheetEndpoint = 'https://script.google.com/macros/s/AKfycbxuqroNhAo1QKtxY-f0RabzzdQTFPAdJ3E2yKtiQL2ClDUvqxzxNkoQEznZgPXyav6w/exec';
                     }
@@ -1098,11 +1165,14 @@
                 localStorage.setItem('kaih_profile', JSON.stringify(profileObj));
             },
 
-            // Utils
             setDefaultDate() {
                 const today = new Date().toISOString().split('T')[0];
-                document.getElementById('inp-tanggal').value = today;
-                document.getElementById('current-date-display').innerText = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                const tanggalInput = document.getElementById('inp-tanggal');
+                if (tanggalInput) tanggalInput.value = today;
+                const displayEl = document.getElementById('current-date-display');
+                if (displayEl) {
+                    displayEl.innerText = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                }
             },
 
             showToast(msg, type = 'success') {
@@ -1282,7 +1352,7 @@
 
             toggleHabitStatus(id) {
                 const cb = document.getElementById(`check-${id}`);
-                const label = document.getElementById(`status-label-${id}`);
+                const label = document.getElementById('status-label-' + id);
                 if (cb.checked) {
                     label.innerText = 'Sudah';
                     label.className = 'text-sm font-bold text-green-600';
@@ -2165,6 +2235,180 @@
                 });
             },
 
+            // --- RINCIAN KATEGORI LOGIC ---
+            renderRincian() {
+                this.populateRincianFilters();
+                this.applyRincianFilter();
+            },
+
+            populateRincianFilters() {
+                const selectKelas = document.getElementById('rincian-filter-kelas');
+                
+                if (this.currentUser && this.currentUser.role === 'guru') {
+                    selectKelas.innerHTML = `<option value="${this.currentUser.kelas}">Kelas ${this.currentUser.kelas}</option>`;
+                    selectKelas.disabled = true;
+                    selectKelas.classList.add('opacity-70', 'cursor-not-allowed');
+                } else {
+                    const classes = [...new Set(this.data.map(d => d.identitas.kelas))].sort();
+                    const currentKelas = selectKelas.value;
+                    selectKelas.innerHTML = '<option value="all">Semua Kelas</option>';
+                    classes.forEach(c => { selectKelas.innerHTML += `<option value="${c}">${c}</option>`; });
+                    if (classes.includes(currentKelas)) selectKelas.value = currentKelas;
+                    selectKelas.disabled = false;
+                    selectKelas.classList.remove('opacity-70', 'cursor-not-allowed');
+                }
+                this.onRincianKelasChange();
+            },
+
+            onRincianKelasChange() {
+                const kelas = document.getElementById('rincian-filter-kelas').value;
+                const selectSiswa = document.getElementById('rincian-filter-siswa');
+                const currentSiswa = selectSiswa.value;
+                
+                selectSiswa.innerHTML = '<option value="all">Semua Siswa</option>';
+                
+                let students = [];
+                if (kelas === 'all') {
+                    // Ambil semua nama siswa dari data rekap
+                    students = [...new Set(this.data.map(d => d.identitas.nama))].sort();
+                } else {
+                    // Ambil nama siswa khusus di kelas tsb
+                    students = [...new Set(this.data.filter(d => d.identitas.kelas === kelas).map(d => d.identitas.nama))].sort();
+                }
+                
+                students.forEach(s => { selectSiswa.innerHTML += `<option value="${s}">${s}</option>`; });
+                if (students.includes(currentSiswa)) selectSiswa.value = currentSiswa;
+                
+                this.applyRincianFilter();
+            },
+
+            resetRincianFilter() {
+                if (this.currentUser && this.currentUser.role === 'admin') {
+                    document.getElementById('rincian-filter-kelas').value = 'all';
+                }
+                document.getElementById('rincian-filter-siswa').value = 'all';
+                document.getElementById('rincian-filter-bulan').value = '';
+                this.onRincianKelasChange();
+            },
+
+            applyRincianFilter() {
+                const kelas = document.getElementById('rincian-filter-kelas').value;
+                const siswa = document.getElementById('rincian-filter-siswa').value;
+                const bulan = document.getElementById('rincian-filter-bulan').value;
+
+                let filtered = this.data;
+                
+                if (kelas !== 'all') filtered = filtered.filter(d => d.identitas.kelas === kelas);
+                if (siswa !== 'all') filtered = filtered.filter(d => d.identitas.nama === siswa);
+                if (bulan) filtered = filtered.filter(d => this.normalizeDate(d.identitas.tanggal).startsWith(bulan));
+
+                const totalReports = filtered.length;
+                const habitStats = {};
+                
+                // Inisialisasi map dengan 0
+                this.habitsDefinition.forEach(h => { 
+                    habitStats[h.id] = { title: h.title, count: 0, color: h.color }; 
+                });
+
+                // Hitung kumulatif checklist "Sudah"
+                filtered.forEach(report => {
+                    report.habits.forEach(h => {
+                        if (h.status && habitStats[h.id]) {
+                            habitStats[h.id].count++;
+                        }
+                    });
+                });
+
+                // Generate UI
+                const container = document.getElementById('rincian-progress-container');
+                container.innerHTML = '';
+                
+                const labels = [];
+                const dataPoints = [];
+                const colors = [];
+
+                if (totalReports === 0) {
+                    container.innerHTML = '<p class="text-sm text-gray-500 italic text-center py-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">Belum ada data laporan yang cocok dengan filter ini.</p>';
+                } else {
+                    this.habitsDefinition.forEach(h => {
+                        const count = habitStats[h.id].count;
+                        const pct = Math.round((count / totalReports) * 100);
+                        
+                        labels.push(h.title);
+                        dataPoints.push(pct);
+                        
+                        // Menentukan warna hex untuk chart berdasarkan class tailwind
+                        let hexColor = '#0ea5e9'; // default blue
+                        if (h.color.includes('orange')) hexColor = '#f97316';
+                        else if (h.color.includes('blue')) hexColor = '#3b82f6';
+                        else if (h.color.includes('green')) hexColor = '#22c55e';
+                        else if (h.color.includes('red')) hexColor = '#ef4444';
+                        else if (h.color.includes('indigo')) hexColor = '#6366f1';
+                        else if (h.color.includes('teal')) hexColor = '#14b8a6';
+                        else if (h.color.includes('purple')) hexColor = '#a855f7';
+                        colors.push(hexColor);
+
+                        container.innerHTML += `
+                            <div>
+                                <div class="flex justify-between text-sm mb-1.5">
+                                    <span class="font-medium text-gray-700 dark:text-gray-300"><i class="fa-solid ${h.icon} w-5 text-center mr-1 ${h.color}"></i> ${h.title}</span>
+                                    <span class="font-bold ${h.color.replace('text-', 'text-')}">${pct}%</span>
+                                </div>
+                                <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-3">
+                                    <div class="${h.color.replace('text-', 'bg-')} h-3 rounded-full transition-all duration-500 ease-out" style="width: ${pct}%"></div>
+                                </div>
+                                <p class="text-[10px] text-gray-500 text-right mt-1">${count} dari ${totalReports} laporan tercapai</p>
+                            </div>
+                        `;
+                    });
+                }
+
+                this.updateRincianChart(labels, dataPoints, colors);
+            },
+
+            updateRincianChart(labels, dataPoints, colors) {
+                const ctx = document.getElementById('rincianChart').getContext('2d');
+                if (this.rincianChartInstance) {
+                    this.rincianChartInstance.destroy();
+                }
+
+                const isDark = document.documentElement.classList.contains('dark');
+                const textColor = isDark ? '#e2e8f0' : '#475569';
+
+                this.rincianChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels.map(l => l.substring(3)), // Menghapus awalan 'A. ' pada chart agar ringkas
+                        datasets: [{
+                            label: 'Keterlaksanaan (%)',
+                            data: dataPoints,
+                            backgroundColor: colors,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y', // Bar Horizontal (Lebih rapi untuk daftar kategori yang banyak)
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                max: 100,
+                                grid: { color: isDark ? '#334155' : '#e2e8f0' },
+                                ticks: { color: textColor }
+                            },
+                            y: {
+                                grid: { display: false },
+                                ticks: { color: textColor, font: { size: 11, weight: '500' } }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            },
+
             // Settings Logic
             populateSettings() {
                 document.getElementById('setting-sheet').value = this.settings.sheetEndpoint || '';
@@ -2619,15 +2863,6 @@
                 this.showToast(`${nisnToDelete.length} Data Siswa berhasil dihapus!`, 'success');
             },
 
-            clearSiswa() {
-                if(confirm('Apakah Anda yakin ingin menghapus seluruh data siswa di memori lokal? (Data di Cloud mungkin tidak terhapus)')) {
-                    this.masterSiswa = [];
-                    this.saveMasterDataToLocal();
-                    this.renderMasterData();
-                    this.showToast('Seluruh data siswa lokal berhasil dihapus');
-                }
-            },
-
             async submitGuruForm(e) {
                 e.preventDefault();
                 const nip = document.getElementById('add-guru-nip').value.trim();
@@ -2773,15 +3008,6 @@
                 document.getElementById('check-all-guru').checked = false;
                 this.hideLoading();
                 this.showToast(`${namaToDelete.length} Data Guru berhasil dihapus!`, 'success');
-            },
-
-            clearGuru() {
-                if(confirm('Apakah Anda yakin ingin menghapus seluruh data guru di memori lokal? (Data di Cloud mungkin tidak terhapus)')) {
-                    this.masterGuru = [];
-                    this.saveMasterDataToLocal();
-                    this.renderMasterData();
-                    this.showToast('Seluruh data guru lokal berhasil dihapus');
-                }
             },
 
             // Excel Copy Paste Import untuk Siswa
