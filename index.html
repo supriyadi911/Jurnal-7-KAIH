@@ -456,12 +456,11 @@
                         <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">RINCIAN KETERLAKSANAAN KEBIASAAN</h3>
                         <p id="print-school-year-rincian" class="text-sm text-black font-semibold mt-2"></p>
                     </div>
-                    <div class="text-sm text-black font-medium border-t-2 border-b-2 border-black py-2 mb-6">
-                        <table class="w-full">
-                            <tr><td class="w-32 py-1 font-semibold">Nama Siswa</td><td class="w-4">:</td><td><span id="pr-siswa" class="font-bold">Semua Siswa</span></td></tr>
-                            <tr><td class="py-1 font-semibold">Kelas</td><td>:</td><td><span id="pr-kelas">Semua Kelas</span></td></tr>
-                            <tr><td class="py-1 font-semibold">Tanggal</td><td>:</td><td><span id="pr-bulan">Semua Waktu</span></td></tr>
-                        </table>
+                    <!-- Identitas Diganti menjadi Div Flexbox agar tidak terkena CSS Border Tabel -->
+                    <div class="text-sm text-black font-medium border-t-2 border-b-2 border-black py-3 mb-6 space-y-1.5">
+                        <div class="flex"><div class="w-32 font-semibold">Nama Siswa</div><div class="w-4">:</div><div id="pr-siswa" class="font-bold uppercase">Semua Siswa</div></div>
+                        <div class="flex"><div class="w-32 font-semibold">Kelas</div><div class="w-4">:</div><div id="pr-kelas" class="font-bold uppercase">Semua Kelas</div></div>
+                        <div class="flex"><div class="w-32 font-semibold">Periode</div><div class="w-4">:</div><div id="pr-bulan" class="font-bold uppercase">Semua Waktu</div></div>
                     </div>
                 </div>
 
