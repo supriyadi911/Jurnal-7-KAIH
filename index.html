@@ -87,7 +87,7 @@
                 zoom: 0.95; /* Mengatur skala otomatis menjadi 95% */
             }
 
-            html, body, main, #view-container, #view-rekap { 
+            html, body, main, #view-container { 
                 height: auto !important; 
                 min-height: auto !important;
                 overflow: visible !important; 
@@ -456,11 +456,11 @@
                         <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">RINCIAN KETERLAKSANAAN KEBIASAAN</h3>
                         <p id="print-school-year-rincian" class="text-sm text-black font-semibold mt-2"></p>
                     </div>
-                    <div class="text-sm text-black font-medium border border-black p-3 bg-gray-50 mb-6">
+                    <div class="text-sm text-black font-medium border-t-2 border-b-2 border-black py-2 mb-6">
                         <table class="w-full">
-                            <tr><td class="w-32 py-1">Kelas</td><td class="w-4">:</td><td><span id="pr-kelas">Semua Kelas</span></td></tr>
-                            <tr><td class="py-1">Nama Siswa</td><td>:</td><td><span id="pr-siswa">Semua Siswa</span></td></tr>
-                            <tr><td class="py-1">Periode / Bulan</td><td>:</td><td><span id="pr-bulan">Semua Waktu</span></td></tr>
+                            <tr><td class="w-32 py-1 font-semibold">Nama Siswa</td><td class="w-4">:</td><td><span id="pr-siswa" class="font-bold">Semua Siswa</span></td></tr>
+                            <tr><td class="py-1 font-semibold">Kelas</td><td>:</td><td><span id="pr-kelas">Semua Kelas</span></td></tr>
+                            <tr><td class="py-1 font-semibold">Tanggal</td><td>:</td><td><span id="pr-bulan">Semua Waktu</span></td></tr>
                         </table>
                     </div>
                 </div>
