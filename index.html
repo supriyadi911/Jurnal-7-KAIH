@@ -474,18 +474,10 @@
                 </div>
 
                 <!-- Stats/Progress Bars -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                    <div class="bg-white dark:bg-darkCard p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card">
-                        <h3 class="font-bold mb-4 text-gray-800 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-3">Tingkat Keterlaksanaan Kategori</h3>
-                        <div id="rincian-progress-container" class="space-y-5">
-                            <!-- Injected by JS -->
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-darkCard p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card flex flex-col">
-                        <h3 class="font-bold mb-4 text-gray-800 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-3">Grafik Batang Perbandingan</h3>
-                        <div class="flex-1 w-full min-h-[300px] flex items-center justify-center pt-2">
-                            <canvas id="rincianChart"></canvas>
-                        </div>
+                <div class="bg-white dark:bg-darkCard p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card w-full mb-6">
+                    <h3 class="font-bold mb-4 text-gray-800 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-3">Tingkat Keterlaksanaan Kategori</h3>
+                    <div id="rincian-progress-container" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- Injected by JS -->
                     </div>
                 </div>
             </section>
@@ -856,7 +848,6 @@
                 { id: 'h7', title: 'G. Tidur Cepat', desc: 'Tidur tidak larut malam (maks 21:30)', icon: 'fa-moon', color: 'text-purple-500' }
             ],
             chartInstance: null,
-            rincianChartInstance: null,
             isTeacherLoggedIn: false,
             currentUser: null, // role: 'admin' | 'guru'
             targetPendingView: null,
@@ -1117,9 +1108,6 @@
                 // redraw chart if exists
                 if(this.chartInstance) {
                     this.renderDashboard();
-                }
-                if(this.rincianChartInstance) {
-                    this.applyRincianFilter();
                 }
             },
 
@@ -2305,9 +2293,14 @@
                 const totalReports = filtered.length;
                 const habitStats = {};
                 
-                // Inisialisasi map dengan 0
+                // Inisialisasi map
                 this.habitsDefinition.forEach(h => { 
-                    habitStats[h.id] = { title: h.title, count: 0, color: h.color }; 
+                    habitStats[h.id] = { 
+                        title: h.title, 
+                        count: 0, 
+                        color: h.color,
+                        prayers: h.id === 'h2' ? { Subuh: 0, Dzuhur: 0, Ashar: 0, Maghrib: 0, Isya: 0 } : null
+                    }; 
                 });
 
                 // Hitung kumulatif checklist "Sudah"
@@ -2316,97 +2309,88 @@
                         if (h.status && habitStats[h.id]) {
                             habitStats[h.id].count++;
                         }
+
+                        // Ekstraksi data Salat jika kategori adalah H2 (B. Beribadah)
+                        if (h.id === 'h2' && habitStats[h.id]) {
+                            if (h.prayers) { 
+                                // Dari data yang disave di lokal browser
+                                if (h.prayers.subuh) habitStats[h.id].prayers.Subuh++;
+                                if (h.prayers.dzuhur) habitStats[h.id].prayers.Dzuhur++;
+                                if (h.prayers.ashar) habitStats[h.id].prayers.Ashar++;
+                                if (h.prayers.maghrib) habitStats[h.id].prayers.Maghrib++;
+                                if (h.prayers.isya) habitStats[h.id].prayers.Isya++;
+                            } else { 
+                                // Dari data hasil sinkronisasi Spreadsheet (Teks)
+                                const textNote = (h.note || '').toLowerCase();
+                                const textStatus = (h.status === true ? 'sudah' : typeof h.status === 'string' ? h.status.toLowerCase() : '');
+                                const fullText = textNote + " " + textStatus; 
+                                
+                                if (fullText.includes('subuh')) habitStats[h.id].prayers.Subuh++;
+                                if (fullText.includes('dzuhur')) habitStats[h.id].prayers.Dzuhur++;
+                                if (fullText.includes('ashar')) habitStats[h.id].prayers.Ashar++;
+                                if (fullText.includes('maghrib')) habitStats[h.id].prayers.Maghrib++;
+                                if (fullText.includes('isya')) habitStats[h.id].prayers.Isya++;
+                            }
+                        }
                     });
                 });
 
                 // Generate UI
                 const container = document.getElementById('rincian-progress-container');
                 container.innerHTML = '';
-                
-                const labels = [];
-                const dataPoints = [];
-                const colors = [];
 
                 if (totalReports === 0) {
-                    container.innerHTML = '<p class="text-sm text-gray-500 italic text-center py-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">Belum ada data laporan yang cocok dengan filter ini.</p>';
+                    container.innerHTML = '<div class="col-span-1 md:col-span-2 text-sm text-gray-500 italic text-center py-10 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">Belum ada data laporan yang cocok dengan filter ini.</div>';
                 } else {
                     this.habitsDefinition.forEach(h => {
                         const count = habitStats[h.id].count;
                         const pct = Math.round((count / totalReports) * 100);
                         
-                        labels.push(h.title);
-                        dataPoints.push(pct);
-                        
-                        // Menentukan warna hex untuk chart berdasarkan class tailwind
-                        let hexColor = '#0ea5e9'; // default blue
-                        if (h.color.includes('orange')) hexColor = '#f97316';
-                        else if (h.color.includes('blue')) hexColor = '#3b82f6';
-                        else if (h.color.includes('green')) hexColor = '#22c55e';
-                        else if (h.color.includes('red')) hexColor = '#ef4444';
-                        else if (h.color.includes('indigo')) hexColor = '#6366f1';
-                        else if (h.color.includes('teal')) hexColor = '#14b8a6';
-                        else if (h.color.includes('purple')) hexColor = '#a855f7';
-                        colors.push(hexColor);
+                        let extraHtml = '';
+                        if (h.id === 'h2') {
+                            const prayers = habitStats[h.id].prayers;
+                            let prayersHtml = '';
+                            ['Subuh', 'Dzuhur', 'Ashar', 'Maghrib', 'Isya'].forEach(pk => {
+                                const pCount = prayers[pk];
+                                const pPct = Math.round((pCount / totalReports) * 100);
+                                prayersHtml += `
+                                    <div class="mb-2.5">
+                                        <div class="flex justify-between text-[11px] mb-1 font-semibold text-gray-600 dark:text-gray-400">
+                                            <span>${pk}</span>
+                                            <span class="text-blue-600 dark:text-blue-400">${pPct}%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-1.5">
+                                            <div class="${h.color.replace('text-', 'bg-')} h-1.5 rounded-full transition-all duration-500 ease-out opacity-75" style="width: ${pPct}%"></div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+
+                            extraHtml = `
+                                <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                                    <p class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-3"><i class="fa-solid fa-person-praying mr-1"></i> Rincian Salat:</p>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
+                                        ${prayersHtml}
+                                    </div>
+                                </div>
+                            `;
+                        }
 
                         container.innerHTML += `
-                            <div>
-                                <div class="flex justify-between text-sm mb-1.5">
-                                    <span class="font-medium text-gray-700 dark:text-gray-300"><i class="fa-solid ${h.icon} w-5 text-center mr-1 ${h.color}"></i> ${h.title}</span>
-                                    <span class="font-bold ${h.color.replace('text-', 'text-')}">${pct}%</span>
+                            <div class="p-5 border border-gray-100 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-800/30 hover:shadow-md transition-shadow h-full flex flex-col justify-center">
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2"><i class="fa-solid ${h.icon} w-6 text-center text-lg ${h.color}"></i> ${h.title}</span>
+                                    <span class="font-bold text-lg ${h.color.replace('text-', 'text-')}">${pct}%</span>
                                 </div>
-                                <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-3">
-                                    <div class="${h.color.replace('text-', 'bg-')} h-3 rounded-full transition-all duration-500 ease-out" style="width: ${pct}%"></div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 shadow-inner">
+                                    <div class="${h.color.replace('text-', 'bg-')} h-2 rounded-full transition-all duration-500 ease-out shadow-sm" style="width: ${pct}%"></div>
                                 </div>
-                                <p class="text-[10px] text-gray-500 text-right mt-1">${count} dari ${totalReports} laporan tercapai</p>
+                                <p class="text-[11px] text-gray-500 dark:text-gray-400 text-right mt-2 font-medium">${count} dari ${totalReports} laporan tercapai</p>
+                                ${extraHtml}
                             </div>
                         `;
                     });
                 }
-
-                this.updateRincianChart(labels, dataPoints, colors);
-            },
-
-            updateRincianChart(labels, dataPoints, colors) {
-                const ctx = document.getElementById('rincianChart').getContext('2d');
-                if (this.rincianChartInstance) {
-                    this.rincianChartInstance.destroy();
-                }
-
-                const isDark = document.documentElement.classList.contains('dark');
-                const textColor = isDark ? '#e2e8f0' : '#475569';
-
-                this.rincianChartInstance = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels.map(l => l.substring(3)), // Menghapus awalan 'A. ' pada chart agar ringkas
-                        datasets: [{
-                            label: 'Keterlaksanaan (%)',
-                            data: dataPoints,
-                            backgroundColor: colors,
-                            borderRadius: 4
-                        }]
-                    },
-                    options: {
-                        indexAxis: 'y', // Bar Horizontal (Lebih rapi untuk daftar kategori yang banyak)
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                max: 100,
-                                grid: { color: isDark ? '#334155' : '#e2e8f0' },
-                                ticks: { color: textColor }
-                            },
-                            y: {
-                                grid: { display: false },
-                                ticks: { color: textColor, font: { size: 11, weight: '500' } }
-                            }
-                        },
-                        plugins: {
-                            legend: { display: false }
-                        }
-                    }
-                });
             },
 
             // Settings Logic
