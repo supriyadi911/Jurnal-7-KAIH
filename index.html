@@ -172,25 +172,11 @@
 </head>
 <body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 transition-colors duration-200 h-screen flex overflow-hidden print:h-auto print:overflow-visible print:block print:bg-white">
 
-    <!-- Splash Screen -->
-    <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white dark:bg-darkBg transition-all duration-700 ease-in-out opacity-100 print:hidden">
-        <div id="splash-content" class="flex flex-col items-center justify-center transform transition-transform duration-700 ease-in-out scale-100">
-            <img src="https://i.ibb.co.com/1fT4ZJrg/logo-sdn-1-dupaaa.png" alt="Logo Sekolah" class="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-xl mb-6 animate-pulse">
-            <div class="flex items-center space-x-3 mb-2">
-                <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
-                    <i class="fa-solid fa-star"></i>
-                </div>
-                <h1 class="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-tight">KAIH</h1>
-            </div>
-            <p class="text-gray-500 dark:text-gray-400 font-medium tracking-widest text-sm uppercase mt-1">Jurnal Kebiasaan Anak Hebat</p>
-            
-            <!-- Loading Dots -->
-            <div class="mt-12 flex items-center justify-center space-x-2">
-                <div class="w-2.5 h-2.5 rounded-full bg-primary animate-bounce" style="animation-delay: -0.3s"></div>
-                <div class="w-2.5 h-2.5 rounded-full bg-primary animate-bounce" style="animation-delay: -0.15s"></div>
-                <div class="w-2.5 h-2.5 rounded-full bg-primary animate-bounce"></div>
-            </div>
-        </div>
+    <!-- Splash Screen dengan Video -->
+    <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0a1120] transition-opacity duration-1000 ease-in-out opacity-100 print:hidden">
+        <video id="splash-video" class="w-full h-full object-contain" autoplay muted playsinline>
+            <source src="gemini_generated_video_4a74f6fa.mp4" type="video/mp4">
+        </video>
     </div>
 
     <!-- Sidebar (Desktop) -->
@@ -225,14 +211,14 @@
                 <button onclick="App.navigate('dashboard')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="dashboard">
                     <i class="fa-solid fa-chart-pie w-5"></i><span>Dashboard Guru</span>
                 </button>
+                <button id="nav-btn-data-desktop" onclick="App.navigate('data')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="data">
+                    <i class="fa-solid fa-users w-5"></i><span>Data Master</span>
+                </button>
                 <button id="nav-btn-rincian-desktop" onclick="App.navigate('rincian')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="rincian">
                     <i class="fa-solid fa-chart-simple w-5"></i><span>Rincian Kategori</span>
                 </button>
                 <button onclick="App.navigate('rekap')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="rekap">
                     <i class="fa-solid fa-table-list w-5"></i><span>Rekap Laporan</span>
-                </button>
-                <button id="nav-btn-data-desktop" onclick="App.navigate('data')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="data">
-                    <i class="fa-solid fa-users w-5"></i><span>Data Master</span>
                 </button>
                 <button id="nav-btn-settings-desktop" onclick="App.navigate('settings')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" data-target="settings">
                     <i class="fa-solid fa-gear w-5"></i><span>Pengaturan</span>
@@ -299,6 +285,10 @@
                 <i class="fa-solid fa-chart-pie text-lg mb-1"></i>
                 <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Dashboard</span>
             </button>
+            <button id="nav-data-mobile" onclick="App.navigate('data')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="data">
+                <i class="fa-solid fa-users text-lg mb-1"></i>
+                <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Data</span>
+            </button>
             <button id="nav-rincian-mobile" onclick="App.navigate('rincian')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="rincian">
                 <i class="fa-solid fa-chart-simple text-lg mb-1"></i>
                 <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Rincian</span>
@@ -306,10 +296,6 @@
             <button id="nav-rekap-mobile" onclick="App.navigate('rekap')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="rekap">
                 <i class="fa-solid fa-table-list text-lg mb-1"></i>
                 <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Rekap</span>
-            </button>
-            <button id="nav-data-mobile" onclick="App.navigate('data')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="data">
-                <i class="fa-solid fa-users text-lg mb-1"></i>
-                <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Data</span>
             </button>
             <button id="nav-settings-mobile" onclick="App.navigate('settings')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors" data-target="settings">
                 <i class="fa-solid fa-gear text-lg mb-1"></i>
@@ -682,9 +668,10 @@
                     </button>
                 </div>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- ID Grid ditambahkan agar bisa di-manipulasi CSS-nya via JS -->
+                <div id="data-master-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Data Siswa -->
-                    <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-[650px]">
+                    <div id="master-siswa-container" class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-[650px]">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
                             <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-user-graduate text-primary"></i> Data Siswa</h3>
                             <div class="space-x-1">
@@ -732,8 +719,8 @@
                         </div>
                     </div>
 
-                    <!-- Data Guru -->
-                    <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-[650px]">
+                    <!-- Data Guru (ID Ditambahkan agar bisa disembunyikan bagi guru) -->
+                    <div id="master-guru-container" class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-[650px]">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
                             <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-secondary"></i> Data & Akun Guru</h3>
                             <div class="space-x-1">
@@ -929,6 +916,7 @@
                 { id: 'h7', title: 'G. Tidur Cepat', desc: 'Tidur tidak larut malam (maks 21:30)', icon: 'fa-moon', color: 'text-purple-500' }
             ],
             chartInstance: null,
+            rincianChartInstance: null,
             isTeacherLoggedIn: false,
             currentUser: null, // role: 'admin' | 'guru'
             targetPendingView: null,
@@ -938,17 +926,23 @@
 
             // Initialize
             init() {
-                // Splash screen logic
-                setTimeout(() => {
+                // Splash screen logic dengan Video
+                const hideSplash = () => {
                     const splash = document.getElementById('splash-screen');
-                    const splashContent = document.getElementById('splash-content');
-                    if (splash) {
+                    if (splash && !splash.classList.contains('opacity-0')) {
                         splash.classList.replace('opacity-100', 'opacity-0');
                         splash.style.pointerEvents = 'none';
-                        if(splashContent) splashContent.classList.replace('scale-100', 'scale-110'); // Animasi membesar saat pudar
-                        setTimeout(() => splash.classList.add('hidden'), 700);
+                        setTimeout(() => splash.classList.add('hidden'), 1000); // Tunggu animasi pudar selesai
                     }
-                }, 2500); // Splash screen tampil selama 2.5 detik
+                };
+
+                const splashVideo = document.getElementById('splash-video');
+                if (splashVideo) {
+                    splashVideo.addEventListener('ended', hideSplash); // Hilang saat video selesai
+                    setTimeout(hideSplash, 4500); // Fallback: Hilang paksa maksimal 4.5 detik untuk UX yang baik
+                } else {
+                    setTimeout(hideSplash, 2500);
+                }
 
                 this.loadLocalData();
                 this.applyTheme();
@@ -980,8 +974,8 @@
                     return;
                 }
                 
-                // Restrict Settings and Data Master for regular teachers
-                if ((viewId === 'settings' || viewId === 'data') && this.currentUser && this.currentUser.role === 'guru') {
+                // Restrict Settings for regular teachers (Kini guru dapet akses menu 'data' / Data Master)
+                if ((viewId === 'settings') && this.currentUser && this.currentUser.role === 'guru') {
                     this.showToast('Akses ditolak. Menu ini hanya untuk Super Admin.', 'error');
                     viewId = 'dashboard';
                 }
@@ -1131,10 +1125,10 @@
                 if (this.isTeacherLoggedIn) {
                     const isAdmin = this.currentUser && this.currentUser.role === 'admin';
 
-                    // Tampilkan menu desktop
+                    // Tampilkan menu desktop (Keduanya bisa akses Data Master)
                     if (adminDesktop) adminDesktop.classList.remove('hidden');
                     if (loginDesktop) loginDesktop.classList.add('hidden');
-                    if (dataDesktopBtn) dataDesktopBtn.style.display = isAdmin ? 'flex' : 'none';
+                    if (dataDesktopBtn) dataDesktopBtn.style.display = 'flex'; 
                     if (settingsDesktopBtn) settingsDesktopBtn.style.display = isAdmin ? 'flex' : 'none';
                     if (rincianDesktopBtn) rincianDesktopBtn.style.display = 'flex';
                     
@@ -1143,7 +1137,7 @@
                     if (dashboardMobile) dashboardMobile.classList.remove('hidden');
                     if (rekapMobile) rekapMobile.classList.remove('hidden');
                     if (rincianMobile) rincianMobile.classList.remove('hidden');
-                    if (dataMobile) isAdmin ? dataMobile.classList.remove('hidden') : dataMobile.classList.add('hidden');
+                    if (dataMobile) dataMobile.classList.remove('hidden'); 
                     if (settingsMobile) isAdmin ? settingsMobile.classList.remove('hidden') : settingsMobile.classList.add('hidden');
                     if (logoutMobile) logoutMobile.classList.remove('hidden');
                 } else {
@@ -2913,9 +2907,48 @@
             renderMasterData() {
                 const siswaBody = document.getElementById('master-siswa-body');
                 const guruBody = document.getElementById('master-guru-body');
+                const gridMaster = document.getElementById('data-master-grid');
+                const guruContainer = document.getElementById('master-guru-container');
+                const kelasInput = document.getElementById('add-siswa-kelas');
+                
+                let displayedSiswa = this.masterSiswa;
+
+                // Logika Pembatasan untuk Guru
+                if (this.currentUser && this.currentUser.role === 'guru') {
+                    // Saring siswa hanya untuk kelas guru
+                    displayedSiswa = this.masterSiswa.filter(s => s.kelas === this.currentUser.kelas);
+                    
+                    // Ubah Grid dan sembunyikan kotak guru
+                    if (gridMaster) {
+                        gridMaster.classList.remove('lg:grid-cols-2');
+                        gridMaster.classList.add('lg:grid-cols-1');
+                    }
+                    if (guruContainer) guruContainer.classList.add('hidden');
+                    
+                    // Kunci inputan kelas agar guru tidak bisa input kelas lain
+                    if (kelasInput) {
+                        kelasInput.value = this.currentUser.kelas;
+                        kelasInput.setAttribute('readonly', 'true');
+                        kelasInput.classList.add('bg-gray-200', 'cursor-not-allowed', 'opacity-70', 'dark:bg-gray-700');
+                    }
+                } else {
+                    // Tampilan Default untuk Admin
+                    if (gridMaster) {
+                        gridMaster.classList.add('lg:grid-cols-2');
+                        gridMaster.classList.remove('lg:grid-cols-1');
+                    }
+                    if (guruContainer) guruContainer.classList.remove('hidden');
+                    
+                    if (kelasInput && !this.editingSiswa) {
+                        kelasInput.removeAttribute('readonly');
+                        kelasInput.classList.remove('bg-gray-200', 'cursor-not-allowed', 'opacity-70', 'dark:bg-gray-700');
+                    }
+                }
                 
                 siswaBody.innerHTML = '';
-                this.masterSiswa.forEach((s, idx) => {
+                displayedSiswa.forEach((s) => {
+                    // Ambil index aslinya dari masterSiswa agar edit/delete tidak nyasar
+                    const originalIdx = this.masterSiswa.indexOf(s);
                     siswaBody.innerHTML += `
                         <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                             <td class="py-2"><input type="checkbox" class="chk-siswa rounded text-primary focus:ring-primary h-4 w-4" value="${this.escapeHTML(s.nisn)}"></td>
@@ -2923,38 +2956,46 @@
                             <td class="py-2">${this.escapeHTML(s.nama)}</td>
                             <td class="py-2">${this.escapeHTML(s.kelas)}</td>
                             <td class="py-2 text-right space-x-1">
-                                <button onclick="App.editSiswa(${idx})" title="Edit Siswa" class="text-yellow-500 hover:bg-yellow-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="App.deleteSiswa(${idx})" title="Hapus Siswa" class="text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="App.editSiswa(${originalIdx})" title="Edit Siswa" class="text-yellow-500 hover:bg-yellow-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-pen"></i></button>
+                                <button onclick="App.deleteSiswa(${originalIdx})" title="Hapus Siswa" class="text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>
                     `;
                 });
-                if (this.masterSiswa.length === 0) siswaBody.innerHTML = `<tr><td colspan="5" class="text-center text-gray-400 py-4">Belum ada data siswa</td></tr>`;
+                if (displayedSiswa.length === 0) siswaBody.innerHTML = `<tr><td colspan="5" class="text-center text-gray-400 py-4">Belum ada data siswa</td></tr>`;
 
-                guruBody.innerHTML = '';
-                this.masterGuru.forEach((g, idx) => {
-                    guruBody.innerHTML += `
-                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                            <td class="py-2"><input type="checkbox" class="chk-guru rounded text-primary focus:ring-primary h-4 w-4" value="${this.escapeHTML(g.nama)}"></td>
-                            <td class="py-2">${this.escapeHTML(g.nama)}</td>
-                            <td class="py-2">${this.escapeHTML(g.kelas)}</td>
-                            <td class="py-2"><span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">${this.escapeHTML(g.username || '-')}</span></td>
-                            <td class="py-2"><span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs text-gray-500">${g.password ? '••••••' : '-'}</span></td>
-                            <td class="py-2 text-right space-x-1">
-                                <button onclick="App.editGuru(${idx})" title="Edit Guru" class="text-yellow-500 hover:bg-yellow-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="App.deleteGuru(${idx})" title="Hapus Guru" class="text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    `;
-                });
-                if (this.masterGuru.length === 0) guruBody.innerHTML = `<tr><td colspan="6" class="text-center text-gray-400 py-4">Belum ada data guru</td></tr>`;
+                // Render Guru (Hanya diproses jika Admin)
+                if (this.currentUser && this.currentUser.role === 'admin') {
+                    guruBody.innerHTML = '';
+                    this.masterGuru.forEach((g, idx) => {
+                        guruBody.innerHTML += `
+                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <td class="py-2"><input type="checkbox" class="chk-guru rounded text-primary focus:ring-primary h-4 w-4" value="${this.escapeHTML(g.nama)}"></td>
+                                <td class="py-2">${this.escapeHTML(g.nama)}</td>
+                                <td class="py-2">${this.escapeHTML(g.kelas)}</td>
+                                <td class="py-2"><span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">${this.escapeHTML(g.username || '-')}</span></td>
+                                <td class="py-2"><span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs text-gray-500">${g.password ? '••••••' : '-'}</span></td>
+                                <td class="py-2 text-right space-x-1">
+                                    <button onclick="App.editGuru(${idx})" title="Edit Guru" class="text-yellow-500 hover:bg-yellow-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-pen"></i></button>
+                                    <button onclick="App.deleteGuru(${idx})" title="Hapus Guru" class="text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    if (this.masterGuru.length === 0) guruBody.innerHTML = `<tr><td colspan="6" class="text-center text-gray-400 py-4">Belum ada data guru</td></tr>`;
+                }
             },
 
             async submitSiswaForm(e) {
                 e.preventDefault();
                 const nisn = document.getElementById('add-siswa-nisn').value.trim();
                 const nama = document.getElementById('add-siswa-nama').value.trim();
-                const kelas = document.getElementById('add-siswa-kelas').value.trim();
+                let kelas = document.getElementById('add-siswa-kelas').value.trim();
+                
+                // Pastikan jika guru, paksa nilai kelasnya agar aman
+                if (this.currentUser && this.currentUser.role === 'guru') {
+                    kelas = this.currentUser.kelas;
+                }
                 
                 // JIKA MODE EDIT
                 if (this.editingSiswa) {
@@ -3028,7 +3069,13 @@
                 this.editingSiswa = null;
                 document.getElementById('add-siswa-nisn').value = '';
                 document.getElementById('add-siswa-nama').value = '';
-                document.getElementById('add-siswa-kelas').value = '';
+                
+                // Kembalikan ke value semula
+                if (this.currentUser && this.currentUser.role === 'guru') {
+                    document.getElementById('add-siswa-kelas').value = this.currentUser.kelas;
+                } else {
+                    document.getElementById('add-siswa-kelas').value = '';
+                }
                 
                 const btnSubmit = document.getElementById('btn-submit-siswa');
                 btnSubmit.innerHTML = '<i class="fa-solid fa-plus"></i>';
@@ -3086,6 +3133,24 @@
                 document.getElementById('check-all-siswa').checked = false;
                 this.hideLoading();
                 this.showToast(`${nisnToDelete.length} Data Siswa berhasil dihapus!`, 'success');
+            },
+
+            clearSiswa() {
+                if (this.currentUser && this.currentUser.role === 'guru') {
+                    if(confirm(`Apakah Anda yakin ingin menghapus seluruh data siswa KELAS ${this.currentUser.kelas} di memori lokal?`)) {
+                        this.masterSiswa = this.masterSiswa.filter(s => s.kelas !== this.currentUser.kelas);
+                        this.saveMasterDataToLocal();
+                        this.renderMasterData();
+                        this.showToast('Seluruh data siswa kelas Anda berhasil dihapus');
+                    }
+                } else {
+                    if(confirm('Apakah Anda yakin ingin menghapus seluruh data siswa di memori lokal? (Data di Cloud mungkin tidak terhapus)')) {
+                        this.masterSiswa = [];
+                        this.saveMasterDataToLocal();
+                        this.renderMasterData();
+                        this.showToast('Seluruh data siswa lokal berhasil dihapus');
+                    }
+                }
             },
 
             async submitGuruForm(e) {
@@ -3256,12 +3321,17 @@
                     if (cols.length >= 2) {
                         const nisn = cols[0] ? cols[0].trim() : '';
                         const nama = cols[1] ? cols[1].trim() : '';
-                        const kelas = cols[2] ? cols[2].trim() : '';
+                        let kelas = cols[2] ? cols[2].trim() : '-';
+
+                        // Paksa kelas untuk guru jika mereka mengimpor file
+                        if (this.currentUser && this.currentUser.role === 'guru') {
+                            kelas = this.currentUser.kelas;
+                        }
 
                         if (nisn && nama) {
                             // Cek duplikasi di lokal dan di data yang sedang diproses
                             if (!this.masterSiswa.find(s => s.nisn === nisn) && !validData.find(s => s.nisn === nisn)) {
-                                validData.push({ nisn, nama, kelas: kelas || '-' });
+                                validData.push({ nisn, nama, kelas });
                             } else {
                                 duplicateCount++;
                             }
