@@ -172,11 +172,25 @@
 </head>
 <body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 transition-colors duration-200 h-screen flex overflow-hidden print:h-auto print:overflow-visible print:block print:bg-white">
 
-    <!-- Splash Screen dengan Video -->
-    <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0a1120] transition-opacity duration-1000 ease-in-out opacity-100 print:hidden">
-        <video id="splash-video" class="w-full h-full object-contain" autoplay muted playsinline>
-            <source src="gemini_generated_video_4a74f6fa.mp4" type="video/mp4">
-        </video>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white dark:bg-darkBg transition-all duration-700 ease-in-out opacity-100 print:hidden">
+        <div id="splash-content" class="flex flex-col items-center justify-center transform transition-transform duration-700 ease-in-out scale-100">
+            <img src="https://i.ibb.co.com/1fT4ZJrg/logo-sdn-1-dupaaa.png" alt="Logo Sekolah" class="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-xl mb-6 animate-pulse">
+            <div class="flex items-center space-x-3 mb-2">
+                <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-tight">KAIH</h1>
+            </div>
+            <p class="text-gray-500 dark:text-gray-400 font-medium tracking-widest text-sm uppercase mt-1">Jurnal Kebiasaan Anak Hebat</p>
+            
+            <!-- Loading Dots -->
+            <div class="mt-12 flex items-center justify-center space-x-2">
+                <div class="w-2.5 h-2.5 rounded-full bg-primary animate-bounce" style="animation-delay: -0.3s"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-primary animate-bounce" style="animation-delay: -0.15s"></div>
+                <div class="w-2.5 h-2.5 rounded-full bg-primary animate-bounce"></div>
+            </div>
+        </div>
     </div>
 
     <!-- Sidebar (Desktop) -->
@@ -719,7 +733,7 @@
                         </div>
                     </div>
 
-                    <!-- Data Guru (ID Ditambahkan agar bisa disembunyikan bagi guru) -->
+                    <!-- Data Guru -->
                     <div id="master-guru-container" class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-[650px]">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
                             <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-secondary"></i> Data & Akun Guru</h3>
@@ -926,23 +940,17 @@
 
             // Initialize
             init() {
-                // Splash screen logic dengan Video
-                const hideSplash = () => {
+                // Splash screen logic asli (CSS & Logo) untuk muat super cepat
+                setTimeout(() => {
                     const splash = document.getElementById('splash-screen');
-                    if (splash && !splash.classList.contains('opacity-0')) {
+                    const splashContent = document.getElementById('splash-content');
+                    if (splash) {
                         splash.classList.replace('opacity-100', 'opacity-0');
                         splash.style.pointerEvents = 'none';
-                        setTimeout(() => splash.classList.add('hidden'), 1000); // Tunggu animasi pudar selesai
+                        if (splashContent) splashContent.classList.replace('scale-100', 'scale-110'); // Animasi membesar saat pudar
+                        setTimeout(() => splash.classList.add('hidden'), 700);
                     }
-                };
-
-                const splashVideo = document.getElementById('splash-video');
-                if (splashVideo) {
-                    splashVideo.addEventListener('ended', hideSplash); // Hilang saat video selesai
-                    setTimeout(hideSplash, 4500); // Fallback: Hilang paksa maksimal 4.5 detik untuk UX yang baik
-                } else {
-                    setTimeout(hideSplash, 2500);
-                }
+                }, 2500); // Tampil selama 2.5 detik saja
 
                 this.loadLocalData();
                 this.applyTheme();
@@ -2881,6 +2889,7 @@
                                 habits: mappedHabits
                             };
                         });
+                        this.data.sort((a, b) => new Date(b.identitas.tanggal) - new Date(a.identitas.tanggal));
                         this.saveDataToLocal();
                         jurnalUpdated = true;
                     }
