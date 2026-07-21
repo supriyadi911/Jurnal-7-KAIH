@@ -960,9 +960,9 @@
                 this.populateFormKelasDropdown();
                 this.updateAppHeader();
                 
-                // Auto sync in background without showing toast (Silent Sync)
+                // Tampilkan Loading Animasi saat Sinkronisasi Awal dengan Cloud
                 if (this.settings.sheetEndpoint) {
-                    this.syncAllData(false);
+                    this.syncAllData(true); // Diubah dari false ke true agar animasi loading muncul
                 }
                 
                 // Listener Fullscreen
