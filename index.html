@@ -321,7 +321,7 @@
             </button>
         </nav>
 
-        <!-- View Container (pb-32 ditambahkan agar tombol form tidak tertutup navbar di mobile) -->
+        <!-- View Container -->
         <div id="view-container" class="flex-1 overflow-y-auto p-4 pb-32 md:p-8 md:pb-8 relative print:overflow-visible print:h-auto print:block print:p-0">
             
             <!-- 2. FORM JURNAL VIEW -->
@@ -687,15 +687,14 @@
                     <!-- Data Siswa -->
                     <div id="master-siswa-container" class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-[650px]">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
-                            <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-user-graduate text-primary"></i> Data Siswa</h3>
+                            <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-user-graduate text-primary"></i> Data Siswa (Mode Hardcode)</h3>
                             <div class="space-x-1">
-                                <button onclick="App.deleteBulkSiswa()" class="text-xs bg-red-100 text-red-600 hover:bg-red-200 px-2 py-1.5 rounded border border-red-200 transition font-semibold"><i class="fa-solid fa-check-double mr-1"></i> Hapus Terpilih</button>
-                                <button onclick="App.clearSiswa()" class="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-1.5"><i class="fa-solid fa-trash-can mr-1"></i> Kosongkan</button>
+                                <span class="text-xs bg-yellow-100 text-yellow-700 px-3 py-1.5 rounded-lg font-semibold border border-yellow-200"><i class="fa-solid fa-lock mr-1"></i> Edit Langsung di Kode</span>
                             </div>
                         </div>
                         
-                        <!-- Excel Copy Paste Import / Single Add -->
-                        <div class="p-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 space-y-4">
+                        <!-- Excel Copy Paste Import / Single Add (DISEMBUNYIKAN KARENA HARDCODE) -->
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 space-y-4 hidden">
                             <!-- Single Add Form -->
                             <form onsubmit="App.submitSiswaForm(event)" class="flex gap-2">
                                 <input type="text" id="add-siswa-nisn" placeholder="NISN" required class="w-1/3 px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none">
@@ -720,11 +719,10 @@
                             <table class="w-full text-left text-sm whitespace-nowrap">
                                 <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-700">
                                     <tr>
-                                        <th class="pb-2 w-8"><input type="checkbox" id="check-all-siswa" onchange="App.toggleCheckAllSiswa(this)" class="rounded text-primary focus:ring-primary h-4 w-4"></th>
+                                        <th class="pb-2 w-10 text-center">No</th>
                                         <th class="pb-2">NISN</th>
                                         <th class="pb-2">Nama</th>
-                                        <th class="pb-2">Kelas</th>
-                                        <th class="pb-2 text-right">Aksi</th>
+                                        <th class="pb-2 text-center">Kelas</th>
                                     </tr>
                                 </thead>
                                 <tbody id="master-siswa-body" class="divide-y divide-gray-100 dark:divide-gray-700">
@@ -733,18 +731,17 @@
                         </div>
                     </div>
 
-                    <!-- Data Guru -->
+                    <!-- Data Guru (ID Ditambahkan agar bisa disembunyikan bagi guru) -->
                     <div id="master-guru-container" class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-[650px]">
                         <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
-                            <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-secondary"></i> Data & Akun Guru</h3>
+                            <h3 class="font-bold flex items-center gap-2"><i class="fa-solid fa-chalkboard-user text-secondary"></i> Data & Akun Guru (Mode Hardcode)</h3>
                             <div class="space-x-1">
-                                <button onclick="App.deleteBulkGuru()" class="text-xs bg-red-100 text-red-600 hover:bg-red-200 px-2 py-1.5 rounded border border-red-200 transition font-semibold"><i class="fa-solid fa-check-double mr-1"></i> Hapus Terpilih</button>
-                                <button onclick="App.clearGuru()" class="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-1.5"><i class="fa-solid fa-trash-can mr-1"></i> Kosongkan</button>
+                                <span class="text-xs bg-yellow-100 text-yellow-700 px-3 py-1.5 rounded-lg font-semibold border border-yellow-200"><i class="fa-solid fa-lock mr-1"></i> Edit Langsung di Kode</span>
                             </div>
                         </div>
                         
-                        <!-- Excel Copy Paste Import / Single Add -->
-                        <div class="p-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 space-y-4">
+                        <!-- Excel Copy Paste Import / Single Add (DISEMBUNYIKAN KARENA HARDCODE) -->
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700 space-y-4 hidden">
                             <!-- Single Add Form -->
                             <form onsubmit="App.submitGuruForm(event)" class="space-y-2">
                                 <div class="flex gap-2">
@@ -775,12 +772,11 @@
                             <table class="w-full text-left text-sm whitespace-nowrap">
                                 <thead class="text-gray-500 border-b border-gray-200 dark:border-gray-700">
                                     <tr>
-                                        <th class="pb-2 w-8"><input type="checkbox" id="check-all-guru" onchange="App.toggleCheckAllGuru(this)" class="rounded text-primary focus:ring-primary h-4 w-4"></th>
+                                        <th class="pb-2 w-10 text-center">No</th>
                                         <th class="pb-2">Nama Guru</th>
-                                        <th class="pb-2">Kelas</th>
+                                        <th class="pb-2 text-center">Kelas</th>
                                         <th class="pb-2">Username</th>
                                         <th class="pb-2">Password</th>
-                                        <th class="pb-2 text-right">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="master-guru-body" class="divide-y divide-gray-100 dark:divide-gray-700">
@@ -909,8 +905,315 @@
             // State
             data: [],
             currentFilteredData: [],
-            masterSiswa: [],
-            masterGuru: [],
+            
+            // Data Master Siswa & Kelas (Hardcoded)
+            // Anda dapat menambah, mengubah, atau menghapus daftar siswa di sini secara langsung
+            masterSiswa: [
+                { nisn: '3193775109', nama: 'MUHAMMAD ADNAN ADYARISKY', kelas: '2A' },
+                { nisn: '3183046721', nama: 'MUHAMMAD SA\'IF ALI KHAN', kelas: '2A' },
+                { nisn: '3190993142', nama: 'ALIZA SAFEA FEBRIYANI', kelas: '2A' },
+                { nisn: '3180661439', nama: 'HENDRIH MAULLANAH', kelas: '2A' },
+                { nisn: '3183566010', nama: 'SITI NAURA ASIPIN', kelas: '2A' },
+                { nisn: '3188954332', nama: 'BADRA SOFWAN FEBRIYAN', kelas: '2A' },
+                { nisn: '3197219084', nama: 'KAYRA HUMAIRA MULIKA', kelas: '2A' },
+                { nisn: '3194024956', nama: 'NABILA RISYANTI', kelas: '2A' },
+                { nisn: '3182448362', nama: 'SUFIE WIDYA UTAMI', kelas: '2A' },
+                { nisn: '3195932524', nama: 'ATHA FARIZ RADEYA AKBAR', kelas: '2A' },
+                { nisn: '3196360486', nama: 'ELZIO ZHIAN KAVAYA', kelas: '2A' },
+                { nisn: '3180066790', nama: 'MUHAMMAD ALDI SAPUTRA', kelas: '2A' },
+                { nisn: '3183392168', nama: 'HAURA SALSABILLAH', kelas: '2A' },
+                { nisn: '3199792917', nama: 'ELVANO BINTANG PRATAMA', kelas: '2A' },
+                { nisn: '3188086767', nama: 'ALVARO REZVAN ARIKA', kelas: '2A' },
+                { nisn: '3181947993', nama: 'GEISCILA PUTRI ALINDA', kelas: '2A' },
+                { nisn: '3196641109', nama: 'M.FASYA RAMADAN', kelas: '2A' },
+                { nisn: '3196820535', nama: 'MESSI PERMAISEHEELA', kelas: '2A' },
+                { nisn: '3199114917', nama: 'MUHAMAD ILHAM', kelas: '2A' },
+                { nisn: '3187001276', nama: 'MUHAMMAD ALBANY FIRASH', kelas: '2A' },
+                { nisn: '3186847578', nama: 'SYAHLA INARA SAPUTRA', kelas: '2A' },
+                { nisn: '3187148555', nama: 'MUHAMMAD AL-FATIH', kelas: '2B' },
+                { nisn: '3183178183', nama: 'MUHAMMAD BAHARZEIN ALFARIZQI', kelas: '2B' },
+                { nisn: '3189482192', nama: 'AFZAR HAZIQ MUSYAFFA', kelas: '2B' },
+                { nisn: '3184106088', nama: 'MUHAMMAD KAUTSAR BILFAQIH', kelas: '2B' },
+                { nisn: '3180564477', nama: 'MUHAMMAD RAFISQI', kelas: '2B' },
+                { nisn: '3186826890', nama: 'MUHAMMAD YUSUF IBRAHIM', kelas: '2B' },
+                { nisn: '3197748896', nama: 'MUHAMMAD RAFISQI AL-GAZZAL', kelas: '2B' },
+                { nisn: '3198746995', nama: 'SANDRA VALLERIE SHAQILA', kelas: '2B' },
+                { nisn: '3186839382', nama: 'MUHAMMAD YUSUF AL FARID', kelas: '2B' },
+                { nisn: '3184992742', nama: 'MUHAMMAD PANJI', kelas: '2B' },
+                { nisn: '3192741714', nama: 'MUHAMMAD NAZRIEL', kelas: '2B' },
+                { nisn: '3196910093', nama: 'MUHAMMAD KENZO ALFATIH', kelas: '2B' },
+                { nisn: '3193637580', nama: 'IMAH SABIRA', kelas: '2B' },
+                { nisn: '3199078862', nama: 'SABILA APRIYANI', kelas: '2B' },
+                { nisn: '3185327751', nama: 'KIRANA PUTRI SUKMA', kelas: '2B' },
+                { nisn: '3184953463', nama: 'MUHAMMAD YUSUF ASAUQI', kelas: '2B' },
+                { nisn: '3184810864', nama: 'KHOIRUL HUDA', kelas: '2B' },
+                { nisn: '3195927957', nama: 'ZAURA MAZNA MAZIYA', kelas: '2B' },
+                { nisn: '3192529088', nama: 'MUHAMMAD ALFARO', kelas: '2B' },
+                { nisn: '3185033606', nama: 'MUHAMMAD DEVAN', kelas: '2B' },
+                { nisn: '3185959848', nama: 'MUTIARA PUTRI', kelas: '2B' },
+                { nisn: '3161634123', nama: 'MUHAMMAD FAQIH RAMADHAN', kelas: '2C' },
+                { nisn: '3193186484', nama: 'NISA FEBRIYANA', kelas: '2C' },
+                { nisn: '3194430077', nama: 'R.A BALQIS TAQIYA SAJIDA', kelas: '2C' },
+                { nisn: '3181090503', nama: 'MUHAMMAD ABDUL GHANI', kelas: '2C' },
+                { nisn: '3175499405', nama: 'KEYSHA WULANSARI', kelas: '2C' },
+                { nisn: '3196693641', nama: 'RAYYAN ALFARIZQI BAHRI', kelas: '2C' },
+                { nisn: '3185019983', nama: 'M. RAFA ALHAFIZ', kelas: '2C' },
+                { nisn: '3196414852', nama: 'AZALIA BILQIS ALMAIRA', kelas: '2C' },
+                { nisn: '3187425883', nama: 'MUHAMMAD DZAKY', kelas: '2C' },
+                { nisn: '3190200782', nama: 'ALEEYA NAURAHUMAIRA', kelas: '2C' },
+                { nisn: '3181222081', nama: 'MUHAMMAD ARDHAN AL ARRAS', kelas: '2C' },
+                { nisn: '3194409605', nama: 'ZERA FAHIRA', kelas: '2C' },
+                { nisn: '3197371127', nama: 'M. FAREL DAVIANSYAH', kelas: '2C' },
+                { nisn: '3190657235', nama: 'MUHAMMAD VICKY PRATAMA', kelas: '2C' },
+                { nisn: '3196436185', nama: 'PUTRI NAWANG WULAN', kelas: '2C' },
+                { nisn: '3188539657', nama: 'RINA JULIANTI', kelas: '2C' },
+                { nisn: '3165108651', nama: 'VINA DESTIYANI', kelas: '2C' },
+                { nisn: '3184091408', nama: 'YUSUF AL ZAHIR', kelas: '2C' },
+                { nisn: '3190867136', nama: 'RAFASYAH LAZUARDI WIJAYA', kelas: '2C' },
+                { nisn: '3183079957', nama: 'CARLA ANINDITA', kelas: '2C' },
+                { nisn: '3192418730', nama: 'JASMINE NUR ANISA RAMADANTI', kelas: '2C' },
+                { nisn: '3177039703', nama: 'KANIA PUTRI AULIA', kelas: '3A' },
+                { nisn: '3181966184', nama: 'MUHAMMAD YUSUF AL-HADI', kelas: '3A' },
+                { nisn: '3176713228', nama: 'SALIFAH PUTRI SALAM', kelas: '3A' },
+                { nisn: '3171629584', nama: 'REVINA OKTAVIANI', kelas: '3A' },
+                { nisn: '3187680770', nama: 'M. REYHAN AQIL FIRASH', kelas: '3A' },
+                { nisn: '3171048409', nama: 'UFAIRAH HAYATUL HIKAM', kelas: '3A' },
+                { nisn: '3178969134', nama: 'MUHAMMAD ZIDAN SOFWAN', kelas: '3A' },
+                { nisn: '3177107075', nama: 'SHAQEENA NUR AQSHO', kelas: '3A' },
+                { nisn: '3177554398', nama: 'AMANDA KANZILLA MILENIA', kelas: '3A' },
+                { nisn: '3174779835', nama: 'AUZAN RAHANDIKA AL FARIQ', kelas: '3A' },
+                { nisn: '3179115556', nama: 'AZQIA SILVI AURA', kelas: '3A' },
+                { nisn: '3173718210', nama: 'HABIBAH WAFIYA', kelas: '3A' },
+                { nisn: '3181654515', nama: 'MUHAMMAD ADRYAN TSAQIB', kelas: '3A' },
+                { nisn: '3188339601', nama: 'ADINDA FREDELLA', kelas: '3A' },
+                { nisn: '3176511121', nama: 'ADNAN KHIARUL FATIH', kelas: '3A' },
+                { nisn: '0133523918', nama: 'MUHAMMAD AL-MALIK GOPAR', kelas: '3A' },
+                { nisn: '3171865056', nama: 'BILKIS AYUNDA', kelas: '3A' },
+                { nisn: '3170566100', nama: 'DIMAS IBRAM PRATAMA', kelas: '3A' },
+                { nisn: '3175089995', nama: 'ELSA RAHMADANI', kelas: '3A' },
+                { nisn: '3180208603', nama: 'KENZIE SHARAFAT FITRAH', kelas: '3A' },
+                { nisn: '3171291277', nama: 'NOVA HERLINA', kelas: '3A' },
+                { nisn: '3171057014', nama: 'M.RAHESIYA NUR HAKIM', kelas: '3A' },
+                { nisn: '3176221893', nama: 'M. SAYYID AL-MAHDI', kelas: '3A' },
+                { nisn: '3180205054', nama: 'MUHAMMAD DHIYAULI IZZUL HAQ', kelas: '3A' },
+                { nisn: '3170668473', nama: 'ZAVIRA ALFATUNNISA', kelas: '3A' },
+                { nisn: '3171437335', nama: 'ZAKIANDRA ASHAD MAULANA', kelas: '3B' },
+                { nisn: '3175926159', nama: 'ADAM FAIZ AL ARKHAN', kelas: '3B' },
+                { nisn: '3186604130', nama: 'ABI RAHANDIKA', kelas: '3B' },
+                { nisn: '3180902044', nama: 'MARZIA SHOFIA SYA\'BAN', kelas: '3B' },
+                { nisn: '3174143595', nama: 'DYNNA SALSABILA PUTRI', kelas: '3B' },
+                { nisn: '3176703899', nama: 'ALMIRA NAYLAL RATIFAH', kelas: '3B' },
+                { nisn: '3185927758', nama: 'NAYYARA KHANZANIA SYAWAL', kelas: '3B' },
+                { nisn: '3176049291', nama: 'AL ZIO PRADATA', kelas: '3B' },
+                { nisn: '3188434593', nama: 'FAEYZA ATHA RAZIQ', kelas: '3B' },
+                { nisn: '3178435222', nama: 'NAUREN NAZWA MIQAILA', kelas: '3B' },
+                { nisn: '3183122787', nama: 'SYAQILA SALWA UTAMI', kelas: '3B' },
+                { nisn: '3182513933', nama: 'HAFIFA ADINDA PUTRI', kelas: '3B' },
+                { nisn: '3179735221', nama: 'MUHAMMAD ADAM MIKRI PRATAMA', kelas: '3B' },
+                { nisn: '3173588956', nama: 'ARSYA TRI AYUNDA', kelas: '3B' },
+                { nisn: '3183823786', nama: 'ARFAN ALFARIZI', kelas: '3B' },
+                { nisn: '3181243604', nama: 'MUHAMAD AKHTAR ALFATIH', kelas: '3B' },
+                { nisn: '3188277676', nama: 'MUHAMMAD AFIF AMALDI', kelas: '3B' },
+                { nisn: '3175812711', nama: 'MUHAMMAD FARHAN AL AZKA', kelas: '3B' },
+                { nisn: '3177414849', nama: 'MUHAMMAD RAFA AZKA PUTRA', kelas: '3B' },
+                { nisn: '3175224517', nama: 'MUZZAMMIL YUSUF', kelas: '3B' },
+                { nisn: '3178158368', nama: 'NUR DURATUL ZINAN', kelas: '3B' },
+                { nisn: '3185270631', nama: 'M AZZAM KHALIFA', kelas: '3B' },
+                { nisn: '3176058238', nama: 'RAISA APRIYANI', kelas: '3B' },
+                { nisn: '3182874236', nama: 'PUTRI DAHLIA', kelas: '3B' },
+                { nisn: '3177818959', nama: 'ZEN ILMAN PUTRA', kelas: '3B' },
+                { nisn: '3178123213', nama: 'MAIRA FITRA NABILA', kelas: '3B' },
+                { nisn: '3166347754', nama: 'ADAM HAZLAM INDRA PUTRA', kelas: '5A' },
+                { nisn: '3160097416', nama: 'ADINDA NURSYIFA', kelas: '5A' },
+                { nisn: '3162765790', nama: 'ALEA ADRIANA JAHRI', kelas: '5A' },
+                { nisn: '3157140571', nama: 'ALKANZA DZAKIRA AFTANI', kelas: '5A' },
+                { nisn: '3169958864', nama: 'ASYIFA RAMADHANI', kelas: '5A' },
+                { nisn: '3158206324', nama: 'DIO HERIYAWAN', kelas: '5A' },
+                { nisn: '3151228956', nama: 'IRFAN RAMADAN', kelas: '5A' },
+                { nisn: '3156332689', nama: 'M. ALFIN HARAFAH', kelas: '5A' },
+                { nisn: '3146083322', nama: 'M. ALVIANO VIRLIAN PRATAMA', kelas: '5A' },
+                { nisn: '3155680892', nama: 'M.LUTFIE SAKHI ZAIDAN', kelas: '5A' },
+                { nisn: '3159618609', nama: 'MUHAMMAD ARYA PANDU', kelas: '5A' },
+                { nisn: '0153244915', nama: 'MUHAMMAD ZAKKY RISQULLAH', kelas: '5A' },
+                { nisn: '3168261189', nama: 'NUR HAFIFAH', kelas: '5A' },
+                { nisn: '3156836377', nama: 'SAFIRA PUTRI', kelas: '5A' },
+                { nisn: '3152280809', nama: 'SITI AURA NABILA', kelas: '5A' },
+                { nisn: '3169134760', nama: 'PUTRI ADIBA', kelas: '5A' },
+                { nisn: '3163359783', nama: 'M AZKA AL HAFIZ', kelas: '5A' },
+                { nisn: '3158037170', nama: 'INDRA MAULANA', kelas: '5A' },
+                { nisn: '3157137225', nama: 'MUHAMMAD NAUFAL HANIF', kelas: '5A' },
+                { nisn: '0152820869', nama: 'GEYSA NURHALIFA', kelas: '5A' },
+                { nisn: '3154992197', nama: 'NURBATRISYA RAHMA KHALIZA', kelas: '5A' },
+                { nisn: '3153256512', nama: 'ANINDHITA ZAHRA', kelas: '5A' },
+                { nisn: '3154240263', nama: 'FIKA AULIA', kelas: '5A' },
+                { nisn: '3169015631', nama: 'MUHAMMAD SULTHON ARDITIA RIZAL', kelas: '5A' },
+                { nisn: '3157836280', nama: 'M. ARKAN RAMAZAN', kelas: '5A' },
+                { nisn: '3167528278', nama: 'NELIDA NURAINI', kelas: '5A' },
+                { nisn: '3159565468', nama: 'FADHAL YAQDHAN NASRULLAH', kelas: '5A' },
+                { nisn: '3157777117', nama: 'REYHAN ADI SANTOSO', kelas: '5A' },
+                { nisn: '3160582649', nama: 'REZA ARIS PURNAMA', kelas: '5A' },
+                { nisn: '3155640262', nama: 'ATIKA PUTRI KANZA AZ\'ZAHRA', kelas: '5A' },
+                { nisn: '3152404873', nama: 'MUHAMAD AZIZ FAHRI', kelas: '5A' },
+                { nisn: '3153291625', nama: 'ABDUL ROSYID ZAIN', kelas: '5B' },
+                { nisn: '0143922897', nama: 'ABDULLAH AL AUFAR', kelas: '5B' },
+                { nisn: '3150291665', nama: 'ALFIYA NURJANA', kelas: '5B' },
+                { nisn: '3141968364', nama: 'BIMA JAFARUDIN', kelas: '5B' },
+                { nisn: '3149342567', nama: 'FAQIH KHAIRY RAHMAN', kelas: '5B' },
+                { nisn: '3169032247', nama: 'JAQI WIJAYA', kelas: '5B' },
+                { nisn: '3154570338', nama: 'M. RAFFA SYAHZIDAN', kelas: '5B' },
+                { nisn: '3159364837', nama: 'MELATI PUTRI ANGGRAINI', kelas: '5B' },
+                { nisn: '3162274344', nama: 'MUHAMAD PUTRA SATRIA', kelas: '5B' },
+                { nisn: '3156711981', nama: 'MUHAMMAD ALIF ALFATAN', kelas: '5B' },
+                { nisn: '3169802468', nama: 'MUHAMMAD FAEZA GAVIN ISKANDAR', kelas: '5B' },
+                { nisn: '3166872765', nama: 'MUHAMMAD INZAGHI AL FACHRI', kelas: '5B' },
+                { nisn: '3146754841', nama: 'R.A TIARA ULYA SALSABILA', kelas: '5B' },
+                { nisn: '3154883906', nama: 'SHAKILA CALLISTA PUTRI ADIBAH', kelas: '5B' },
+                { nisn: '0156155377', nama: 'SILVI RAMADHANI', kelas: '5B' },
+                { nisn: '3167834457', nama: 'SITI AN-NAZWA NUR ROHMAH', kelas: '5B' },
+                { nisn: '3153039889', nama: 'MUHAMMAD FRENDY DIRGANTARA', kelas: '5B' },
+                { nisn: '3166212159', nama: 'FILDZAH DZAHABIYYAH RUPAWAN', kelas: '5B' },
+                { nisn: '3154913008', nama: 'ALESYA NABILA INARA', kelas: '5B' },
+                { nisn: '3158026163', nama: 'AL- FASYAH', kelas: '5B' },
+                { nisn: '3152753541', nama: 'MUHAMMAD RAFA AZKA PERMANA', kelas: '5B' },
+                { nisn: '3168924047', nama: 'AISYAH HANIFAH RAMADHANI', kelas: '5B' },
+                { nisn: '3167540557', nama: 'WINDI SALSABILLAH PUTRI', kelas: '5B' },
+                { nisn: '3167244357', nama: 'ANNISA FEBRIANI', kelas: '5B' },
+                { nisn: '3151156032', nama: 'RESTU AULIA SAFITRI', kelas: '5B' },
+                { nisn: '3142659188', nama: 'M. ABIFA TEIH ALJABAR', kelas: '5B' },
+                { nisn: '3156292835', nama: 'DIGO MAHARDHIKA PUTRA', kelas: '5B' },
+                { nisn: '3167830523', nama: 'MUHAMMAD PUTRA DIMAS', kelas: '5B' },
+                { nisn: '3156511478', nama: 'RIZKY HABIB RAMDHANI', kelas: '5B' },
+                { nisn: '3145852693', nama: 'HENDRO RAMADHAN', kelas: '5B' },
+                { nisn: '3153628491', nama: 'FERDI YANSYAH SAPUTRA', kelas: '5B' },
+                { nisn: '3141431822', nama: 'YUZARSIF ALVARO', kelas: '5B' },
+                { nisn: '3149377988', nama: 'ABU YAZEED AL BUSTOMI', kelas: '6A' },
+                { nisn: '3148975555', nama: 'SOFIANA FAHRUNSYAQ', kelas: '6A' },
+                { nisn: '0143393131', nama: 'ALVIAN DANISH FAEZA', kelas: '6A' },
+                { nisn: '0152562710', nama: 'ADIBAH ALISYAH', kelas: '6A' },
+                { nisn: '3149544672', nama: 'FIRDA SUSANTI', kelas: '6A' },
+                { nisn: '3154061545', nama: 'REZA UTOMO', kelas: '6A' },
+                { nisn: '0146249949', nama: 'MUHAMMAD NUR HUDA', kelas: '6A' },
+                { nisn: '3158577669', nama: 'PUTRI MAHWA JELITA', kelas: '6A' },
+                { nisn: '3131430119', nama: 'INDRI SEPTIYANI', kelas: '6A' },
+                { nisn: '0155605187', nama: 'Nadhiva Nur Maulida', kelas: '6A' },
+                { nisn: '3145597441', nama: 'Amelita Azzahra Putri Kurnia', kelas: '6A' },
+                { nisn: '3137283506', nama: 'SELY REGA ANZANI', kelas: '6A' },
+                { nisn: '0148021887', nama: 'ANISA NURJANAH', kelas: '6A' },
+                { nisn: '3145630201', nama: 'RIDHO ALIF', kelas: '6A' },
+                { nisn: '0137983512', nama: 'QAISHAR OMAR ALKAHFI', kelas: '6A' },
+                { nisn: '0142717223', nama: 'DEBBY LIYANA BUDIYANTO', kelas: '6A' },
+                { nisn: '3144720801', nama: 'MUHAMAD ANDRIAN SAPUTRA', kelas: '6A' },
+                { nisn: '0144725339', nama: 'SINTIA PUTRI AULIA', kelas: '6A' },
+                { nisn: '3147479144', nama: 'NASYWA OKTARIANI SISWANTO', kelas: '6A' },
+                { nisn: '3140977859', nama: 'M.FARHAN AL HAFIZ', kelas: '6A' },
+                { nisn: '3149197516', nama: 'FELIZHA ZEA AMORA', kelas: '6A' },
+                { nisn: '0136519550', nama: 'HILDA HIDAYATI', kelas: '6A' },
+                { nisn: '3130289684', nama: 'FARHAT AL MUHYI', kelas: '6A' },
+                { nisn: '3138717048', nama: 'CINTA MAURELYA KANZA AZAHRA', kelas: '6A' },
+                { nisn: '3136366976', nama: 'RANO IMAMSYAH', kelas: '6A' },
+                { nisn: '0144767322', nama: 'BALQIS ADZRA ZHAFIRA', kelas: '6B' },
+                { nisn: '3145988493', nama: 'NAYLA RAMADHANI', kelas: '6B' },
+                { nisn: '0157733275', nama: 'SUCI DAMAYANTI', kelas: '6B' },
+                { nisn: '3150121461', nama: 'NAYLA AZALEA PUTRI', kelas: '6B' },
+                { nisn: '0145332620', nama: 'Muhammad Fardan Zaki Saputra', kelas: '6B' },
+                { nisn: '3159884806', nama: 'INARA MEISHA', kelas: '6B' },
+                { nisn: '3145592598', nama: 'M.NIKO FERDIANSYAH', kelas: '6B' },
+                { nisn: '3159842909', nama: 'IBNU AZKA AL ARKHAN', kelas: '6B' },
+                { nisn: '3150095596', nama: 'MUHAMMAD GATAN ARSYA SAPUTRA', kelas: '6B' },
+                { nisn: '0137794537', nama: 'ASYIFA PUTRI', kelas: '6B' },
+                { nisn: '3159440967', nama: 'ALIYSA KHAIRA WILDAYANI', kelas: '6B' },
+                { nisn: '0149947302', nama: 'SAFHIRA FAIQA KIRANA', kelas: '6B' },
+                { nisn: '0152074198', nama: 'BILQIS MAULIDA', kelas: '6B' },
+                { nisn: '0149099370', nama: 'Nikyrta Kaisa Rahman', kelas: '6B' },
+                { nisn: '0131018879', nama: 'NAZQIA VELYZA', kelas: '6B' },
+                { nisn: '3145318334', nama: 'ILHAM FATAHILLAH', kelas: '6B' },
+                { nisn: '3158865672', nama: 'M. HANAFI SAPUTRA', kelas: '6B' },
+                { nisn: '0132820621', nama: 'M. RASYA AL GOFAHRI', kelas: '6B' },
+                { nisn: '3141333949', nama: 'DEVA REFANA', kelas: '6B' },
+                { nisn: '3159116671', nama: 'MUZDHALIFFA', kelas: '6B' },
+                { nisn: '3153997656', nama: 'SINTA APRILIA', kelas: '6B' },
+                { nisn: '0142945166', nama: 'MUHAMMAD ISAM AL SHAQIRI', kelas: '6B' },
+                { nisn: '3145230465', nama: 'RAHEL ADINDA SILA', kelas: '6B' },
+                { nisn: '3146910215', nama: 'Nabila Anggraini', kelas: '6B' },
+                { nisn: '3167242584', nama: 'ADIBA ALMAIRA SETIA DEWI', kelas: '4A' },
+                { nisn: '3169239814', nama: 'AILEEN NATANIA SUWANDI', kelas: '4A' },
+                { nisn: '316072825', nama: 'ARYASENO AL-FATIH', kelas: '4A' },
+                { nisn: '3172841220', nama: 'DEWI ROSA INDAH', kelas: '4A' },
+                { nisn: '3170729212', nama: 'INDRI KUSUMAWATI', kelas: '4A' },
+                { nisn: '316807085', nama: 'INTAN NURAISYAH WIJAYA', kelas: '4A' },
+                { nisn: '3178732502', nama: 'KIREI KARUNIA RAMADHANI', kelas: '4A' },
+                { nisn: '3172024043', nama: 'M.ALTHAF HANIF AL-JINAN', kelas: '4A' },
+                { nisn: '3168982991', nama: 'M.AZZAM NURWAHID APRIADI', kelas: '4A' },
+                { nisn: '3175673315', nama: 'M.RAKA AZKA PUTRA', kelas: '4A' },
+                { nisn: '3167680548', nama: 'M.RIDWAN', kelas: '4A' },
+                { nisn: '3172428766', nama: 'NAURA ZAHIRA', kelas: '4A' },
+                { nisn: '3170858498', nama: 'RAFA ABDILLAH PRATAMA', kelas: '4A' },
+                { nisn: '3175717463', nama: 'NAZWA ALYA RAMADHANI', kelas: '4A' },
+                { nisn: '3167494494', nama: 'CANTIKA PUTRI', kelas: '4A' },
+                { nisn: '3161478750', nama: 'M.VINO AGUNG PRATAMA', kelas: '4A' },
+                { nisn: '3162924367', nama: 'MUHAMAD FARDHAN MAULANA', kelas: '4A' },
+                { nisn: '3165525335', nama: 'IMAM AKHMAD ALGHIFARI', kelas: '4A' },
+                { nisn: '3165727744', nama: 'M.DYAHFAHRI RAMADHAN', kelas: '4A' },
+                { nisn: '3165719758', nama: 'SATRIA EL AZZAM MALIK', kelas: '4A' },
+                { nisn: '3174097036', nama: 'MUHAMAD KASIFUL HAAFIZH', kelas: '4A' },
+                { nisn: '3176507357', nama: 'NAZRIL IRHAM PUTRA SYAHRONI', kelas: '4A' },
+                { nisn: '3168811842', nama: 'ARSYAD JILI', kelas: '4A' },
+                { nisn: '3162511663', nama: 'HAFIZAAH MAYLI FAHLUTFI', kelas: '4A' },
+                { nisn: '3166228908', nama: 'RIDHO RAFIZQI BAHRI', kelas: '4A' },
+                { nisn: '3174638125', nama: 'BAGAS MAULANA HAFIZ', kelas: '4A' },
+                { nisn: '3174639285', nama: 'DWI PUTERI AYU', kelas: '4A' },
+                { nisn: '3161606994', nama: 'ALDEN ADIYASTHA ARISTO', kelas: '4A' },
+                { nisn: '3162415179', nama: 'AFIFAH AZKA LABIBAH', kelas: '4B' },
+                { nisn: '3172385311', nama: 'AHMAD HAIKAL AL-FATIH', kelas: '4B' },
+                { nisn: '3165265943', nama: 'ANINDYA TRI FAUZIAH', kelas: '4B' },
+                { nisn: '3163118683', nama: 'AZZAM ZHAFIR RAMADHAN', kelas: '4B' },
+                { nisn: '3167354950', nama: 'FAZIA ZAHRA DWITA PUTRI', kelas: '4B' },
+                { nisn: '3161400719', nama: 'HAFIDZIDAN ARGA FADHILLAH', kelas: '4B' },
+                { nisn: '3175701425', nama: 'M.KHOLID HASAN', kelas: '4B' },
+                { nisn: '3164171951', nama: 'M.ABRIZAM SANTOSO', kelas: '4B' },
+                { nisn: '3176811400', nama: 'M.DION SAPUTRA', kelas: '4B' },
+                { nisn: '3165013665', nama: 'M.FAUZAN AZHIMA', kelas: '4B' },
+                { nisn: '3155749174', nama: 'RAISA MUTIARA PUTRI', kelas: '4B' },
+                { nisn: '3165982152', nama: 'TITO KUNTARA MADNGOREJO', kelas: '4B' },
+                { nisn: '3173762863', nama: 'VINA MIRANDA', kelas: '4B' },
+                { nisn: '3166809257', nama: 'ADREENA SALSABILA dinata', kelas: '4B' },
+                { nisn: '3179891537', nama: 'ANDRA FATIH RAMADHAN', kelas: '4B' },
+                { nisn: '3170863234', nama: 'ARIN SASI KIRANA', kelas: '4B' },
+                { nisn: '3168033608', nama: 'ARSYAD HAFIZH YUSUP ALFALAH', kelas: '4B' },
+                { nisn: '3169934955', nama: 'GIO ANDAMI TUA SELLA', kelas: '4B' },
+                { nisn: '3178278637', nama: 'RAKHIL A\'BIDAH', kelas: '4B' },
+                { nisn: '3169660482', nama: 'M.DAFFI KHUMAIDI', kelas: '4B' },
+                { nisn: '3156564744', nama: 'MUHAMAD ALFINO', kelas: '4B' },
+                { nisn: '3171073739', nama: 'KHUIRUNNISA SALSABILA', kelas: '4B' },
+                { nisn: '3169059402', nama: 'MUHAMAD ABDULLAH', kelas: '4B' },
+                { nisn: '3167235005', nama: 'SHAQILA ANDINI RAHMA', kelas: '4B' },
+                { nisn: '3165322535', nama: 'NANDA HUMAIRA', kelas: '4B' },
+                { nisn: '3166277162', nama: 'NAURA SABILA', kelas: '4B' },
+                { nisn: '3160656893', nama: 'M.RAYEN ALFADILLAH', kelas: '4B' },
+                { nisn: '4652', nama: 'Ardiyansyah Putra', kelas: '3B' },
+                { nisn: '4573', nama: 'KEENAND ATHAYA RAHMAN', kelas: '3B' },
+                { nisn: '3174852883', nama: 'AZALEA MAELA NAJWA', kelas: '4B' },
+                { nisn: '3169778705', nama: 'REHAN RAMADHAN', kelas: '4B' },
+                { nisn: '3172726391', nama: 'ARFAN NAUFAL RAFASSYA', kelas: '2A' }
+            ],
+            
+            // Data Master Guru (Hardcoded)
+            masterGuru: [
+                { nip: '', nama: 'Supriyadi, S. Pd. Gr', kelas: '5B', username: 'supri5b', password: 'supri5b' },
+                { nip: '', nama: 'Lady Astria Prayogi, S. Pd. Gr', kelas: '6B', username: 'lady6b', password: 'lady6b' },
+                { nip: '', nama: 'Yeny Suyarti, S. Pd. Gr', kelas: '6A', username: 'yeny6a', password: 'yeny6a' },
+                { nip: '', nama: 'Lola Fitria, S. Pd. Gr', kelas: '5A', username: 'lola5a', password: 'lola5a' },
+                { nip: '', nama: 'Ani Widya Pitri, M. Pd. Gr', kelas: '1B', username: 'ani1b', password: 'ani1b' },
+                { nip: '', nama: 'Tursinah, S. Pd', kelas: '1A', username: 'tursinah1a', password: 'tursinah1a' },
+                { nip: '', nama: 'Riami, S. Pd. Gr', kelas: '2A', username: 'riami2a', password: 'riami2a' },
+                { nip: '', nama: 'Siti Haryati, S. Pd. Gr', kelas: '2B', username: 'siti2b', password: 'siti2b' },
+                { nip: '', nama: 'Siti Luthfia Dwi Putri, S. Pd. Gr', kelas: '2C', username: 'fia2c', password: 'fia2c' },
+                { nip: '', nama: 'Nova Desiana, S. Pd. Gr', kelas: '3A', username: 'nova3a', password: 'nova3a' },
+                { nip: '', nama: 'Helen Mahdaleni', kelas: '3B', username: 'helen3b', password: 'helen3b' },
+                { nip: '', nama: 'Ana Yulia, S. Pd. Gr', kelas: '4A', username: 'ana4a', password: 'ana4a' },
+                { nip: '', nama: 'Elsa Octa Rusandi, S. Pd. Gr', kelas: '4B', username: 'elsa4b', password: 'elsa4b' }
+            ],
+            
             settings: {
                 sheetEndpoint: 'https://script.google.com/macros/s/AKfycbxuqroNhAo1QKtxY-f0RabzzdQTFPAdJ3E2yKtiQL2ClDUvqxzxNkoQEznZgPXyav6w/exec',
                 theme: 'light',
@@ -960,10 +1263,9 @@
                 this.populateFormKelasDropdown();
                 this.updateAppHeader();
                 
-                // Tampilkan Loading Animasi saat Sinkronisasi Awal dengan Cloud
-                if (this.settings.sheetEndpoint) {
-                    this.syncAllData(true); // Diubah dari false ke true agar animasi loading muncul
-                }
+                // AUTO SINKRONISASI DI AWAL DIMATIKAN
+                // Aplikasi akan terbuka secara instan.
+                // Sinkronisasi hanya terjadi jika Admin/Guru menekan tombol "Sinkron"
                 
                 // Listener Fullscreen
                 document.addEventListener('fullscreenchange', () => this.updateFullScreenIcon());
@@ -1239,11 +1541,11 @@
                 const savedProfile = localStorage.getItem('kaih_profile');
                 if (savedProfile) this.profile = JSON.parse(savedProfile);
 
-                const savedSiswa = localStorage.getItem('kaih_siswa');
-                if (savedSiswa) this.masterSiswa = JSON.parse(savedSiswa);
-
-                const savedGuru = localStorage.getItem('kaih_guru');
-                if (savedGuru) this.masterGuru = JSON.parse(savedGuru);
+                // DATA SISWA DAN GURU DINONAKTIFKAN KARENA MENGGUNAKAN HARDCODE
+                // const savedSiswa = localStorage.getItem('kaih_siswa');
+                // if (savedSiswa) this.masterSiswa = JSON.parse(savedSiswa);
+                // const savedGuru = localStorage.getItem('kaih_guru');
+                // if (savedGuru) this.masterGuru = JSON.parse(savedGuru);
             },
 
             saveDataToLocal() {
@@ -1251,8 +1553,10 @@
             },
 
             saveMasterDataToLocal() {
-                localStorage.setItem('kaih_siswa', JSON.stringify(this.masterSiswa));
-                localStorage.setItem('kaih_guru', JSON.stringify(this.masterGuru));
+                // DATA SISWA DAN GURU DINONAKTIFKAN KARENA MENGGUNAKAN HARDCODE
+                // localStorage.setItem('kaih_siswa', JSON.stringify(this.masterSiswa));
+                // localStorage.setItem('kaih_guru', JSON.stringify(this.masterGuru));
+                
                 this.populateFormKelasDropdown();
             },
 
@@ -1522,6 +1826,7 @@
                 const currentVal = selectKelas.value;
                 selectKelas.innerHTML = '<option value="">-- Pilih Kelas --</option>';
                 
+                // Ambil daftar kelas unik langsung dari masterSiswa hardcoded
                 const classes = [...new Set(this.masterSiswa.map(s => s.kelas))].filter(c => c && c !== '-').sort();
                 
                 classes.forEach(c => {
@@ -1534,33 +1839,37 @@
             },
 
             onFormKelasChange() {
-                const kelas = document.getElementById('inp-kelas').value;
-                const selectNama = document.getElementById('inp-nama');
+                const selectKelas = document.getElementById('inp-kelas');
+                const selectSiswa = document.getElementById('inp-nama');
                 const inpNis = document.getElementById('inp-nis');
                 const inpGuru = document.getElementById('inp-guru');
                 
+                if (!selectKelas || !selectSiswa) return;
+                
+                const selectedKelas = selectKelas.value;
+                
                 // Reset dependents
-                selectNama.innerHTML = '<option value="">-- Pilih Nama --</option>';
-                selectNama.disabled = true;
+                selectSiswa.innerHTML = '<option value="">-- Pilih Nama --</option>';
+                selectSiswa.disabled = true;
                 inpNis.value = '';
                 inpGuru.value = '';
                 
-                if (!kelas) return;
+                if (!selectedKelas) return;
                 
-                // Filter siswa berdasarkan kelas
-                const studentsInClass = this.masterSiswa.filter(s => s.kelas === kelas).sort((a, b) => a.nama.localeCompare(b.nama));
+                // Filter nama siswa berdasarkan kelas yang dipilih dari data hardcoded
+                const studentsInClass = this.masterSiswa.filter(s => s.kelas === selectedKelas).sort((a, b) => a.nama.localeCompare(b.nama));
                 
                 if (studentsInClass.length > 0) {
-                    selectNama.disabled = false;
+                    selectSiswa.disabled = false;
                     studentsInClass.forEach(s => {
-                        selectNama.innerHTML += `<option value="${s.nama}">${s.nama}</option>`;
+                        selectSiswa.innerHTML += `<option value="${s.nama}">${s.nama}</option>`;
                     });
                 } else {
-                    selectNama.innerHTML = '<option value="">-- Siswa Kosong --</option>';
+                    selectSiswa.innerHTML = '<option value="">-- Siswa Kosong --</option>';
                 }
                 
                 // Auto isi Wali Kelas
-                const guru = this.masterGuru.find(g => g.kelas === kelas);
+                const guru = this.masterGuru.find(g => g.kelas === selectedKelas);
                 if (guru) {
                     inpGuru.value = guru.nama;
                 }
@@ -2716,8 +3025,10 @@
                         if(parsed.data) this.data = parsed.data;
                         if(parsed.settings) this.settings = parsed.settings;
                         if(parsed.profile) this.profile = parsed.profile;
-                        if(parsed.masterSiswa) this.masterSiswa = parsed.masterSiswa;
-                        if(parsed.masterGuru) this.masterGuru = parsed.masterGuru;
+                        
+                        // DATA SISWA & GURU DINONAKTIFKAN KARENA MENGGUNAKAN HARDCODE
+                        // if(parsed.masterSiswa) this.masterSiswa = parsed.masterSiswa;
+                        // if(parsed.masterGuru) this.masterGuru = parsed.masterGuru;
                         
                         this.saveDataToLocal();
                         this.saveSettingsToLocal();
@@ -2739,12 +3050,12 @@
                     localStorage.removeItem('kaih_data');
                     localStorage.removeItem('kaih_settings');
                     localStorage.removeItem('kaih_profile');
-                    localStorage.removeItem('kaih_siswa');
-                    localStorage.removeItem('kaih_guru');
+                    // localStorage.removeItem('kaih_siswa'); // Dinonaktifkan
+                    // localStorage.removeItem('kaih_guru');  // Dinonaktifkan
                     this.data = [];
                     this.currentFilteredData = [];
-                    this.masterSiswa = [];
-                    this.masterGuru = [];
+                    // this.masterSiswa = []; // Dinonaktifkan
+                    // this.masterGuru = [];  // Dinonaktifkan
                     this.showToast('Data dibersihkan. Memuat ulang...');
                     setTimeout(() => location.reload(), 1500);
                 }
@@ -2761,9 +3072,10 @@
                 
                 try {
                     // Fetch all needed data concurrently for speed
-                    const [resSiswa, resGuru, resJurnal, resPengaturan] = await Promise.all([
-                        this.apiCall('read', 'Data Siswa'),
-                        this.apiCall('read', 'Data Guru'),
+                    // Penarikan Data Siswa & Guru dinonaktifkan karena menggunakan Hardcode
+                    const [resJurnal, resPengaturan] = await Promise.all([
+                        // this.apiCall('read', 'Data Siswa'),
+                        // this.apiCall('read', 'Data Guru'),
                         this.apiCall('read', 'Laporan Jurnal'),
                         this.apiCall('read', 'Pengaturan')
                     ]);
@@ -2784,27 +3096,8 @@
                         this.populateSettings(); // Perbarui isian form di menu pengaturan
                     }
 
-                    // 1. Sinkronisasi Data Siswa
-                    if (resSiswa && resSiswa.status === 'success' && resSiswa.data) {
-                        this.masterSiswa = resSiswa.data.map(d => ({
-                            nisn: String(d['NISN'] || d['nisn'] || ''),
-                            nama: String(d['Nama'] || d['Nama Siswa'] || d['nama'] || ''),
-                            kelas: String(d['Kelas'] || d['kelas'] || '')
-                        })).filter(s => s.nisn !== '');
-                        masterUpdated = true;
-                    }
-
-                    // 2. Sinkronisasi Data Guru
-                    if (resGuru && resGuru.status === 'success' && resGuru.data) {
-                        this.masterGuru = resGuru.data.map(d => ({
-                            nip: String(d['NIP'] || d['nip'] || ''),
-                            nama: String(d['Nama Guru'] || d['Nama'] || d['nama'] || ''),
-                            kelas: String(d['Kelas Wali'] || d['Kelas'] || d['kelas'] || ''),
-                            username: String(d['Username'] || d['username'] || ''),
-                            password: String(d['Password'] || d['password'] || '')
-                        })).filter(g => g.nama !== '');
-                        masterUpdated = true;
-                    }
+                    // 1. Sinkronisasi Data Siswa (DINONAKTIFKAN KARENA MENGGUNAKAN HARDCODE)
+                    // 2. Sinkronisasi Data Guru (DINONAKTIFKAN KARENA MENGGUNAKAN HARDCODE)
 
                     if (masterUpdated) {
                         this.saveMasterDataToLocal();
@@ -2960,18 +3253,16 @@
                     const originalIdx = this.masterSiswa.indexOf(s);
                     siswaBody.innerHTML += `
                         <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                            <td class="py-2"><input type="checkbox" class="chk-siswa rounded text-primary focus:ring-primary h-4 w-4" value="${this.escapeHTML(s.nisn)}"></td>
-                            <td class="py-2">${this.escapeHTML(s.nisn)}</td>
-                            <td class="py-2">${this.escapeHTML(s.nama)}</td>
-                            <td class="py-2">${this.escapeHTML(s.kelas)}</td>
-                            <td class="py-2 text-right space-x-1">
-                                <button onclick="App.editSiswa(${originalIdx})" title="Edit Siswa" class="text-yellow-500 hover:bg-yellow-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="App.deleteSiswa(${originalIdx})" title="Hapus Siswa" class="text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-trash"></i></button>
+                            <td class="py-3 text-center text-gray-500">${originalIdx + 1}</td>
+                            <td class="py-3">${this.escapeHTML(s.nisn)}</td>
+                            <td class="py-3 font-medium text-gray-800 dark:text-gray-200">${this.escapeHTML(s.nama)}</td>
+                            <td class="py-3 text-center">
+                                <span class="bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 px-2 py-1 rounded text-xs font-bold border border-blue-100 dark:border-blue-800">${this.escapeHTML(s.kelas)}</span>
                             </td>
                         </tr>
                     `;
                 });
-                if (displayedSiswa.length === 0) siswaBody.innerHTML = `<tr><td colspan="5" class="text-center text-gray-400 py-4">Belum ada data siswa</td></tr>`;
+                if (displayedSiswa.length === 0) siswaBody.innerHTML = `<tr><td colspan="4" class="text-center text-gray-400 py-6 italic">Belum ada data siswa</td></tr>`;
 
                 // Render Guru (Hanya diproses jika Admin)
                 if (this.currentUser && this.currentUser.role === 'admin') {
@@ -2979,19 +3270,17 @@
                     this.masterGuru.forEach((g, idx) => {
                         guruBody.innerHTML += `
                             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                                <td class="py-2"><input type="checkbox" class="chk-guru rounded text-primary focus:ring-primary h-4 w-4" value="${this.escapeHTML(g.nama)}"></td>
-                                <td class="py-2">${this.escapeHTML(g.nama)}</td>
-                                <td class="py-2">${this.escapeHTML(g.kelas)}</td>
-                                <td class="py-2"><span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs">${this.escapeHTML(g.username || '-')}</span></td>
-                                <td class="py-2"><span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs text-gray-500">${g.password ? '••••••' : '-'}</span></td>
-                                <td class="py-2 text-right space-x-1">
-                                    <button onclick="App.editGuru(${idx})" title="Edit Guru" class="text-yellow-500 hover:bg-yellow-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-pen"></i></button>
-                                    <button onclick="App.deleteGuru(${idx})" title="Hapus Guru" class="text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 p-1.5 rounded transition"><i class="fa-solid fa-trash"></i></button>
+                                <td class="py-3 text-center text-gray-500">${idx + 1}</td>
+                                <td class="py-3 font-medium text-gray-800 dark:text-gray-200">${this.escapeHTML(g.nama)}</td>
+                                <td class="py-3 text-center">
+                                    <span class="bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 px-2 py-1 rounded text-xs font-bold border border-blue-100 dark:border-blue-800">${this.escapeHTML(g.kelas)}</span>
                                 </td>
+                                <td class="py-3"><span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs font-mono">${this.escapeHTML(g.username || '-')}</span></td>
+                                <td class="py-3"><span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs text-gray-500">${g.password ? '••••••' : '-'}</span></td>
                             </tr>
                         `;
                     });
-                    if (this.masterGuru.length === 0) guruBody.innerHTML = `<tr><td colspan="6" class="text-center text-gray-400 py-4">Belum ada data guru</td></tr>`;
+                    if (this.masterGuru.length === 0) guruBody.innerHTML = `<tr><td colspan="5" class="text-center text-gray-400 py-6 italic">Belum ada data guru</td></tr>`;
                 }
             },
 
@@ -3020,17 +3309,7 @@
                     this.saveMasterDataToLocal();
                     this.renderMasterData();
                     
-                    if (this.settings.sheetEndpoint) {
-                        this.showLoading('Menyimpan Edit', 'Menyinkronkan perubahan ke Cloud...');
-                        await this.apiCall('update', 'Data Siswa', { 
-                            keyField: 'NISN', 
-                            keyValue: "'" + oldNisn, 
-                            data: { "NISN": "'" + nisn, "Nama": nama, "Kelas": kelas } 
-                        });
-                        this.hideLoading();
-                    }
-                    
-                    this.showToast('Data siswa berhasil diperbarui', 'success');
+                    this.showToast('Data siswa berhasil diperbarui secara lokal', 'success');
                     this.cancelEditSiswa();
                     return;
                 }
@@ -3047,15 +3326,8 @@
                 document.getElementById('add-siswa-nisn').value = '';
                 document.getElementById('add-siswa-nama').value = '';
                 document.getElementById('add-siswa-kelas').value = '';
-                
-                // Real-time Push to Cloud
-                if (this.settings.sheetEndpoint) {
-                    this.showLoading('Menyimpan Siswa', 'Menyinkronkan data ke Cloud...');
-                    await this.apiCall('create', 'Data Siswa', { data: { "NISN": "'" + nisn, "Nama": nama, "Kelas": kelas } });
-                    this.hideLoading();
-                }
 
-                this.showToast('Siswa berhasil ditambahkan', 'success');
+                this.showToast('Siswa berhasil ditambahkan ke memori', 'success');
             },
 
             editSiswa(idx) {
@@ -3100,14 +3372,7 @@
                     this.masterSiswa.splice(idx, 1);
                     this.saveMasterDataToLocal();
                     this.renderMasterData();
-                    
-                    // Real-time Push to Cloud
-                    if (this.settings.sheetEndpoint) {
-                        this.showLoading('Menghapus Data', 'Menghapus siswa dari Cloud...');
-                        await this.apiCall('delete', 'Data Siswa', { keyField: "NISN", keyValue: "'" + deletedNisn });
-                        this.hideLoading();
-                    }
-                    this.showToast('Siswa berhasil dihapus', 'success');
+                    this.showToast('Siswa berhasil dihapus dari memori', 'success');
                 }
             },
 
@@ -3125,22 +3390,13 @@
                 
                 if (!confirm(`Apakah Anda yakin ingin menghapus ${checkedNodes.length} data siswa secara massal?`)) return;
                 
-                this.showLoading('Menghapus Data', `Menghapus ${checkedNodes.length} siswa...`);
                 const nisnToDelete = Array.from(checkedNodes).map(cb => cb.value);
                 
                 this.masterSiswa = this.masterSiswa.filter(s => !nisnToDelete.includes(s.nisn));
                 this.saveMasterDataToLocal();
                 this.renderMasterData();
                 
-                if (this.settings.sheetEndpoint) {
-                    for (let i = 0; i < nisnToDelete.length; i++) {
-                        await this.apiCall('delete', 'Data Siswa', { keyField: "NISN", keyValue: "'" + nisnToDelete[i] });
-                        this.updateLoading(`Menghapus ${i + 1} dari ${nisnToDelete.length} data di Cloud...`);
-                    }
-                }
-                
                 document.getElementById('check-all-siswa').checked = false;
-                this.hideLoading();
                 this.showToast(`${nisnToDelete.length} Data Siswa berhasil dihapus!`, 'success');
             },
 
@@ -3349,35 +3605,15 @@
                 });
 
                 if (validData.length > 0) {
-                    // 1. Simpan ke lokal terlebih dahulu agar tabel langsung terupdate
+                    // Simpan ke lokal dan render ulang tabel
                     this.masterSiswa = [...this.masterSiswa, ...validData];
                     this.saveMasterDataToLocal();
                     this.renderMasterData();
                     textarea.value = '';
                     
-                    let message = `Berhasil mengimpor ${validData.length} data lokal.`;
+                    let message = `Berhasil mengimpor ${validData.length} data ke memori.`;
                     if (duplicateCount > 0) message += ` (${duplicateCount} duplikat diabaikan)`;
                     this.showToast(message, 'success');
-
-                    // 2. Push ke Cloud secara Berurutan (Sequential Await) agar Google Script tidak Time-Out
-                    if (this.settings.sheetEndpoint) {
-                        this.showLoading('Menyinkronkan Siswa', `Loading 0 dari ${validData.length} data tersinkron...`);
-                        let successCloud = 0;
-                        
-                        for (let i = 0; i < validData.length; i++) {
-                            const student = validData[i];
-                            const res = await this.apiCall('create', 'Data Siswa', { 
-                                data: { "NISN": "'" + student.nisn, "Nama": student.nama, "Kelas": student.kelas } 
-                            });
-                            
-                            if (res && res.status === 'success') successCloud++;
-                            
-                            this.updateLoading(`Loading ${i + 1} dari ${validData.length} data tersinkron...`);
-                        }
-                        
-                        this.hideLoading();
-                        this.showToast(`Sinkronisasi Selesai! ${successCloud} data siswa berhasil masuk ke Spreadsheet.`, 'success');
-                    }
                 } else {
                     this.showToast('Gagal mengimpor data. Format salah atau semua data duplikat.', 'error');
                 }
