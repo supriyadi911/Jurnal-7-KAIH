@@ -654,14 +654,27 @@
                     </div>
                     <div class="overflow-x-auto print:overflow-visible">
                         <table id="teacher-table" class="w-full text-left text-sm whitespace-nowrap print:whitespace-normal">
-                            <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                            <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 select-none">
                                 <tr>
                                     <th class="px-4 py-3 w-10 no-print text-center"><input type="checkbox" id="check-all-reports" onchange="App.toggleCheckAllReports(this)" class="rounded text-primary focus:ring-primary h-4 w-4"></th>
-                                    <th class="px-6 py-3">Waktu Laporan</th>
-                                    <th class="px-6 py-3">Nama Siswa</th>
-                                    <th class="px-6 py-3">Kelas</th>
-                                    <th class="px-6 py-3">Nilai</th>
-                                    <th class="px-6 py-3">Kategori</th>
+                                    <th class="px-6 py-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition" onclick="App.sortTable('waktu')">
+                                        Waktu Laporan <i id="sort-icon-waktu" class="fa-solid fa-sort-down ml-1 text-primary"></i>
+                                    </th>
+                                    <th class="px-6 py-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition text-blue-600 dark:text-blue-400" onclick="App.sortTable('tanggal')">
+                                        Tanggal Laporan <i id="sort-icon-tanggal" class="fa-solid fa-sort ml-1 text-gray-400"></i>
+                                    </th>
+                                    <th class="px-6 py-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition" onclick="App.sortTable('nama')">
+                                        Nama Siswa <i id="sort-icon-nama" class="fa-solid fa-sort ml-1 text-gray-400"></i>
+                                    </th>
+                                    <th class="px-6 py-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition" onclick="App.sortTable('kelas')">
+                                        Kelas <i id="sort-icon-kelas" class="fa-solid fa-sort ml-1 text-gray-400"></i>
+                                    </th>
+                                    <th class="px-6 py-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition" onclick="App.sortTable('nilai')">
+                                        Nilai <i id="sort-icon-nilai" class="fa-solid fa-sort ml-1 text-gray-400"></i>
+                                    </th>
+                                    <th class="px-6 py-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition" onclick="App.sortTable('kategori')">
+                                        Kategori <i id="sort-icon-kategori" class="fa-solid fa-sort ml-1 text-gray-400"></i>
+                                    </th>
                                     <th class="px-6 py-3 no-print text-right">Aksi</th>
                                 </tr>
                             </thead>
@@ -905,6 +918,7 @@
             // State
             data: [],
             currentFilteredData: [],
+            sortConfig: { key: 'waktu', direction: 'desc' }, // State untuk menyimpan mode sortir
             
             // Data Master Siswa & Kelas (Hardcoded)
             // Anda dapat menambah, mengubah, atau menghapus daftar siswa di sini secara langsung
@@ -2484,6 +2498,32 @@
                 this.handleFilterTypeChange(); 
             },
 
+            sortTable(key) {
+                // Jika kolom yang diklik sama, balik arah urutannya. Jika beda, set ke ascending.
+                if (this.sortConfig.key === key) {
+                    this.sortConfig.direction = this.sortConfig.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    this.sortConfig.key = key;
+                    this.sortConfig.direction = 'asc';
+                }
+
+                // Perbarui ikon panah pada header tabel
+                const columns = ['waktu', 'tanggal', 'nama', 'kelas', 'nilai', 'kategori'];
+                columns.forEach(col => {
+                    const icon = document.getElementById(`sort-icon-${col}`);
+                    if (icon) {
+                        if (col === this.sortConfig.key) {
+                            icon.className = `fa-solid ml-1 text-primary ${this.sortConfig.direction === 'asc' ? 'fa-sort-up mt-1' : 'fa-sort-down mb-1'}`;
+                        } else {
+                            icon.className = 'fa-solid fa-sort ml-1 text-gray-400';
+                        }
+                    }
+                });
+
+                // Render ulang tabel dengan urutan baru
+                this.applyTeacherFilter();
+            },
+
             applyTeacherFilter() {
                 // Jika Guru Kelas, Timpa Paksa filternya ke Kelas miliknya
                 const classFilter = (this.currentUser && this.currentUser.role === 'guru') ? this.currentUser.kelas : document.getElementById('filter-kelas').value;
@@ -2519,8 +2559,40 @@
                     if (thn) filtered = filtered.filter(d => this.normalizeDate(d.identitas.tanggal).startsWith(thn));
                 }
 
-                // Sort descending by date
-                filtered.sort((a,b) => new Date(b.identitas.tanggal) - new Date(a.identitas.tanggal));
+                // 3. Dynamic Sort Berdasarkan Tombol Header (Accending/Descending)
+                filtered.sort((a, b) => {
+                    let valA, valB;
+                    switch (this.sortConfig.key) {
+                        case 'waktu':
+                            valA = new Date(a.timestamp || a.identitas.tanggal).getTime();
+                            valB = new Date(b.timestamp || b.identitas.tanggal).getTime();
+                            break;
+                        case 'tanggal':
+                            valA = new Date(a.identitas.tanggal).getTime();
+                            valB = new Date(b.identitas.tanggal).getTime();
+                            break;
+                        case 'nama':
+                            valA = a.identitas.nama.toLowerCase();
+                            valB = b.identitas.nama.toLowerCase();
+                            break;
+                        case 'kelas':
+                            valA = a.identitas.kelas.toLowerCase();
+                            valB = b.identitas.kelas.toLowerCase();
+                            break;
+                        case 'nilai':
+                        case 'kategori': // Sort kategori diwakilkan oleh nilai persentase agar akurat
+                            valA = a.persentase;
+                            valB = b.persentase;
+                            break;
+                        default:
+                            valA = new Date(a.timestamp || a.identitas.tanggal).getTime();
+                            valB = new Date(b.timestamp || b.identitas.tanggal).getTime();
+                    }
+
+                    if (valA < valB) return this.sortConfig.direction === 'asc' ? -1 : 1;
+                    if (valA > valB) return this.sortConfig.direction === 'asc' ? 1 : -1;
+                    return 0;
+                });
                 
                 // Save filtered data to state for WA & Excel exports
                 this.currentFilteredData = filtered;
@@ -2553,22 +2625,32 @@
                 document.getElementById('stat-cat').innerText = topCat;
                 document.getElementById('stat-students').innerText = activeStudents.size;
 
-                // 2. Table
+                // 4. Update Table UI
                 const tbody = document.getElementById('teacher-table-body');
                 tbody.innerHTML = '';
                 
                 if (filtered.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-gray-500">Tidak ada data ditemukan.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="8" class="px-6 py-8 text-center text-gray-500">Tidak ada data ditemukan.</td></tr>`;
                 } else {
                     filtered.forEach(item => {
                         const cat = this.getCategory(item.persentase);
                         // Terapkan format tanggal dan waktu agar cantik dipandang (Jam, Tanggal Bulan Tahun)
                         const displayDate = this.formatDateTime(item.timestamp || item.identitas.tanggal);
                         
+                        // Format Tanggal Jurnal (Tanpa Jam)
+                        let reportDateStr = item.identitas.tanggal;
+                        try {
+                            const d = new Date(reportDateStr);
+                            if (!isNaN(d.getTime())) {
+                                reportDateStr = d.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+                            }
+                        } catch(e) {}
+                        
                         tbody.innerHTML += `
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/80 transition text-sm">
                                 <td class="px-4 py-3 no-print text-center"><input type="checkbox" class="chk-report rounded text-primary focus:ring-primary h-4 w-4" value="${item.id}"></td>
                                 <td class="px-6 py-3 whitespace-normal min-w-[150px] leading-tight">${displayDate}</td>
+                                <td class="px-6 py-3 font-semibold text-blue-600 dark:text-blue-400 whitespace-nowrap">${reportDateStr}</td>
                                 <td class="px-6 py-3 font-medium">${this.escapeHTML(item.identitas.nama)}</td>
                                 <td class="px-6 py-3">${this.escapeHTML(item.identitas.kelas)}</td>
                                 <td class="px-6 py-3 font-bold ${cat.color.split(' ')[1]} print:text-black">${item.persentase}%</td>
@@ -2583,7 +2665,7 @@
                     });
                 }
 
-                // 3. Chart
+                // 5. Chart
                 this.updateChart(filtered);
             },
 
