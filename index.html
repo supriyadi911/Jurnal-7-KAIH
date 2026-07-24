@@ -649,7 +649,7 @@
                 <!-- Teacher Data Table -->
                 <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden print-card print:overflow-visible print:border-none print:shadow-none print:rounded-none print:bg-transparent">
                     <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800 no-print">
-                        <h3 class="font-bold">Daftar Laporan</h3>
+                        <h3 class="font-bold flex items-center gap-2">Daftar Laporan <span id="badge-total-laporan" class="bg-primary text-white text-[10px] px-2.5 py-0.5 rounded-full shadow-sm font-medium">0 data</span></h3>
                         <button onclick="App.deleteBulkReports()" class="text-xs bg-red-100 text-red-600 hover:bg-red-200 px-3 py-1.5 rounded border border-red-200 transition font-medium no-print"><i class="fa-solid fa-trash-can mr-1"></i> Hapus Terpilih</button>
                     </div>
                     <div class="overflow-x-auto print:overflow-visible">
@@ -2624,6 +2624,10 @@
                 document.getElementById('stat-avg').innerText = avg + '%';
                 document.getElementById('stat-cat').innerText = topCat;
                 document.getElementById('stat-students').innerText = activeStudents.size;
+
+                // Update badge total data di judul tabel
+                const badgeTotal = document.getElementById('badge-total-laporan');
+                if (badgeTotal) badgeTotal.innerText = `${total} data`;
 
                 // 4. Update Table UI
                 const tbody = document.getElementById('teacher-table-body');
