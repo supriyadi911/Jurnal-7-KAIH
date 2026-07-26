@@ -648,9 +648,12 @@
 
                 <!-- Teacher Data Table -->
                 <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden print-card print:overflow-visible print:border-none print:shadow-none print:rounded-none print:bg-transparent">
-                    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800 no-print">
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-800 no-print flex-wrap gap-2">
                         <h3 class="font-bold flex items-center gap-2">Daftar Laporan <span id="badge-total-laporan" class="bg-primary text-white text-[10px] px-2.5 py-0.5 rounded-full shadow-sm font-medium">0 data</span></h3>
-                        <button onclick="App.deleteBulkReports()" class="text-xs bg-red-100 text-red-600 hover:bg-red-200 px-3 py-1.5 rounded border border-red-200 transition font-medium no-print"><i class="fa-solid fa-trash-can mr-1"></i> Hapus Terpilih</button>
+                        <div class="flex gap-2">
+                            <button onclick="App.sendBelumLaporWA()" class="text-xs bg-green-100 text-green-700 hover:bg-green-200 px-3 py-1.5 rounded border border-green-200 transition font-semibold no-print flex items-center"><i class="fa-brands fa-whatsapp mr-1 text-sm"></i> WA Belum Lapor</button>
+                            <button onclick="App.deleteBulkReports()" class="text-xs bg-red-100 text-red-600 hover:bg-red-200 px-3 py-1.5 rounded border border-red-200 transition font-semibold no-print flex items-center"><i class="fa-solid fa-trash-can mr-1"></i> Hapus Terpilih</button>
+                        </div>
                     </div>
                     <div class="overflow-x-auto print:overflow-visible">
                         <table id="teacher-table" class="w-full text-left text-sm whitespace-nowrap print:whitespace-normal">
@@ -3837,6 +3840,50 @@
                 if (this.currentFilteredData.length > limit) {
                     text += `\n_... dan ${this.currentFilteredData.length - limit} laporan lainnya._\n`;
                 }
+
+                const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+                window.open(url, '_blank');
+            },
+
+            // WhatsApp Share untuk Siswa Belum Lapor
+            sendBelumLaporWA() {
+                const classFilter = document.getElementById('filter-kelas').value;
+                const tipeFilter = document.getElementById('filter-tipe').value;
+                
+                // Tentukan target siswa berdasarkan kelas yang difilter
+                let targetStudents = this.masterSiswa;
+                if (classFilter !== 'all') {
+                    targetStudents = targetStudents.filter(s => s.kelas === classFilter);
+                }
+
+                // Ambil daftar NISN siswa yang SUDAH melapor di data filter saat ini
+                const reportedNisns = new Set(this.currentFilteredData.map(d => d.identitas.nis));
+
+                // Saring siswa yang BELUM melapor
+                const belumLapor = targetStudents.filter(s => !reportedNisns.has(s.nisn));
+
+                if (belumLapor.length === 0) {
+                    this.showToast('Luar Biasa! Semua siswa sudah melapor untuk periode ini.', 'success');
+                    return;
+                }
+
+                // Siapkan Teks WhatsApp
+                let periodText = 'Semua Waktu';
+                if (tipeFilter === 'harian') periodText = 'Tanggal ' + (document.getElementById('filter-tanggal').value || '-');
+                else if (tipeFilter === 'bulanan') periodText = 'Bulan ' + (document.getElementById('filter-bulan').value || '-');
+                else if (tipeFilter === 'semester') periodText = 'Semester ' + (document.getElementById('filter-semester').value === '1' ? 'Ganjil' : 'Genap') + ' Tahun ' + document.getElementById('filter-tahun').value;
+                else if (tipeFilter === 'tahunan') periodText = 'Tahun ' + document.getElementById('filter-tahun').value;
+
+                let text = `*PEMBERITAHUAN JURNAL KAIH*\n`;
+                text += `Periode: ${periodText}\n`;
+                text += `Kelas: ${classFilter === 'all' ? 'Semua Kelas' : classFilter}\n\n`;
+                text += `Berikut adalah daftar siswa yang *BELUM* mengisi jurnal:\n\n`;
+
+                belumLapor.forEach((s, index) => {
+                    text += `${index + 1}. ${s.nama} (${s.kelas})\n`;
+                });
+
+                text += `\nMohon untuk segera mengisi jurnal KAIH agar karakter hebatmu terus berkembang! Terima kasih. 🙏`;
 
                 const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
                 window.open(url, '_blank');
