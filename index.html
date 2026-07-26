@@ -914,6 +914,34 @@
 
     <!-- Application Logic -->
     <script>
+        // ==========================================
+        // KEAMANAN FRONTEND (ANTI-INSPECT & DEVTOOLS)
+        // ==========================================
+        
+        // 1. Matikan Klik Kanan
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        
+        // 2. Matikan Shortcut Keyboard Inspect Element
+        document.addEventListener('keydown', function(e) {
+            // Matikan F12
+            if (e.key === 'F12') {
+                e.preventDefault();
+            }
+            // Matikan Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (Inspect, Console, Element Selector)
+            if (e.ctrlKey && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)) {
+                e.preventDefault();
+            }
+            // Matikan Ctrl+U (View Source)
+            if (e.ctrlKey && ['U', 'u'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // 3. Matikan Dragging Gambar / Teks agar tidak mudah dicopy
+        document.addEventListener('dragstart', event => event.preventDefault());
+
+        // ==========================================
+
         const App = {
             // State
             data: [],
