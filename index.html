@@ -1871,10 +1871,12 @@
                         headers: {
                             'Content-Type': 'text/plain;charset=utf-8',
                         },
-                        body: JSON.stringify(payload)
+                        body: JSON.stringify(payload),
+                        redirect: 'follow'
                     });
                     return await response.json();
                 } catch (error) {
+                    console.error("API Error:", error);
                     return null;
                 }
             },
@@ -2448,7 +2450,8 @@
                     const response = await fetch(endpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify(payload)
+                        body: JSON.stringify(payload),
+                        redirect: 'follow'
                     });
                     
                     const result = await response.json();
@@ -2456,7 +2459,9 @@
                         this.showToast('Laporan berhasil masuk ke Spreadsheet!', 'success');
                         return true;
                     }
-                } catch (e) {}
+                } catch (e) {
+                    console.error("Kirim Error:", e);
+                }
                 return false;
             },
 
