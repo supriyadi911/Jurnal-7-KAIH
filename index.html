@@ -638,6 +638,11 @@
                             </select>
                         </div>
 
+                        <div id="filter-val-hari-efektif" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
+                            <label class="block text-sm mb-1 font-semibold text-primary">Hari Efektif</label>
+                            <input type="number" id="filter-hari-efektif" min="1" onchange="App.applyTeacherFilter()" onkeyup="App.applyTeacherFilter()" placeholder="Wajib (Misal: 5)" class="w-full p-2 rounded-lg border border-blue-300 bg-blue-50 dark:bg-blue-900/30 dark:border-blue-700 outline-none focus:ring-2 focus:ring-primary transition">
+                        </div>
+
                         <div class="w-full sm:w-auto">
                             <button onclick="App.resetTeacherFilter()" class="w-full px-6 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition border border-red-200 dark:border-red-800">Reset</button>
                         </div>
@@ -2573,15 +2578,24 @@
 
             handleFilterTypeChange() {
                 const type = document.getElementById('filter-tipe').value;
-                ['harian', 'bulanan', 'semester', 'tahun'].forEach(t => {
+                ['harian', 'bulanan', 'semester', 'tahun', 'hari-efektif'].forEach(t => {
                     const el = document.getElementById(`filter-val-${t}`);
                     if (el) el.classList.add('hidden');
                 });
 
                 if (type === 'harian') document.getElementById('filter-val-harian')?.classList.remove('hidden');
-                if (type === 'bulanan') document.getElementById('filter-val-bulanan')?.classList.remove('hidden');
-                if (type === 'semester') document.getElementById('filter-val-semester')?.classList.remove('hidden');
-                if (type === 'tahunan') document.getElementById('filter-val-tahun')?.classList.remove('hidden');
+                if (type === 'bulanan') {
+                    document.getElementById('filter-val-bulanan')?.classList.remove('hidden');
+                    document.getElementById('filter-val-hari-efektif')?.classList.remove('hidden');
+                }
+                if (type === 'semester') {
+                    document.getElementById('filter-val-semester')?.classList.remove('hidden');
+                    document.getElementById('filter-val-hari-efektif')?.classList.remove('hidden');
+                }
+                if (type === 'tahunan') {
+                    document.getElementById('filter-val-tahun')?.classList.remove('hidden');
+                    document.getElementById('filter-val-hari-efektif')?.classList.remove('hidden');
+                }
 
                 this.applyTeacherFilter();
             },
@@ -2592,6 +2606,10 @@
 
                 const filterTipe = document.getElementById('filter-tipe');
                 if (filterTipe) filterTipe.value = 'all';
+                
+                const filterHari = document.getElementById('filter-hari-efektif');
+                if (filterHari) filterHari.value = '';
+
                 this.handleFilterTypeChange();
             },
 
@@ -2622,6 +2640,14 @@
                 } else if (selTipe === 'tahunan') {
                     const valTahun = document.getElementById('filter-tahun')?.value;
                     if (valTahun) filteredReports = filteredReports.filter(d => this.normalizeDate(d.identitas?.tanggal).substring(0, 4) === valTahun);
+                }
+
+                let hariEfektif = 0;
+                if (['bulanan', 'semester', 'tahunan'].includes(selTipe)) {
+                    const valHari = parseInt(document.getElementById('filter-hari-efektif')?.value, 10);
+                    if (!isNaN(valHari) && valHari > 0) {
+                        hariEfektif = valHari;
+                    }
                 }
 
                 let targetStudents = [...this.masterSiswa];
@@ -2691,7 +2717,17 @@
                 });
 
                 this.currentAggregatedStudents = Array.from(studentMap.values()).map(s => {
-                    const avg = s.count > 0 ? Math.round(s.sumScore / s.count) : 0;
+                    let divisor = s.count > 0 ? s.count : 1;
+                    if (hariEfektif > 0) {
+                        divisor = hariEfektif;
+                    }
+                    
+                    let avg = 0;
+                    if (s.count > 0) {
+                        avg = Math.round(s.sumScore / divisor);
+                        if (avg > 100) avg = 100;
+                    }
+                    
                     const cat = s.count > 0 ? this.getCategory(avg).label : 'Belum Lapor';
                     return {
                         ...s,
