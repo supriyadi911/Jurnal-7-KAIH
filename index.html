@@ -883,8 +883,7 @@
             sortConfig: { key: 'nilai', direction: 'desc' },
             
             masterSiswa: [
-                { nisn: '3193775109', nama: 'Bintang Barnir Chandra Pratama', kelas: '2C' },
-                { nisn: '3188986417', nama: 'MUHAMMAD ADNAN ADYARISKY', kelas: '2A' },
+                { nisn: '3193775109', nama: 'MUHAMMAD ADNAN ADYARISKY', kelas: '2A' },
                 { nisn: '3183046721', nama: 'MUHAMMAD SA\'IF ALI KHAN', kelas: '2A' },
                 { nisn: '3190993142', nama: 'ALIZA SAFEA FEBRIYANI', kelas: '2A' },
                 { nisn: '3180661439', nama: 'HENDRIH MAULLANAH', kelas: '2A' },
@@ -1057,7 +1056,7 @@
                 { nisn: '3167830523', nama: 'MUHAMMAD PUTRA DIMAS', kelas: '5B' },
                 { nisn: '3156511478', nama: 'RIZKY HABIB RAMDHANI', kelas: '5B' },
                 { nisn: '3145852693', nama: 'HENDRO RAMADHAN', kelas: '5B' },
-                { nisn: '3153628491', nama: 'FERDIYANSAH SAPUTRA', kelas: '5B' },
+                { nisn: '3153628491', nama: 'FERDIANSYAH SAPUTRA', kelas: '5B' },
                 { nisn: '3141431822', nama: 'YUZARSIF ALVARO', kelas: '5B' },
                 { nisn: '3149377988', nama: 'ABU YAZEED AL BUSTOMI', kelas: '6A' },
                 { nisn: '3148975555', nama: 'SOFIANA FAHRUNSYAQ', kelas: '6A' },
@@ -1514,7 +1513,47 @@
             },
 
             saveDataToLocal() {
-                localStorage.setItem('kaih_data', JSON.stringify(this.data));
+                try {
+                    // Hapus data lama terlebih dahulu untuk mengosongkan ruang memori sebelum menulis ulang
+                    localStorage.removeItem('kaih_data');
+                    localStorage.setItem('kaih_data', JSON.stringify(this.data));
+                } catch (e) {
+                    if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED' || e.message.includes('exceeded the quota') || e.message.includes('quota')) {
+                        console.warn("Storage Quota Exceeded. Mencoba menyimpan sebagian data...");
+                        this.showToast('Memori penuh! Menyimpan sebagian laporan terbaru...', 'warning');
+                        
+                        let limit = 500;
+                        let saved = false;
+                        
+                        // Urutkan data dari yang paling baru
+                        const sortedData = [...this.data].sort((a, b) => {
+                            const dateA = new Date(a.timestamp || a.identitas?.tanggal || 0);
+                            const dateB = new Date(b.timestamp || b.identitas?.tanggal || 0);
+                            return dateB - dateA;
+                        });
+
+                        // Coba kurangi limit secara perlahan jika masih gagal (dinamis)
+                        while (limit > 50 && !saved) {
+                            try {
+                                const trimmedData = sortedData.slice(0, limit); 
+                                localStorage.removeItem('kaih_data');
+                                localStorage.setItem('kaih_data', JSON.stringify(trimmedData));
+                                saved = true;
+                                this.showToast(`Memori lokal dibatasi ${limit} laporan terbaru.`, 'info');
+                            } catch (innerError) {
+                                limit -= 100; // Kurangi limit dan coba lagi
+                            }
+                        }
+
+                        if (!saved) {
+                            console.error("Gagal menyimpan memori sama sekali:", e);
+                            this.showToast('Penyimpanan gagal! Hapus Memory Browser di Pengaturan.', 'error');
+                        }
+                    } else {
+                        console.error("Storage Error:", e);
+                        this.showToast('Gagal menyimpan data ke penyimpanan lokal browser.', 'error');
+                    }
+                }
             },
 
             saveMasterDataToLocal() {
@@ -1875,10 +1914,18 @@
                         body: JSON.stringify(payload),
                         redirect: 'follow'
                     });
-                    return await response.json();
+                    
+                    const textResponse = await response.text();
+                    
+                    try {
+                        return JSON.parse(textResponse);
+                    } catch (jsonError) {
+                        console.error("API Error (Bukan JSON valid dari Google):", textResponse.substring(0, 150) + "...");
+                        return { error: 'invalid_json', raw: textResponse };
+                    }
                 } catch (error) {
-                    console.error("API Error:", error);
-                    return null;
+                    console.error("Network/Fetch Error:", error);
+                    return { error: 'network_error', message: error.message };
                 }
             },
 
@@ -2455,13 +2502,22 @@
                         redirect: 'follow'
                     });
                     
-                    const result = await response.json();
-                    if(result.status === 'success') {
-                        this.showToast('Laporan berhasil masuk ke Spreadsheet!', 'success');
-                        return true;
+                    const textResponse = await response.text();
+                    try {
+                        const result = JSON.parse(textResponse);
+                        if(result.status === 'success' || result.success) {
+                            this.showToast('Laporan berhasil masuk ke Spreadsheet!', 'success');
+                            return true;
+                        } else {
+                            this.showToast('Gagal memproses di Cloud.', 'error');
+                        }
+                    } catch (e) {
+                        console.error("Cloud response not JSON:", textResponse.substring(0, 100));
+                        this.showToast('URL Cloud merespon format yang salah.', 'error');
                     }
                 } catch (e) {
                     console.error("Kirim Error:", e);
+                    this.showToast('Koneksi ke Cloud terputus!', 'error');
                 }
                 return false;
             },
@@ -3427,12 +3483,31 @@
 
                 this.showLoading('Menyelaraskan Cloud...', 'Menghubungkan ke Google Sheets API');
 
-                await new Promise(resolve => setTimeout(resolve, 50));
+                await new Promise(resolve => setTimeout(resolve, 500)); // Beri waktu UI untuk loading
 
                 try {
                     const response = await this.apiCall('read', 'Laporan Jurnal');
-                    if (response && (Array.isArray(response) || response.data || response.rows)) {
-                        const rawList = Array.isArray(response) ? response : (response.data || response.rows || []);
+                    
+                    if (!response) {
+                        if (manual) this.showToast('Koneksi terputus. Gagal menghubungi server.', 'error');
+                        return;
+                    }
+
+                    if (response.error === 'invalid_json') {
+                        if (manual) this.showToast('URL Google Script menolak akses. Cek URL Endpoint di Pengaturan.', 'error');
+                        return;
+                    }
+                    
+                    if (response.error === 'network_error') {
+                        if (manual) this.showToast('Gangguan Jaringan. Gagal menyinkronkan data.', 'error');
+                        return;
+                    }
+
+                    if (response && (Array.isArray(response) || response.data || response.rows || response.status === 'success')) {
+                        let rawList = [];
+                        if (Array.isArray(response)) rawList = response;
+                        else if (Array.isArray(response.data)) rawList = response.data;
+                        else if (Array.isArray(response.rows)) rawList = response.rows;
                         
                         const cloudReports = [];
                         for (let i = 0; i < rawList.length; i++) {
@@ -3449,13 +3524,14 @@
                             this.applyTeacherFilter();
                             this.showToast(`Berhasil menyinkronkan ${cloudReports.length} laporan dari Cloud!`, 'success');
                         } else {
-                            if (manual) this.showToast('Tidak ada data baru di Cloud', 'info');
+                            if (manual) this.showToast('Sinkronisasi selesai. Tidak ada data laporan.', 'info');
                         }
                     } else {
-                        if (manual) this.showToast('Respon dari Sheet kosong atau bermasalah', 'error');
+                        if (manual) this.showToast('Respon dari Sheet kosong atau bermasalah.', 'error');
                     }
                 } catch (e) {
-                    if (manual) this.showToast('Gagal menyinkronkan data dari Cloud', 'error');
+                    console.error("Sync Error:", e);
+                    if (manual) this.showToast('Terjadi kesalahan sistem saat sinkronisasi', 'error');
                 } finally {
                     this.hideLoading();
                 }
