@@ -1240,7 +1240,7 @@
             ],
             
             settings: {
-                sheetEndpoint: 'https://script.google.com/macros/s/AKfycbxuqroNhAo1QKtxY-f0RabzzdQTFPAdJ3E2yKtiQL2ClDUvqxzxNkoQEznZgPXyav6w/exec',
+                sheetEndpoint: 'https://script.google.com/macros/s/AKfycbwuYqFjz0EeQR5S_WrXmBBetYC8pXinJZ_IdrRxwhcNHwbYNHZSrIkibS0ukpKmV3Fw/exec',
                 theme: 'light',
                 logoSekolah: '',
                 namaSekolah: '',
@@ -1556,8 +1556,12 @@
                         this.settings = {...this.settings, ...parsedSettings};
                     } catch(e) {}
                 }
-                if (!this.settings.sheetEndpoint) {
-                    this.settings.sheetEndpoint = 'https://script.google.com/macros/s/AKfycbxuqroNhAo1QKtxY-f0RabzzdQTFPAdJ3E2yKtiQL2ClDUvqxzxNkoQEznZgPXyav6w/exec';
+                
+                // Memastikan menggunakan URL terbaru (Menimpa URL lama jika terdeteksi di memori browser)
+                const oldUrl = 'https://script.google.com/macros/s/AKfycbxuqroNhAo1QKtxY-f0RabzzdQTFPAdJ3E2yKtiQL2ClDUvqxzxNkoQEznZgPXyav6w/exec';
+                if (!this.settings.sheetEndpoint || this.settings.sheetEndpoint === oldUrl) {
+                    this.settings.sheetEndpoint = 'https://script.google.com/macros/s/AKfycbwuYqFjz0EeQR5S_WrXmBBetYC8pXinJZ_IdrRxwhcNHwbYNHZSrIkibS0ukpKmV3Fw/exec';
+                    this.saveSettingsToLocal();
                 }
 
                 const savedProfile = localStorage.getItem('kaih_profile');
