@@ -163,9 +163,9 @@
 
     <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white dark:bg-darkBg transition-all duration-700 ease-in-out opacity-100 print:hidden">
         <div id="splash-content" class="flex flex-col items-center justify-center transform transition-transform duration-700 ease-in-out scale-100">
-            <img src="https://i.ibb.co.com/1fT4ZJrg/logo-sdn-1-dupaaa.png" alt="Logo Sekolah" class="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-xl mb-6 animate-pulse" onerror="this.src='https://placehold.co/150x150/4f46e5/ffffff?text=JIKA'">
+            <img id="splash-logo" src="https://i.ibb.co.com/1fT4ZJrg/logo-sdn-1-dupaaa.png" alt="Logo Sekolah" class="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-xl mb-6 animate-pulse" onerror="this.src='https://placehold.co/150x150/4f46e5/ffffff?text=JIKA'">
             <div class="flex items-center space-x-3 mb-2">
-                <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary text-white rounded-xl flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-500/30">
+                <div id="splash-icon" class="w-10 h-10 bg-gradient-to-br from-primary to-secondary text-white rounded-xl flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-500/30">
                     <i class="fa-solid fa-star"></i>
                 </div>
                 <h1 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-secondary tracking-tight">JIKA HEBAT</h1>
@@ -380,74 +380,6 @@
             <section id="view-dashboard" class="view-section slide-up w-full max-w-6xl mx-auto hidden print-container">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 no-print gap-4">
                     <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-white tracking-tight flex items-center"><span class="w-1.5 h-6 md:h-8 bg-secondary rounded-full mr-3"></span> Dashboard Statistik</h2>
-                </div>
-                
-                <div class="mb-6 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 p-4 rounded-xl text-sm border border-blue-100 dark:border-blue-800 leading-relaxed no-print">
-                    <strong>Selamat Datang!</strong> Jurnal KAIH (Kebiasaan Anak Indonesia Hebat) bertujuan untuk mencatat dan memantau kebiasaan positifmu setiap hari. Isilah dengan jujur agar karakter hebatmu terus berkembang! Pilih <strong>Kelas</strong> lalu pilih <strong>Nama Kamu</strong> untuk mengisi identitas secara otomatis.
-                </div>
-
-                <form id="jurnal-form" onsubmit="App.handleFormSubmit(event)" class="space-y-6">
-                    <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 print-card">
-                        <h3 class="text-lg font-bold mb-4 flex items-center text-gray-700 dark:text-gray-200"><i class="fa-solid fa-id-card text-primary mr-2"></i> Identitas Siswa</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Kelas *</label>
-                                <select id="inp-kelas" required onchange="App.onFormKelasChange()" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition appearance-none">
-                                    <option value="">-- Pilih Kelas --</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Nama Lengkap *</label>
-                                <select id="inp-nama" required onchange="App.autoFillByNama()" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition appearance-none disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                                    <option value="">-- Pilih Kelas Terlebih Dahulu --</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">NIS / NISN *</label>
-                                <input type="text" id="inp-nis" required readonly placeholder="Terisi otomatis..." class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 cursor-not-allowed focus:ring-0 outline-none transition">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Tanggal Laporan *</label>
-                                <input type="date" id="inp-tanggal" required class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition">
-                            </div>
-                            <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">Nama Guru / Wali Kelas</label>
-                                <input type="text" id="inp-guru" placeholder="Bapak/Ibu Guru" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-primary outline-none transition">
-                            </div>
-                        </div>
-                        <div class="mt-4 flex items-center no-print">
-                            <input type="checkbox" id="save-profile" class="mr-2 rounded text-primary focus:ring-primary h-4 w-4" checked>
-                            <label for="save-profile" class="text-sm text-gray-500">Simpan identitas untuk laporan berikutnya</label>
-                        </div>
-                    </div>
-
-                    <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 print-card">
-                        <h3 class="text-lg font-bold mb-4 flex items-center text-gray-700 dark:text-gray-200"><i class="fa-solid fa-list-check text-secondary mr-2"></i> Jurnal Kegiatan (7 KAIH)</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Tandai kegiatan yang sudah kamu laksanakan hari ini dengan jujur.</p>
-                        
-                        <div id="habits-container" class="space-y-5">
-                        </div>
-                    </div>
-
-                    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-6 border border-blue-100 dark:border-blue-800 text-center no-print">
-                        <h4 class="font-bold text-gray-800 dark:text-gray-200 mb-2">Kirim Jurnal Kamu Sekarang</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Pastikan semua data diisi dengan benar. Nilai kejujuran adalah yang utama!</p>
-                        
-                        <div class="flex flex-col sm:flex-row justify-center gap-3">
-                            <button type="button" id="btn-cancel-edit" onclick="App.cancelEdit()" class="hidden px-6 py-4 bg-gray-500 hover:bg-gray-600 text-white rounded-2xl font-bold text-lg transition shadow flex items-center justify-center">
-                                <i class="fa-solid fa-xmark mr-2"></i> Batal Edit
-                            </button>
-                            <button type="submit" id="btn-submit-form" class="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-primary to-green-600 hover:from-primaryDark hover:to-green-700 text-white rounded-2xl font-bold text-lg transition shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3">
-                                <i class="fa-brands fa-whatsapp text-2xl"></i> <span>Simpan & Kirim Laporan ke WhatsApp</span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </section>
-
-            <section id="view-dashboard" class="view-section slide-up w-full max-w-6xl mx-auto hidden print-container">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 no-print gap-4">
-                    <h2 class="text-2xl font-bold border-l-4 border-secondary pl-3 text-gray-800 dark:text-white">Dashboard Statistik</h2>
                 </div>
 
                 <!-- Filter Data & Waktu Dashboard -->
@@ -1354,6 +1286,7 @@
                 }, 2000);
 
                 this.loadLocalData();
+                this.loadCloudSettings();
                 this.applyTheme();
                 this.renderHabitsForm();
                 this.setDefaultDate();
@@ -1627,17 +1560,20 @@
                 }
 
                 const savedSettings = localStorage.getItem('kaih_settings');
+                let parsedSettings = {};
                 if (savedSettings) {
                     try {
-                        const parsedSettings = JSON.parse(savedSettings);
+                        parsedSettings = JSON.parse(savedSettings);
                         this.settings = {...this.settings, ...parsedSettings};
                     } catch(e) {}
                 }
                 
-                // Memastikan menggunakan URL terbaru (Menimpa URL lama jika terdeteksi di memori browser)
-                const oldUrl = 'https://script.google.com/macros/s/AKfycbxuqroNhAo1QKtxY-f0RabzzdQTFPAdJ3E2yKtiQL2ClDUvqxzxNkoQEznZgPXyav6w/exec';
-                if (!this.settings.sheetEndpoint || this.settings.sheetEndpoint === oldUrl) {
-                    this.settings.sheetEndpoint = 'https://script.google.com/macros/s/AKfycbwuYqFjz0EeQR5S_WrXmBBetYC8pXinJZ_IdrRxwhcNHwbYNHZSrIkibS0ukpKmV3Fw/exec';
+                // Memastikan menggunakan URL terbaru sebagai default
+                const defaultUrl = 'https://script.google.com/macros/s/AKfycbwuYqFjz0EeQR5S_WrXmBBetYC8pXinJZ_IdrRxwhcNHwbYNHZSrIkibS0ukpKmV3Fw/exec';
+                
+                // Timpa jika kosong, atau jika masih menggunakan URL bawaan sebelumnya/tidak ada
+                if (!this.settings.sheetEndpoint || this.settings.sheetEndpoint.trim() === '' || !parsedSettings.sheetEndpoint) {
+                    this.settings.sheetEndpoint = defaultUrl;
                     this.saveSettingsToLocal();
                 }
 
@@ -3544,7 +3480,26 @@
                 if (document.getElementById('setting-tahun-ajaran')) document.getElementById('setting-tahun-ajaran').value = this.settings.tahunAjaran || '';
             },
 
-            saveSettings() {
+            async loadCloudSettings() {
+                if (!this.settings.sheetEndpoint) return;
+                try {
+                    const res = await this.apiCall('read', 'Pengaturan Sekolah');
+                    if (res && res.status === 'success' && Array.isArray(res.data) && res.data.length > 0) {
+                        const latest = res.data[res.data.length - 1];
+                        if (latest['Nama Sekolah']) this.settings.namaSekolah = latest['Nama Sekolah'];
+                        if (latest['Alamat Sekolah']) this.settings.alamatSekolah = latest['Alamat Sekolah'];
+                        if (latest['Tahun Ajaran']) this.settings.tahunAjaran = latest['Tahun Ajaran'];
+                        if (latest['URL Logo']) this.settings.logoSekolah = latest['URL Logo'];
+                        
+                        this.saveSettingsToLocal();
+                        this.updateAppHeader();
+                    }
+                } catch(e) {
+                    console.warn("Gagal memuat pengaturan cloud:", e);
+                }
+            },
+
+            async saveSettings() {
                 this.settings.sheetEndpoint = document.getElementById('setting-sheet')?.value.trim() || '';
                 this.settings.logoSekolah = document.getElementById('setting-logo')?.value.trim() || '';
                 this.settings.namaSekolah = document.getElementById('setting-nama-sekolah')?.value.trim() || '';
@@ -3553,12 +3508,31 @@
 
                 this.saveSettingsToLocal();
                 this.updateAppHeader();
-                this.showToast('Pengaturan aplikasi berhasil disimpan!', 'success');
-            },
 
-            updateAppHeader() {
-                if (document.getElementById('app-subtitle-desktop')) document.getElementById('app-subtitle-desktop').innerText = this.settings.namaSekolah || 'Kebiasaan Anak Indonesia Hebat';
-                if (document.getElementById('app-subtitle-mobile')) document.getElementById('app-subtitle-mobile').innerText = this.settings.namaSekolah || 'Kebiasaan Anak Indonesia Hebat';
+                if (this.settings.sheetEndpoint) {
+                    try {
+                        this.showToast('Menyimpan pengaturan ke database...', 'info');
+                        const response = await this.apiCall('create', 'Pengaturan Sekolah', {
+                            data: {
+                                "Kunci": "IDENTITAS_SEKOLAH",
+                                "Nama Sekolah": this.settings.namaSekolah,
+                                "Alamat Sekolah": this.settings.alamatSekolah,
+                                "Tahun Ajaran": this.settings.tahunAjaran,
+                                "URL Logo": this.settings.logoSekolah,
+                                "Waktu Update": new Date().toISOString()
+                            }
+                        });
+                        if (response && response.status === 'success') {
+                            this.showToast('Pengaturan berhasil disimpan di lokal & database!', 'success');
+                        } else {
+                            this.showToast('Pengaturan tersimpan lokal (Cloud merespon tidak lengkap).', 'warning');
+                        }
+                    } catch (e) {
+                        this.showToast('Pengaturan tersimpan lokal (Gagal terhubung ke Cloud).', 'warning');
+                    }
+                } else {
+                    this.showToast('Pengaturan aplikasi berhasil disimpan!', 'success');
+                }
             },
 
             backupData() {
@@ -3744,6 +3718,34 @@
             updateAppHeader() {
                 if (document.getElementById('app-subtitle-desktop')) document.getElementById('app-subtitle-desktop').innerText = this.settings.namaSekolah || 'Jurnal Interaktif Kebiasaan Anak Indonesia Hebat';
                 if (document.getElementById('app-subtitle-mobile')) document.getElementById('app-subtitle-mobile').innerText = this.settings.namaSekolah || 'Jurnal Interaktif Kebiasaan Anak Indonesia Hebat';
+                
+                const logoUrl = this.settings.logoSekolah;
+                
+                const logoDesktop = document.getElementById('app-logo-desktop');
+                const iconDesktop = document.getElementById('app-icon-desktop');
+                const logoMobile = document.getElementById('app-logo-mobile');
+                const iconMobile = document.getElementById('app-icon-mobile');
+                const splashLogo = document.getElementById('splash-logo');
+                const splashIcon = document.getElementById('splash-icon');
+
+                if (logoUrl) {
+                    if (logoDesktop) { logoDesktop.src = logoUrl; logoDesktop.classList.remove('hidden'); }
+                    if (iconDesktop) iconDesktop.classList.add('hidden');
+                    
+                    if (logoMobile) { logoMobile.src = logoUrl; logoMobile.classList.remove('hidden'); }
+                    if (iconMobile) iconMobile.classList.add('hidden');
+                    
+                    if (splashLogo) splashLogo.src = logoUrl;
+                    if (splashIcon) splashIcon.classList.add('hidden');
+                } else {
+                    if (logoDesktop) logoDesktop.classList.add('hidden');
+                    if (iconDesktop) iconDesktop.classList.remove('hidden');
+                    
+                    if (logoMobile) logoMobile.classList.add('hidden');
+                    if (iconMobile) iconMobile.classList.remove('hidden');
+                    
+                    if (splashIcon) splashIcon.classList.remove('hidden');
+                }
             }
         };
 
