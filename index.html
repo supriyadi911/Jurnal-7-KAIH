@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jurnal KAIH - Kebiasaan Anak Indonesia Hebat</title>
+    <title>JIKA HEBAT - Jurnal Interaktif Kebiasaan Anak Indonesia Hebat</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,11 +13,14 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0ea5e9',
-                        primaryDark: '#0284c7',
-                        secondary: '#ef4444',
+                        primary: '#4f46e5', /* Modern Indigo-600 */
+                        primaryDark: '#3730a3',
+                        secondary: '#0ea5e9', /* Sky Blue */
                         darkBg: '#0f172a',
                         darkCard: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     }
                 }
             }
@@ -34,10 +37,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -156,18 +159,18 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 transition-colors duration-200 h-screen flex overflow-hidden print:h-auto print:overflow-visible print:block print:bg-white">
+<body class="bg-slate-50 text-gray-800 dark:bg-darkBg dark:text-gray-100 transition-colors duration-200 h-screen flex overflow-hidden print:h-auto print:overflow-visible print:block print:bg-white">
 
     <div id="splash-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white dark:bg-darkBg transition-all duration-700 ease-in-out opacity-100 print:hidden">
         <div id="splash-content" class="flex flex-col items-center justify-center transform transition-transform duration-700 ease-in-out scale-100">
-            <img src="https://i.ibb.co.com/1fT4ZJrg/logo-sdn-1-dupaaa.png" alt="Logo Sekolah" class="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-xl mb-6 animate-pulse" onerror="this.src='https://placehold.co/150x150/0ea5e9/ffffff?text=KAIH'">
+            <img src="https://i.ibb.co.com/1fT4ZJrg/logo-sdn-1-dupaaa.png" alt="Logo Sekolah" class="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-xl mb-6 animate-pulse" onerror="this.src='https://placehold.co/150x150/4f46e5/ffffff?text=JIKA'">
             <div class="flex items-center space-x-3 mb-2">
-                <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary text-white rounded-xl flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-500/30">
                     <i class="fa-solid fa-star"></i>
                 </div>
-                <h1 class="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-tight">KAIH</h1>
+                <h1 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-500 to-secondary tracking-tight">JIKA HEBAT</h1>
             </div>
-            <p class="text-gray-500 dark:text-gray-400 font-medium tracking-widest text-sm uppercase mt-1">Jurnal Kebiasaan Anak Hebat</p>
+            <p class="text-gray-500 dark:text-gray-400 font-semibold tracking-wide text-xs md:text-sm uppercase mt-2 text-center px-4">Jurnal Interaktif Kebiasaan Anak Indonesia Hebat</p>
             
             <div class="mt-12 flex items-center justify-center space-x-2">
                 <div class="w-2.5 h-2.5 rounded-full bg-primary animate-bounce" style="animation-delay: -0.3s"></div>
@@ -177,21 +180,24 @@
         </div>
     </div>
 
-    <aside id="sidebar" class="hidden md:flex flex-col w-64 shrink-0 bg-white dark:bg-darkCard border-r border-gray-200 dark:border-gray-700 shadow-sm z-20 transition-transform duration-300 print:hidden">
-        <div class="p-5 flex flex-col items-center justify-center border-b border-gray-100 dark:border-gray-700 text-center">
-            <div class="flex items-center justify-center space-x-3 mb-2">
-                <img id="app-logo-desktop" src="" class="w-10 h-10 object-contain hidden" alt="Logo Sekolah">
-                <div id="app-icon-desktop" class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
-                    <i class="fa-solid fa-star"></i>
+    <aside id="sidebar" class="hidden md:flex flex-col w-64 shrink-0 bg-white/80 backdrop-blur-xl dark:bg-darkCard/80 border-r border-gray-200 dark:border-gray-700 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-20 transition-transform duration-300 print:hidden">
+        <div class="p-6 flex flex-col items-center justify-center border-b border-gray-100 dark:border-gray-700 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-indigo-50/50 to-transparent dark:from-indigo-900/10 dark:to-transparent z-0"></div>
+            <div class="relative z-10 flex flex-col items-center justify-center w-full">
+                <div class="flex items-center justify-center space-x-3 mb-3">
+                    <img id="app-logo-desktop" src="" class="w-10 h-10 object-contain hidden" alt="Logo Sekolah">
+                    <div id="app-icon-desktop" class="w-10 h-10 bg-gradient-to-br from-primary to-secondary text-white rounded-xl flex items-center justify-center font-bold text-xl shadow-md shadow-indigo-500/20">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <h1 class="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-tight">JIKA HEBAT</h1>
                 </div>
-                <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">KAIH</h1>
-            </div>
-            <div id="app-subtitle-desktop" class="text-xs text-gray-500 dark:text-gray-400 font-medium leading-tight">
+                <div id="app-subtitle-desktop" class="text-xs text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+                </div>
             </div>
         </div>
         
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-            <button onclick="App.navigate('form')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-blue-50 hover:text-primary dark:hover:bg-gray-800 transition-colors" data-target="form">
+            <button onclick="App.navigate('form')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-indigo-50 hover:text-primary dark:hover:bg-gray-800 transition-colors font-medium" data-target="form">
                 <i class="fa-solid fa-pen-to-square w-5"></i><span>Isi Jurnal</span>
             </button>
             <div class="my-4 border-t border-gray-200 dark:border-gray-700"></div>
@@ -236,15 +242,15 @@
 
     <main class="flex-1 flex flex-col h-full relative min-w-0 print:h-auto print:block print:overflow-visible">
         <!-- Mobile Header -->
-        <header class="md:hidden flex items-center justify-between p-3 bg-white dark:bg-darkCard shadow-sm z-10 w-full relative shrink-0 print:hidden">
+        <header class="md:hidden flex items-center justify-between p-3 bg-white/90 backdrop-blur-md dark:bg-darkCard/90 shadow-sm z-10 w-full relative shrink-0 print:hidden border-b border-gray-100 dark:border-gray-800">
             <div class="flex items-center space-x-3 truncate">
-                <img id="app-logo-mobile" src="" class="w-10 h-10 object-contain hidden shrink-0" alt="Logo">
-                <div id="app-icon-mobile" class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm shadow shrink-0">
+                <img id="app-logo-mobile" src="" class="w-9 h-9 object-contain hidden shrink-0" alt="Logo">
+                <div id="app-icon-mobile" class="w-9 h-9 bg-gradient-to-br from-primary to-secondary text-white rounded-lg flex items-center justify-center font-bold text-sm shadow-md shadow-indigo-500/20 shrink-0">
                     <i class="fa-solid fa-star"></i>
                 </div>
                 <div class="flex flex-col truncate pr-2">
-                    <h1 class="text-lg font-bold leading-tight text-gray-800 dark:text-white">KAIH</h1>
-                    <div id="app-subtitle-mobile" class="text-[10px] text-gray-500 dark:text-gray-400 leading-snug truncate">
+                    <h1 class="text-lg font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">JIKA HEBAT</h1>
+                    <div id="app-subtitle-mobile" class="text-[10px] text-gray-500 dark:text-gray-400 leading-snug truncate font-medium">
                     </div>
                 </div>
             </div>
@@ -259,7 +265,7 @@
         </header>
 
         <!-- Sticky Bottom Navigation (Mobile) -->
-        <nav class="md:hidden fixed bottom-0 w-full bg-white dark:bg-darkCard border-t border-gray-200 dark:border-gray-700 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)] z-40 flex justify-around items-end pt-2 safe-area-pb overflow-x-auto no-scrollbar print:hidden">
+        <nav class="md:hidden fixed bottom-0 w-full bg-white/95 backdrop-blur-lg dark:bg-darkCard/95 border-t border-gray-200 dark:border-gray-800 shadow-[0_-10px_40px_-10px_rgba(0,0,0,0.1)] z-40 flex justify-around items-end pt-2 safe-area-pb overflow-x-auto no-scrollbar print:hidden">
             <button onclick="App.navigate('form')" class="nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-primary transition-colors" data-target="form">
                 <i class="fa-solid fa-pen-to-square text-lg mb-1"></i>
                 <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Jurnal</span>
@@ -300,9 +306,80 @@
         <div id="view-container" class="flex-1 overflow-y-auto p-4 pb-32 md:p-8 md:pb-8 relative print:overflow-visible print:h-auto print:block print:p-0">
             
             <section id="view-form" class="view-section slide-up w-full max-w-3xl mx-auto hidden print-container">
-                <div class="flex items-center justify-between mb-2 no-print">
-                    <h2 id="form-title" class="text-2xl font-bold border-l-4 border-primary pl-3">Isi Jurnal KAIH</h2>
-                    <span id="current-date-display" class="bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full text-sm font-medium"></span>
+                <div class="flex items-center justify-between mb-4 no-print">
+                    <h2 id="form-title" class="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-white tracking-tight flex items-center"><span class="w-1.5 h-6 md:h-8 bg-primary rounded-full mr-3"></span> Isi Jurnal JIKA HEBAT</h2>
+                    <span id="current-date-display" class="bg-indigo-50 text-primary dark:bg-indigo-900/30 dark:text-indigo-300 px-3 py-1.5 rounded-full text-xs md:text-sm font-bold border border-indigo-100 dark:border-indigo-800/50 shadow-sm shrink-0 ml-2"></span>
+                </div>
+                
+                <div class="mb-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800/50 text-gray-700 dark:text-gray-300 p-5 rounded-2xl text-sm border border-indigo-100/50 dark:border-gray-700 leading-relaxed no-print shadow-sm">
+                    <strong>Selamat Datang!</strong> Jurnal <strong>JIKA HEBAT</strong> (Jurnal Interaktif Kebiasaan Anak Indonesia Hebat) bertujuan untuk mencatat dan memantau kebiasaan positifmu setiap hari. Isilah dengan jujur agar karakter hebatmu terus berkembang! Pilih <strong>Kelas</strong> lalu pilih <strong>Nama Kamu</strong>.
+                </div>
+
+                <form id="jurnal-form" onsubmit="App.handleFormSubmit(event)" class="space-y-6">
+                    <div class="bg-white dark:bg-darkCard rounded-3xl shadow-[0_2px_20px_rgba(0,0,0,0.03)] border border-gray-100/80 dark:border-gray-800 p-6 sm:p-8 print-card transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+                        <h3 class="text-lg font-bold mb-5 flex items-center text-gray-800 dark:text-gray-100"><div class="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center mr-3"><i class="fa-solid fa-id-card text-primary"></i></div> Identitas Siswa</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1.5">Kelas *</label>
+                                <select id="inp-kelas" required onchange="App.onFormKelasChange()" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all appearance-none">
+                                    <option value="">-- Pilih Kelas --</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1.5">Nama Lengkap *</label>
+                                <select id="inp-nama" required onchange="App.autoFillByNama()" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all appearance-none disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                                    <option value="">-- Pilih Kelas Terlebih Dahulu --</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1.5">NIS / NISN *</label>
+                                <input type="text" id="inp-nis" required readonly placeholder="Terisi otomatis..." class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800/80 text-gray-500 dark:text-gray-400 cursor-not-allowed outline-none transition-all font-mono text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1.5">Tanggal Laporan *</label>
+                                <input type="date" id="inp-tanggal" required class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1.5">Nama Guru / Wali Kelas</label>
+                                <input type="text" id="inp-guru" placeholder="Bapak/Ibu Guru" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all">
+                            </div>
+                        </div>
+                        <div class="mt-5 flex items-center no-print bg-gray-50 dark:bg-gray-800/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700">
+                            <input type="checkbox" id="save-profile" class="mr-3 rounded text-primary focus:ring-primary h-4 w-4 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600">
+                            <label for="save-profile" class="text-sm font-medium text-gray-600 dark:text-gray-300 cursor-pointer select-none">Simpan identitas di perangkat ini untuk laporan berikutnya</label>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard rounded-3xl shadow-[0_2px_20px_rgba(0,0,0,0.03)] border border-gray-100/80 dark:border-gray-800 p-6 sm:p-8 print-card transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+                        <h3 class="text-lg font-bold mb-2 flex items-center text-gray-800 dark:text-gray-100"><div class="w-8 h-8 rounded-lg bg-sky-100 dark:bg-sky-900/50 flex items-center justify-center mr-3"><i class="fa-solid fa-list-check text-secondary"></i></div> Jurnal Kegiatan (7 Kebiasaan Utama)</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 font-medium">Tandai kebiasaan positif yang sudah kamu laksanakan hari ini dengan jujur.</p>
+                        
+                        <div id="habits-container" class="space-y-4">
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-indigo-500 to-blue-600 rounded-3xl p-8 text-center no-print shadow-lg shadow-indigo-500/20 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white opacity-10 blur-2xl"></div>
+                        <div class="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 rounded-full bg-white opacity-10 blur-xl"></div>
+                        
+                        <h4 class="font-extrabold text-white text-xl mb-2 relative z-10">Kirim Jurnal Kamu Sekarang</h4>
+                        <p class="text-sm text-indigo-100 mb-8 max-w-lg mx-auto relative z-10">Pastikan semua data diisi dengan benar. Nilai kejujuran adalah karakter utama dari Anak Indonesia Hebat!</p>
+                        
+                        <div class="flex flex-col sm:flex-row justify-center gap-3 relative z-10">
+                            <button type="button" id="btn-cancel-edit" onclick="App.cancelEdit()" class="hidden px-6 py-4 bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm rounded-2xl font-bold text-base transition-all shadow-sm flex items-center justify-center">
+                                <i class="fa-solid fa-xmark mr-2"></i> Batal Edit
+                            </button>
+                            <button type="submit" id="btn-submit-form" class="w-full sm:w-auto px-10 py-4 bg-white text-primary hover:bg-gray-50 rounded-2xl font-extrabold text-base transition-all shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3">
+                                <i class="fa-brands fa-whatsapp text-2xl text-green-500"></i> <span>Simpan & Kirim Laporan</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <section id="view-dashboard" class="view-section slide-up w-full max-w-6xl mx-auto hidden print-container">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 no-print gap-4">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-white tracking-tight flex items-center"><span class="w-1.5 h-6 md:h-8 bg-secondary rounded-full mr-3"></span> Dashboard Statistik</h2>
                 </div>
                 
                 <div class="mb-6 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 p-4 rounded-xl text-sm border border-blue-100 dark:border-blue-800 leading-relaxed no-print">
@@ -474,7 +551,7 @@
                         <div class="h-20 w-20"></div>
                     </div>
                     <div class="text-center mt-6 mb-4">
-                        <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">RINCIAN KETERLAKSANAAN KEBIASAAN</h3>
+                        <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">RINCIAN KETERLAKSANAAN KEBIASAAN JIKA HEBAT</h3>
                         <p id="print-school-year-rincian" class="text-sm text-black font-semibold mt-2"></p>
                     </div>
                     <div class="text-sm text-black font-medium border-t-2 border-b-2 border-black py-3 mb-6 space-y-1.5">
@@ -579,13 +656,13 @@
                         <div class="h-20 w-20"></div>
                     </div>
                     <div class="text-center mt-6">
-                        <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">REKAPITULASI JURNAL KAIH</h3>
+                        <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">REKAPITULASI JURNAL JIKA HEBAT</h3>
                         <p id="print-school-year" class="text-sm text-black font-semibold mt-2"></p>
                     </div>
                 </div>
 
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 no-print gap-4">
-                    <h2 class="text-2xl font-bold border-l-4 border-secondary pl-3 text-gray-800 dark:text-white shrink-0">Rekap Laporan Siswa</h2>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-white tracking-tight flex items-center shrink-0"><span class="w-1.5 h-6 md:h-8 bg-secondary rounded-full mr-3"></span> Rekap Laporan Siswa</h2>
                     <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 w-full lg:w-auto lg:justify-end">
                         <button onclick="App.syncAllData(true)" class="flex justify-center items-center px-3 py-2.5 bg-blue-100 text-primary border border-blue-200 rounded-lg text-sm hover:bg-blue-200 dark:bg-blue-900/30 dark:border-blue-800 shadow-sm font-semibold transition"><i class="fa-solid fa-rotate mr-2"></i> Sinkron</button>
                         <button onclick="App.sendRecapToWA()" class="flex justify-center items-center px-3 py-2.5 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 shadow-sm"><i class="fa-brands fa-whatsapp text-base mr-2"></i> WA Grup</button>
@@ -750,11 +827,11 @@
             </section>
 
             <section id="view-settings" class="view-section slide-up w-full max-w-2xl mx-auto hidden">
-                <h2 class="text-2xl font-bold border-l-4 border-gray-400 pl-3 mb-6">Pengaturan Aplikasi</h2>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-white tracking-tight flex items-center mb-6"><span class="w-1.5 h-6 md:h-8 bg-gray-400 rounded-full mr-3"></span> Pengaturan Aplikasi</h2>
 
                 <div class="space-y-6">
-                    <div class="bg-white dark:bg-darkCard rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                        <h3 class="font-bold mb-4 border-b pb-2 dark:border-gray-700"><i class="fa-solid fa-database text-blue-500 mr-2"></i> Koneksi Database Google Sheet</h3>
+                    <div class="bg-white dark:bg-darkCard rounded-3xl p-6 sm:p-8 shadow-[0_2px_20px_rgba(0,0,0,0.03)] border border-gray-100/80 dark:border-gray-800 transition-all hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+                        <h3 class="font-bold mb-4 border-b pb-3 border-gray-100 dark:border-gray-800 flex items-center"><div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center mr-3"><i class="fa-solid fa-database text-blue-600"></i></div> Koneksi Database Cloud</h3>
                         <p class="text-sm text-gray-500 mb-4">Masukkan URL Web App dari Google Apps Script untuk mengaktifkan sinkronisasi Cloud real-time.</p>
                         <input type="url" id="setting-sheet" placeholder="https://script.google.com/macros/s/..." class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 outline-none">
                         <button onclick="App.saveSettings()" class="mt-3 bg-primary text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600">Simpan Koneksi & Terapkan</button>
@@ -1249,11 +1326,11 @@
             },
             profile: {},
             habitsDefinition: [
-                { id: 'h1', title: 'A. Bangun Pagi', desc: 'Bangun pagi tepat waktu (maks 05:00)', icon: 'fa-sun', color: 'text-orange-500' },
-                { id: 'h2', title: 'B. Beribadah', desc: 'Melaksanakan ibadah sesuai agama', icon: 'fa-hands-praying', color: 'text-blue-500' },
-                { id: 'h3', title: 'C. Berolahraga', desc: 'Aktivitas fisik minimal 15 menit', icon: 'fa-person-running', color: 'text-green-500' },
-                { id: 'h4', title: 'D. Makan Sehat', desc: 'Sarapan dan makan makanan bergizi', icon: 'fa-apple-whole', color: 'text-red-500' },
-                { id: 'h5', title: 'E. Gemar Belajar', desc: 'Membaca atau mengulang pelajaran', icon: 'fa-book-open', color: 'text-indigo-500' },
+                { id: 'h1', title: 'A. Bangun Pagi', desc: 'Bangun pagi tepat waktu (maks 05:00)', icon: 'fa-sun', color: 'text-amber-500' },
+                { id: 'h2', title: 'B. Beribadah', desc: 'Melaksanakan ibadah sesuai agama', icon: 'fa-hands-praying', color: 'text-indigo-500' },
+                { id: 'h3', title: 'C. Berolahraga', desc: 'Aktivitas fisik minimal 15 menit', icon: 'fa-person-running', color: 'text-emerald-500' },
+                { id: 'h4', title: 'D. Makan Sehat', desc: 'Sarapan dan makan makanan bergizi', icon: 'fa-apple-whole', color: 'text-rose-500' },
+                { id: 'h5', title: 'E. Gemar Belajar', desc: 'Membaca atau mengulang pelajaran', icon: 'fa-book-open', color: 'text-blue-500' },
                 { id: 'h6', title: 'F. Mengaji', desc: 'Membaca kitab suci / Al-Qur\'an', icon: 'fa-book-quran', color: 'text-teal-500' },
                 { id: 'h7', title: 'G. Tidur Cepat', desc: 'Tidur tidak larut malam (maks 21:30)', icon: 'fa-moon', color: 'text-purple-500' }
             ],
@@ -1997,15 +2074,15 @@
                     
                     if (habit.id === 'h2') {
                         subHabitHtml = `
-                            <div class="mt-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700">
-                                <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2">Salat Lima Waktu (Bagi Muslim):</p>
-                                <div class="grid grid-cols-5 gap-1.5">
+                            <div class="mt-4 p-4 bg-white/50 dark:bg-gray-800/30 rounded-xl border border-gray-100/50 dark:border-gray-700/50 backdrop-blur-sm">
+                                <p class="text-xs font-bold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wider">Salat Lima Waktu (Bagi Muslim):</p>
+                                <div class="grid grid-cols-5 gap-2">
                                     ${['Subuh', 'Dzuhur', 'Ashar', 'Maghrib', 'Isya'].map(pr => `
-                                        <label class="flex flex-col items-center justify-center p-1.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer transition select-none">
+                                        <label class="flex flex-col items-center justify-center p-2 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-700 cursor-pointer transition-all shadow-sm hover:shadow-md peer-checked:border-primary peer-checked:bg-indigo-50 select-none group">
                                             <input type="checkbox" id="prayer-${pr.toLowerCase()}" class="sr-only peer" onchange="App.handlePrayerCheck()">
-                                            <span class="text-[10px] sm:text-xs font-semibold text-gray-600 dark:text-gray-300 peer-checked:text-primary transition">${pr}</span>
-                                            <div class="w-3.5 h-3.5 mt-1 rounded-full border border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary">
-                                                <i class="fa-solid fa-check text-[8px] text-white hidden peer-checked:block"></i>
+                                            <span class="text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-400 peer-checked:text-primary transition-colors">${pr}</span>
+                                            <div class="w-4 h-4 mt-1.5 rounded-md border border-gray-300 dark:border-gray-600 flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition-all group-active:scale-90">
+                                                <i class="fa-solid fa-check text-[10px] text-white opacity-0 peer-checked:opacity-100 transition-opacity"></i>
                                             </div>
                                         </label>
                                     `).join('')}
@@ -2015,36 +2092,36 @@
                     } else if (habit.id === 'h6') {
                         subHabitHtml = `
                             <div class="mt-3">
-                                <input type="text" id="surat-${habit.id}" placeholder="Surat/Ayat/Juz yang dibaca..." class="w-full text-sm px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none focus:border-primary transition">
+                                <input type="text" id="surat-${habit.id}" placeholder="Surat/Ayat/Juz yang dibaca..." class="w-full text-sm px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-darkCard/50 outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
                             </div>
                         `;
                     }
 
                     html += `
-                        <div class="p-4 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 hover:shadow-md transition">
+                        <div class="p-5 rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30 hover:shadow-lg hover:shadow-indigo-500/5 hover:border-indigo-100 dark:hover:border-indigo-900/50 transition-all duration-300">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <div class="flex items-start space-x-3">
-                                    <div class="w-10 h-10 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center shadow-sm ${habit.color}">
-                                        <i class="fa-solid ${habit.icon} text-lg"></i>
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-12 h-12 rounded-xl bg-white dark:bg-gray-800 flex items-center justify-center shadow-sm border border-gray-100 dark:border-gray-700 ${habit.color}">
+                                        <i class="fa-solid ${habit.icon} text-xl"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-bold text-gray-800 dark:text-gray-200 text-base">${habit.title}</h4>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">${habit.desc}</p>
+                                        <h4 class="font-extrabold text-gray-800 dark:text-gray-100 text-base mb-0.5">${habit.title}</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">${habit.desc}</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center space-x-3 shrink-0">
-                                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400" id="status-label-${habit.id}">Belum</span>
+                                <div class="flex items-center space-x-3 shrink-0 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
+                                    <span class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wide" id="status-label-${habit.id}">Belum</span>
                                     <label class="relative inline-flex items-center cursor-pointer">
                                         <input type="checkbox" id="check-${habit.id}" class="sr-only peer" onchange="App.toggleHabitStatus('${habit.id}')">
-                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-500"></div>
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary shadow-inner"></div>
                                     </label>
                                 </div>
                             </div>
                             
                             ${subHabitHtml}
 
-                            <div class="mt-3">
-                                <input type="text" id="note-${habit.id}" placeholder="Catatan singkat (Opsional)" class="w-full text-sm px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-darkCard outline-none focus:border-primary transition">
+                            <div class="mt-4">
+                                <input type="text" id="note-${habit.id}" placeholder="Tambahkan catatan singkat (Opsional)..." class="w-full text-sm px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-darkCard/50 outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
                             </div>
                         </div>
                     `;
@@ -2336,11 +2413,10 @@
 
             cancelEdit() {
                 this.editingReportId = null;
-                document.getElementById('form-title').innerText = "Isi Jurnal KAIH";
+                document.getElementById('form-title').innerHTML = '<span class="w-1.5 h-6 md:h-8 bg-primary rounded-full mr-3"></span> Isi Jurnal JIKA HEBAT';
                 document.getElementById('btn-cancel-edit').classList.add('hidden');
-                document.getElementById('btn-submit-form').innerHTML = '<i class="fa-brands fa-whatsapp text-2xl"></i> <span>Simpan & Kirim Laporan ke WhatsApp</span>';
-                document.getElementById('btn-submit-form').classList.replace('from-yellow-500', 'from-primary');
-                document.getElementById('btn-submit-form').classList.replace('to-orange-500', 'to-green-600');
+                document.getElementById('btn-submit-form').innerHTML = '<i class="fa-brands fa-whatsapp text-2xl text-green-500"></i> <span>Simpan & Kirim Laporan</span>';
+                document.getElementById('btn-submit-form').className = 'w-full sm:w-auto px-10 py-4 bg-white text-primary hover:bg-gray-50 rounded-2xl font-extrabold text-base transition-all shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3';
                 
                 this.resetFormChecklists();
                 this.populateProfileForm();
@@ -2396,10 +2472,10 @@
                 });
                 
                 document.getElementById('form-title').innerText = "Edit Laporan Jurnal";
+                document.getElementById('form-title').innerHTML = '<span class="w-1.5 h-6 md:h-8 bg-yellow-400 rounded-full mr-3"></span> Edit Laporan Jurnal';
                 document.getElementById('btn-cancel-edit').classList.remove('hidden');
                 document.getElementById('btn-submit-form').innerHTML = '<i class="fa-solid fa-save text-xl"></i> <span>Simpan Perubahan Laporan</span>';
-                document.getElementById('btn-submit-form').classList.replace('from-primary', 'from-yellow-500');
-                document.getElementById('btn-submit-form').classList.replace('to-green-600', 'to-orange-500');
+                document.getElementById('btn-submit-form').className = 'w-full sm:w-auto px-10 py-4 bg-yellow-500 text-white hover:bg-yellow-600 rounded-2xl font-extrabold text-base transition-all shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-3';
                 
                 this.navigate('form');
                 this.showToast('Memasuki mode edit. Ubah data lalu tekan Simpan Perubahan.', 'info');
@@ -2478,8 +2554,8 @@
             sendToWA(report) {
                 const { identitas, habits, persentase, kategori } = report;
 
-                let text = `*LAPORAN HARIAN KAIH*\n`;
-                text += `(Kebiasaan Anak Indonesia Hebat)\n\n`;
+                let text = `*LAPORAN HARIAN JIKA HEBAT*\n`;
+                text += `(Jurnal Interaktif Kebiasaan Anak Indonesia Hebat)\n\n`;
                 text += `*Nama:* ${identitas.nama}\n`;
                 text += `*NIS/NISN:* ${identitas.nis}\n`;
                 text += `*Kelas:* ${identitas.kelas}\n`;
@@ -3601,7 +3677,7 @@
                     return;
                 }
 
-                let text = `*REKAPITULASI LAPORAN JURNAL KAIH*\n`;
+                let text = `*REKAPITULASI JURNAL JIKA HEBAT*\n`;
                 text += `Sekolah: ${this.settings.namaSekolah || '-'}\n`;
                 text += `Tanggal: ${new Date().toLocaleDateString('id-ID')}\n`;
                 text += `-----------------------------------\n\n`;
@@ -3652,7 +3728,7 @@
                     return;
                 }
 
-                let text = `*PEMBERITAHUAN SISWA BELUM MENGISI JURNAL KAIH*\n\n`;
+                let text = `*PEMBERITAHUAN SISWA BELUM MENGISI JURNAL JIKA HEBAT*\n\n`;
                 text += `Mohon bantuannya Bapak/Ibu Orang Tua/Wali untuk mendampingi siswa berikut yang belum mengisi laporan hari ini:\n\n`;
 
                 unsubmitted.forEach((s, idx) => {
@@ -3663,6 +3739,11 @@
 
                 const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
                 window.open(url, '_blank');
+            },
+            
+            updateAppHeader() {
+                if (document.getElementById('app-subtitle-desktop')) document.getElementById('app-subtitle-desktop').innerText = this.settings.namaSekolah || 'Jurnal Interaktif Kebiasaan Anak Indonesia Hebat';
+                if (document.getElementById('app-subtitle-mobile')) document.getElementById('app-subtitle-mobile').innerText = this.settings.namaSekolah || 'Jurnal Interaktif Kebiasaan Anak Indonesia Hebat';
             }
         };
 
