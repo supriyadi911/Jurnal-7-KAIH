@@ -200,6 +200,9 @@
             <button onclick="App.navigate('form')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-indigo-50 hover:text-primary dark:hover:bg-gray-800 transition-colors font-medium" data-target="form">
                 <i class="fa-solid fa-pen-to-square w-5"></i><span>Isi Jurnal</span>
             </button>
+            <button id="nav-btn-rincian-desktop" onclick="App.navigate('rincian')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors font-medium" data-target="rincian">
+                <i class="fa-solid fa-chart-simple w-5"></i><span>Rincian Kategori</span>
+            </button>
             <div class="my-4 border-t border-gray-200 dark:border-gray-700"></div>
             
             <button id="btn-login-desktop" onclick="App.openLoginModal()" class="w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
@@ -213,9 +216,6 @@
                 </button>
                 <button id="nav-btn-data-desktop" onclick="App.navigate('data')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="data">
                     <i class="fa-solid fa-users w-5"></i><span>Data Master</span>
-                </button>
-                <button id="nav-btn-rincian-desktop" onclick="App.navigate('rincian')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="rincian">
-                    <i class="fa-solid fa-chart-simple w-5"></i><span>Rincian Kategori</span>
                 </button>
                 <button onclick="App.navigate('rekap')" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-gray-300 rounded-xl hover:bg-red-50 hover:text-secondary dark:hover:bg-gray-800 transition-colors" data-target="rekap">
                     <i class="fa-solid fa-table-list w-5"></i><span>Rekap Laporan</span>
@@ -270,6 +270,11 @@
                 <i class="fa-solid fa-pen-to-square text-lg mb-1"></i>
                 <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Jurnal</span>
             </button>
+
+            <button id="nav-rincian-mobile" onclick="App.navigate('rincian')" class="nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="rincian">
+                <i class="fa-solid fa-chart-simple text-lg mb-1"></i>
+                <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Rincian</span>
+            </button>
             
             <button id="btn-login-mobile" onclick="App.openLoginModal()" class="flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">
                 <i class="fa-solid fa-right-to-bracket text-lg mb-1"></i>
@@ -283,10 +288,6 @@
             <button id="nav-data-mobile" onclick="App.navigate('data')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="data">
                 <i class="fa-solid fa-users text-lg mb-1"></i>
                 <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Data</span>
-            </button>
-            <button id="nav-rincian-mobile" onclick="App.navigate('rincian')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="rincian">
-                <i class="fa-solid fa-chart-simple text-lg mb-1"></i>
-                <span class="text-[9px] font-medium leading-tight mt-0.5 truncate w-full text-center">Rincian</span>
             </button>
             <button id="nav-rekap-mobile" onclick="App.navigate('rekap')" class="hidden nav-btn-mobile flex-1 min-w-[55px] pb-2 flex flex-col items-center text-gray-400 hover:text-secondary transition-colors" data-target="rekap">
                 <i class="fa-solid fa-table-list text-lg mb-1"></i>
@@ -377,206 +378,6 @@
                 </form>
             </section>
 
-            <section id="view-dashboard" class="view-section slide-up w-full max-w-6xl mx-auto hidden print-container">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 no-print gap-4">
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-white tracking-tight flex items-center"><span class="w-1.5 h-6 md:h-8 bg-secondary rounded-full mr-3"></span> Dashboard Statistik</h2>
-                </div>
-
-                <!-- Filter Data & Waktu Dashboard -->
-                <div class="bg-white dark:bg-darkCard p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 no-print mb-6">
-                    <h3 class="font-bold mb-4"><i class="fa-solid fa-filter text-primary"></i> Filter Dashboard</h3>
-                    <div class="flex flex-wrap gap-4 items-end">
-                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
-                            <label class="block text-sm mb-1">Kelas</label>
-                            <select id="dash-filter-kelas" onchange="App.applyDashboardFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                                <option value="all">Semua Kelas</option>
-                            </select>
-                        </div>
-                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
-                            <label class="block text-sm mb-1">Periode</label>
-                            <select id="dash-filter-tipe" onchange="App.handleDashFilterTypeChange()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                                <option value="all">Semua Waktu</option>
-                                <option value="harian">Harian</option>
-                                <option value="bulanan">Bulanan</option>
-                                <option value="semester">Semester</option>
-                                <option value="tahunan">Tahunan</option>
-                            </select>
-                        </div>
-                        
-                        <div id="dash-filter-val-harian" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
-                            <label class="block text-sm mb-1">Tanggal</label>
-                            <input type="date" id="dash-filter-tanggal" onchange="App.applyDashboardFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                        </div>
-
-                        <div id="dash-filter-val-bulanan" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
-                            <label class="block text-sm mb-1">Bulan</label>
-                            <input type="month" id="dash-filter-bulan" onchange="App.applyDashboardFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                        </div>
-
-                        <div id="dash-filter-val-semester" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
-                            <label class="block text-sm mb-1">Semester</label>
-                            <select id="dash-filter-semester" onchange="App.applyDashboardFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                                <option value="1">Ganjil (Jul - Des)</option>
-                                <option value="2">Genap (Jan - Jun)</option>
-                            </select>
-                        </div>
-
-                        <div id="dash-filter-val-tahun" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
-                            <label class="block text-sm mb-1">Tahun</label>
-                            <select id="dash-filter-tahun" onchange="App.applyDashboardFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                            </select>
-                        </div>
-
-                        <div class="w-full sm:w-auto">
-                            <button onclick="App.resetDashboardFilter()" class="w-full px-6 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition border border-red-200 dark:border-red-800">Reset</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                    <div class="bg-white dark:bg-darkCard p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm print-card">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Total Laporan</p>
-                        <h4 class="text-2xl font-bold text-primary" id="stat-total">0</h4>
-                    </div>
-                    <div class="bg-white dark:bg-darkCard p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm print-card">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Rata-rata Nilai</p>
-                        <h4 class="text-2xl font-bold text-green-500" id="stat-avg">0%</h4>
-                    </div>
-                    <div class="bg-white dark:bg-darkCard p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm print-card">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Kategori Terbanyak</p>
-                        <h4 class="text-xl font-bold text-blue-500 truncate" id="stat-cat">-</h4>
-                    </div>
-                    <div class="bg-white dark:bg-darkCard p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm print-card">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Siswa Aktif Pelapor</p>
-                        <h4 class="text-2xl font-bold text-orange-500" id="stat-students">0</h4>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                    <div class="lg:col-span-2 bg-white dark:bg-darkCard p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card">
-                        <h3 class="font-bold mb-4">Grafik Keterlaksanaan Mingguan</h3>
-                        <div class="h-64 w-full">
-                            <canvas id="mainChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white dark:bg-darkCard p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card flex flex-col h-[335px] no-print">
-                        <h3 class="font-bold mb-3 border-b border-gray-100 dark:border-gray-700 pb-3"><i class="fa-solid fa-users text-primary mr-2"></i> Populasi Siswa Master</h3>
-                        <div class="flex-1 overflow-y-auto pr-2">
-                            <table class="w-full text-left text-sm">
-                                <tbody id="dashboard-class-stats-body">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="view-rincian" class="view-section slide-up w-full max-w-6xl mx-auto hidden print-container">
-                <div id="print-header-rincian" class="hidden print:block w-full mb-6">
-                    <div class="flex items-center justify-between border-b-4 border-double border-black pb-4">
-                        <img id="print-logo-rincian" src="" class="h-20 w-20 object-contain" alt="Logo">
-                        <div class="text-center flex-1 px-4">
-                            <h2 id="print-school-name-rincian" class="text-2xl font-bold uppercase tracking-wider text-black"></h2>
-                            <p id="print-school-address-rincian" class="text-sm text-black"></p>
-                        </div>
-                        <div class="h-20 w-20"></div>
-                    </div>
-                    <div class="text-center mt-6 mb-4">
-                        <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">RINCIAN KETERLAKSANAAN KEBIASAAN JIKA HEBAT</h3>
-                        <p id="print-school-year-rincian" class="text-sm text-black font-semibold mt-2"></p>
-                    </div>
-                    <div class="text-sm text-black font-medium border-t-2 border-b-2 border-black py-3 mb-6 space-y-1.5">
-                        <div class="flex"><div class="w-32 font-semibold">Nama Siswa</div><div class="w-4">:</div><div id="pr-siswa" class="font-bold uppercase">Semua Siswa</div></div>
-                        <div class="flex"><div class="w-32 font-semibold">Kelas</div><div class="w-4">:</div><div id="pr-kelas" class="font-bold uppercase">Semua Kelas</div></div>
-                        <div class="flex"><div class="w-32 font-semibold">Periode</div><div class="w-4">:</div><div id="pr-bulan" class="font-bold uppercase">Semua Waktu</div></div>
-                    </div>
-                </div>
-
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 no-print gap-4">
-                    <h2 class="text-2xl font-bold border-l-4 border-secondary pl-3 text-gray-800 dark:text-white">Rincian Kategori Kebiasaan</h2>
-                    <button onclick="App.printReport('rincian')" class="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm hover:bg-gray-700 shadow-sm"><i class="fa-solid fa-print mr-1"></i> Cetak Laporan Rincian</button>
-                </div>
-
-                <div class="bg-white dark:bg-darkCard p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 no-print mb-6">
-                    <h3 class="font-bold mb-4"><i class="fa-solid fa-filter text-primary"></i> Filter Rincian</h3>
-                    <div class="flex flex-wrap gap-4 items-end">
-                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
-                            <label class="block text-sm mb-1">Kelas</label>
-                            <select id="rincian-filter-kelas" onchange="App.onRincianKelasChange()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                                <option value="all">Semua Kelas</option>
-                            </select>
-                        </div>
-                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
-                            <label class="block text-sm mb-1">Siswa</label>
-                            <select id="rincian-filter-siswa" onchange="App.applyRincianFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                                <option value="all">Semua Siswa</option>
-                            </select>
-                        </div>
-                        
-                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
-                            <label class="block text-sm mb-1">Periode</label>
-                            <select id="rincian-filter-tipe" onchange="App.handleRincianFilterTypeChange()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                                <option value="all">Semua Waktu</option>
-                                <option value="harian">Harian</option>
-                                <option value="bulanan">Bulanan</option>
-                                <option value="semester">Semester</option>
-                                <option value="tahunan">Tahunan</option>
-                            </select>
-                        </div>
-                        
-                        <div id="rincian-val-harian" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
-                            <label class="block text-sm mb-1">Tanggal</label>
-                            <input type="date" id="rincian-filter-tanggal" onchange="App.applyRincianFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                        </div>
-
-                        <div id="rincian-val-bulanan" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
-                            <label class="block text-sm mb-1">Bulan</label>
-                            <input type="month" id="rincian-filter-bulan" onchange="App.applyRincianFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                        </div>
-
-                        <div id="rincian-val-semester" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
-                            <label class="block text-sm mb-1">Semester</label>
-                            <select id="rincian-filter-semester" onchange="App.applyRincianFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                                <option value="1">Ganjil (Jul - Des)</option>
-                                <option value="2">Genap (Jan - Jun)</option>
-                            </select>
-                        </div>
-
-                        <div id="rincian-val-tahun" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
-                            <label class="block text-sm mb-1">Tahun</label>
-                            <select id="rincian-filter-tahun" onchange="App.applyRincianFilter()" class="w-full p-2 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none">
-                            </select>
-                        </div>
-
-                        <div class="w-full sm:w-auto">
-                            <button onclick="App.resetRincianFilter()" class="w-full px-6 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition border border-red-200 dark:border-red-800">Reset</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-darkCard p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 print-card w-full mb-6 print:hidden">
-                    <h3 class="font-bold mb-4 text-gray-800 dark:text-white border-b border-gray-100 dark:border-gray-700 pb-3">Tingkat Keterlaksanaan Kategori</h3>
-                    <div id="rincian-progress-container" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    </div>
-                </div>
-
-                <div class="hidden print:block w-full">
-                    <table class="w-full text-left text-sm border-collapse border border-black mb-6">
-                        <thead>
-                            <tr>
-                                <th class="border border-black p-2 text-center w-12 bg-gray-200">No</th>
-                                <th class="border border-black p-2 bg-gray-200">Kategori / Jenis Kegiatan</th>
-                                <th class="border border-black p-2 text-center w-40 bg-gray-200">Terlaksana</th>
-                                <th class="border border-black p-2 text-center w-32 bg-gray-200">Persentase</th>
-                            </tr>
-                        </thead>
-                        <tbody id="print-rincian-tbody">
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
             <section id="view-rekap" class="view-section slide-up w-full max-w-6xl mx-auto hidden print-container">
                 <div id="print-header" class="hidden print:block w-full mb-6">
                     <div class="flex items-center justify-between border-b-4 border-double border-black pb-4">
@@ -587,19 +388,17 @@
                         </div>
                         <div class="h-20 w-20"></div>
                     </div>
-                    <div class="text-center mt-6">
-                        <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">REKAPITULASI JURNAL JIKA HEBAT</h3>
+                    <div class="text-center mt-6 mb-4">
+                        <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">REKAPITULASI LAPORAN JURNAL</h3>
                         <p id="print-school-year" class="text-sm text-black font-semibold mt-2"></p>
                     </div>
                 </div>
 
-                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 no-print gap-4">
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-white tracking-tight flex items-center shrink-0"><span class="w-1.5 h-6 md:h-8 bg-secondary rounded-full mr-3"></span> Rekap Laporan Siswa</h2>
-                    <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 w-full lg:w-auto lg:justify-end">
-                        <button onclick="App.syncAllData(true)" class="flex justify-center items-center px-3 py-2.5 bg-blue-100 text-primary border border-blue-200 rounded-lg text-sm hover:bg-blue-200 dark:bg-blue-900/30 dark:border-blue-800 shadow-sm font-semibold transition"><i class="fa-solid fa-rotate mr-2"></i> Sinkron</button>
-                        <button onclick="App.sendRecapToWA()" class="flex justify-center items-center px-3 py-2.5 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 shadow-sm"><i class="fa-brands fa-whatsapp text-base mr-2"></i> WA Grup</button>
-                        <button onclick="App.printReport('teacher')" class="flex justify-center items-center px-3 py-2.5 bg-gray-800 text-white rounded-lg text-sm hover:bg-gray-700 shadow-sm"><i class="fa-solid fa-file-pdf text-base mr-2"></i> Cetak PDF</button>
-                        <button onclick="App.exportExcel()" class="flex justify-center items-center px-3 py-2.5 bg-green-600 text-white rounded-lg text-sm hover:bg-green-700 shadow-sm"><i class="fa-solid fa-file-excel text-base mr-2"></i> Excel</button>
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 no-print gap-4">
+                    <h2 class="text-2xl font-bold border-l-4 border-secondary pl-3 text-gray-800 dark:text-white">Rekap Laporan Siswa</h2>
+                    <div class="flex flex-col gap-2 w-full md:w-auto items-end">
+                        <button onclick="App.printReport('teacher')" class="w-full sm:w-auto px-4 py-2 bg-gray-800 text-white rounded-lg text-sm hover:bg-gray-700 shadow-sm flex items-center justify-center"><i class="fa-solid fa-print mr-2"></i> Cetak Tabel Rekap</button>
+                        <button onclick="App.syncAllData(true)" class="w-full sm:w-auto px-4 py-2 bg-blue-100 text-primary border border-blue-200 rounded-lg text-sm hover:bg-blue-200 dark:bg-blue-900/30 dark:border-blue-800 shadow-sm font-semibold transition flex items-center justify-center"><i class="fa-solid fa-rotate mr-2"></i> Sinkron Data</button>
                     </div>
                 </div>
 
@@ -696,6 +495,104 @@
                                 </tr>
                             </thead>
                             <tbody id="teacher-table-body" class="divide-y divide-gray-100 dark:divide-gray-700">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="view-rincian" class="view-section slide-up w-full max-w-6xl mx-auto hidden print-container">
+                <div id="print-header-rincian" class="hidden print:block w-full mb-6">
+                    <div class="text-center mt-6 mb-4">
+                        <h3 class="text-lg font-bold uppercase text-black underline decoration-2 underline-offset-4">RINCIAN KETERLAKSANAAN KEBIASAAN JIKA HEBAT</h3>
+                    </div>
+                    <div class="text-sm text-black font-medium border-t-2 border-b-2 border-black py-3 mb-6 space-y-1.5">
+                        <div class="flex"><div class="w-32 font-semibold">Nama Siswa</div><div class="w-4">:</div><div id="pr-siswa" class="font-bold uppercase">Semua Siswa</div></div>
+                        <div class="flex"><div class="w-32 font-semibold">Kelas</div><div class="w-4">:</div><div id="pr-kelas" class="font-bold uppercase">Semua Kelas</div></div>
+                        <div class="flex"><div class="w-32 font-semibold">Periode</div><div class="w-4">:</div><div id="pr-bulan" class="font-bold uppercase">Semua Waktu</div></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 no-print gap-4">
+                    <h2 class="text-2xl font-bold border-l-4 border-secondary pl-3 text-gray-800 dark:text-white">Rincian Kategori Kebiasaan</h2>
+                    <div class="flex flex-col gap-2 w-full md:w-auto items-end">
+                        <button onclick="App.printReport('rincian')" class="w-full sm:w-auto px-4 py-2 bg-gray-800 text-white rounded-lg text-sm hover:bg-gray-700 shadow-sm flex items-center justify-center"><i class="fa-solid fa-print mr-2"></i> Cetak Laporan Rincian</button>
+                        <button onclick="App.syncAllData(true)" class="w-full sm:w-auto px-4 py-2 bg-blue-100 text-primary border border-blue-200 rounded-lg text-sm hover:bg-blue-200 dark:bg-blue-900/30 dark:border-blue-800 shadow-sm font-semibold transition flex items-center justify-center"><i class="fa-solid fa-rotate mr-2"></i> Sinkron Data</button>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-darkCard p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 no-print mb-6">
+                    <h3 class="font-bold mb-4 flex items-center"><i class="fa-solid fa-filter text-primary mr-2"></i> Filter Rincian</h3>
+                    <div class="flex flex-wrap gap-4 items-end">
+                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
+                            <label class="block text-sm mb-1 text-gray-600 dark:text-gray-400 font-medium">Kelas</label>
+                            <select id="rincian-filter-kelas" onchange="App.onRincianKelasChange()" class="w-full p-2.5 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none focus:ring-2 focus:ring-primary/20">
+                                <option value="all">Semua Kelas</option>
+                            </select>
+                        </div>
+                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
+                            <label class="block text-sm mb-1 text-gray-600 dark:text-gray-400 font-medium">Siswa</label>
+                            <select id="rincian-filter-siswa" onchange="App.applyRincianFilter()" class="w-full p-2.5 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none focus:ring-2 focus:ring-primary/20">
+                                <option value="all">Semua Siswa</option>
+                            </select>
+                        </div>
+                        <div class="w-full sm:w-auto flex-1 min-w-[140px]">
+                            <label class="block text-sm mb-1 text-gray-600 dark:text-gray-400 font-medium">Periode</label>
+                            <select id="rincian-filter-tipe" onchange="App.handleRincianFilterTypeChange()" class="w-full p-2.5 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none focus:ring-2 focus:ring-primary/20">
+                                <option value="all">Semua Waktu</option>
+                                <option value="harian">Harian</option>
+                                <option value="bulanan">Bulanan</option>
+                                <option value="semester">Semester</option>
+                                <option value="tahunan">Tahunan</option>
+                            </select>
+                        </div>
+                        
+                        <div id="rincian-val-harian" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
+                            <label class="block text-sm mb-1 text-gray-600 dark:text-gray-400 font-medium">Tanggal</label>
+                            <input type="date" id="rincian-filter-tanggal" onchange="App.applyRincianFilter()" class="w-full p-2.5 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none focus:ring-2 focus:ring-primary/20">
+                        </div>
+
+                        <div id="rincian-val-bulanan" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
+                            <label class="block text-sm mb-1 text-gray-600 dark:text-gray-400 font-medium">Bulan</label>
+                            <input type="month" id="rincian-filter-bulan" onchange="App.applyRincianFilter()" class="w-full p-2.5 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none focus:ring-2 focus:ring-primary/20">
+                        </div>
+
+                        <div id="rincian-val-semester" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
+                            <label class="block text-sm mb-1 text-gray-600 dark:text-gray-400 font-medium">Semester</label>
+                            <select id="rincian-filter-semester" onchange="App.applyRincianFilter()" class="w-full p-2.5 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none focus:ring-2 focus:ring-primary/20">
+                                <option value="1">Ganjil (Jul - Des)</option>
+                                <option value="2">Genap (Jan - Jun)</option>
+                            </select>
+                        </div>
+
+                        <div id="rincian-val-tahun" class="w-full sm:w-auto flex-1 min-w-[140px] hidden">
+                            <label class="block text-sm mb-1 text-gray-600 dark:text-gray-400 font-medium">Tahun</label>
+                            <select id="rincian-filter-tahun" onchange="App.applyRincianFilter()" class="w-full p-2.5 rounded-lg border bg-gray-50 dark:bg-gray-800 dark:border-gray-600 outline-none focus:ring-2 focus:ring-primary/20">
+                            </select>
+                        </div>
+
+                        <div class="w-full sm:w-auto flex items-end">
+                            <button onclick="App.resetRincianFilter()" class="w-full px-6 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition border border-red-200 dark:border-red-800 font-medium">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-darkCard rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 print-card print:p-0 print:border-none print:shadow-none print:bg-transparent">
+                    <h3 class="font-bold mb-6 text-lg border-b pb-3 border-gray-100 dark:border-gray-700">Tingkat Keterlaksanaan Kategori</h3>
+                    <div id="rincian-progress-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 print:hidden">
+                    </div>
+                    
+                    <div class="hidden print:block mt-2">
+                        <table class="w-full text-left text-sm border-collapse border border-black">
+                            <thead>
+                                <tr>
+                                    <th class="border border-black p-2 text-center w-10">No</th>
+                                    <th class="border border-black p-2">Kategori Kebiasaan</th>
+                                    <th class="border border-black p-2 text-center">Terlaksana</th>
+                                    <th class="border border-black p-2 text-center">Persentase</th>
+                                </tr>
+                            </thead>
+                            <tbody id="print-rincian-tbody">
                             </tbody>
                         </table>
                     </div>
@@ -1301,7 +1198,7 @@
             },
 
             navigate(viewId, updateHash = true) {
-                if ((viewId === 'dashboard' || viewId === 'settings' || viewId === 'rekap' || viewId === 'data' || viewId === 'rincian') && !this.isTeacherLoggedIn) {
+                if ((viewId === 'dashboard' || viewId === 'settings' || viewId === 'rekap' || viewId === 'data') && !this.isTeacherLoggedIn) {
                     this.targetPendingView = viewId;
                     this.openLoginModal();
                     return;
@@ -1428,7 +1325,7 @@
                         this.updateAuthUI();
                         this.closeLoginModal();
                         
-                        if (this.targetPendingView === 'dashboard' || this.targetPendingView === 'rekap' || this.targetPendingView === 'rincian' || this.targetPendingView === 'data') {
+                        if (this.targetPendingView === 'dashboard' || this.targetPendingView === 'rekap' || this.targetPendingView === 'data') {
                             this.navigate(this.targetPendingView);
                         } else {
                             this.navigate('dashboard');
@@ -1454,12 +1351,10 @@
                 const loginDesktop = document.getElementById('btn-login-desktop');
                 const dataDesktopBtn = document.getElementById('nav-btn-data-desktop');
                 const settingsDesktopBtn = document.getElementById('nav-btn-settings-desktop');
-                const rincianDesktopBtn = document.getElementById('nav-btn-rincian-desktop');
                 
                 const loginMobile = document.getElementById('btn-login-mobile');
                 const dashboardMobile = document.getElementById('nav-dashboard-mobile');
                 const rekapMobile = document.getElementById('nav-rekap-mobile');
-                const rincianMobile = document.getElementById('nav-rincian-mobile');
                 const dataMobile = document.getElementById('nav-data-mobile');
                 const settingsMobile = document.getElementById('nav-settings-mobile');
                 const logoutMobile = document.getElementById('btn-logout-mobile');
@@ -1471,12 +1366,10 @@
                     if (loginDesktop) loginDesktop.classList.add('hidden');
                     if (dataDesktopBtn) dataDesktopBtn.style.display = 'flex'; 
                     if (settingsDesktopBtn) settingsDesktopBtn.style.display = isAdmin ? 'flex' : 'none';
-                    if (rincianDesktopBtn) rincianDesktopBtn.style.display = 'flex';
                     
                     if (loginMobile) loginMobile.classList.add('hidden');
                     if (dashboardMobile) dashboardMobile.classList.remove('hidden');
                     if (rekapMobile) rekapMobile.classList.remove('hidden');
-                    if (rincianMobile) rincianMobile.classList.remove('hidden');
                     if (dataMobile) dataMobile.classList.remove('hidden'); 
                     if (settingsMobile) isAdmin ? settingsMobile.classList.remove('hidden') : settingsMobile.classList.add('hidden');
                     if (logoutMobile) logoutMobile.classList.remove('hidden');
@@ -1489,7 +1382,6 @@
                     if (loginMobile) loginMobile.classList.remove('hidden');
                     if (dashboardMobile) dashboardMobile.classList.add('hidden');
                     if (rekapMobile) rekapMobile.classList.add('hidden');
-                    if (rincianMobile) rincianMobile.classList.add('hidden');
                     if (dataMobile) dataMobile.classList.add('hidden');
                     if (settingsMobile) settingsMobile.classList.add('hidden');
                     if (logoutMobile) logoutMobile.classList.add('hidden');
