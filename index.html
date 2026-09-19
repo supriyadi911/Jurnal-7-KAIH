@@ -2206,7 +2206,8 @@
                     "Waktu Pengiriman": reportObj.timestamp,
                     "Tanggal Laporan": reportObj.identitas.tanggal,
                     "Nama Siswa": reportObj.identitas.nama,
-                    "NISN": "'" + reportObj.identitas.nis,
+                    // PERBAIKAN: Menghapus "'" + agar tidak terjadi kutip ganda
+                    "NISN": reportObj.identitas.nis, 
                     "Kelas": reportObj.identitas.kelas,
                     "Wali Kelas / Guru": reportObj.identitas.guru,
                     "Persentase (%)": reportObj.persentase + "%",
@@ -2539,7 +2540,7 @@
                     ...report,
                     identitas: {
                         ...report.identitas,
-                        nis: "'" + report.identitas.nis
+                        nis: report.identitas.nis // PERBAIKAN: Menghapus "'" + pada pengiriman laporan baru
                     },
                     habits: report.habits.map(h => {
                         let additional = '';
