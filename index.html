@@ -2331,6 +2331,44 @@
                 checkboxes.forEach(cb => cb.checked = el.checked);
             },
 
+            toggleCheckAllHistory(el) {
+                const checkboxes = document.querySelectorAll('.chk-history');
+                checkboxes.forEach(cb => cb.checked = el.checked);
+            },
+
+            deleteSelectedHistory(nisn) {
+                const checkedNodes = document.querySelectorAll('.chk-history:checked');
+                if (checkedNodes.length === 0) {
+                    this.showToast('Pilih setidaknya satu laporan dengan mencentang kotaknya', 'error');
+                    return;
+                }
+                
+                this.confirmAction(`Apakah Anda yakin ingin menghapus ${checkedNodes.length} laporan terpilih secara permanen?`, 'Hapus Massal Riwayat', async () => {
+                    this.showToast('Memproses penghapusan massal...', 'info');
+                    const idsToDelete = Array.from(checkedNodes).map(cb => cb.value);
+                    
+                    this.data = this.data.filter(d => !idsToDelete.includes(String(d.id)));
+                    this.saveDataToLocal();
+                    this.applyTeacherFilter(); // Refresh rekap
+                    
+                    if (this.settings.sheetEndpoint) {
+                        for (const id of idsToDelete) {
+                            await this.apiCall('delete', 'Laporan Jurnal', { keyField: "ID Laporan", keyValue: id });
+                        }
+                    }
+                    
+                    this.showToast(`${idsToDelete.length} Laporan berhasil dihapus!`, 'success');
+                    
+                    // Refresh tampilan popup jika masih ada sisa, tutup jika habis
+                    const student = this.currentAggregatedStudents.find(s => this.cleanNis(s.nisn) === this.cleanNis(nisn));
+                    if (student && student.reports && student.reports.length > 0) {
+                        this.showStudentReportHistory(nisn);
+                    } else {
+                        this.closeModal();
+                    }
+                });
+            },
+
             deleteBulkReports() {
                 const checkedNodes = document.querySelectorAll('.chk-report:checked');
                 if (checkedNodes.length === 0) {
@@ -2862,16 +2900,34 @@
                     return;
                 }
 
-                let reportsHtml = '';
+                // Tambahkan header aksi massal
+                let reportsHtml = `
+                    <div class="mb-4 flex items-center justify-between bg-gray-100 dark:bg-gray-700/50 p-3 rounded-lg border border-gray-200 dark:border-gray-600 sticky top-0 z-10 shadow-sm">
+                        <label class="flex items-center space-x-2 text-sm font-semibold text-gray-700 dark:text-gray-200 cursor-pointer">
+                            <input type="checkbox" onchange="App.toggleCheckAllHistory(this)" class="rounded text-primary focus:ring-primary h-4 w-4">
+                            <span>Pilih Semua</span>
+                        </label>
+                        <button onclick="App.deleteSelectedHistory('${this.escapeJsParam(nisn)}')" class="text-xs bg-red-100 text-red-600 hover:bg-red-200 px-3 py-1.5 rounded border border-red-200 transition font-semibold flex items-center">
+                            <i class="fa-solid fa-trash-can mr-1"></i> Hapus Terpilih
+                        </button>
+                    </div>
+                    <div class="space-y-3">
+                `;
+
                 student.reports.forEach(r => {
                     const cat = this.getCategory(r.persentase);
                     const displayDate = this.formatDateTime(r.timestamp || r.identitas?.tanggal);
 
                     reportsHtml += `
-                        <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 mb-3 flex items-center justify-between">
-                            <div>
-                                <span class="text-xs text-gray-500 font-medium block">${displayDate}</span>
-                                <span class="inline-block mt-1 px-2 py-0.5 text-xs rounded border font-bold ${cat.color}">${cat.label} (${r.persentase}%)</span>
+                        <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 flex items-center justify-between transition hover:shadow-sm">
+                            <div class="flex items-start gap-3">
+                                <div class="pt-1.5">
+                                    <input type="checkbox" value="${this.escapeJsParam(r.id)}" class="chk-history rounded text-primary focus:ring-primary h-4 w-4 cursor-pointer">
+                                </div>
+                                <div>
+                                    <span class="text-xs text-gray-500 font-medium block">${displayDate}</span>
+                                    <span class="inline-block mt-1 px-2 py-0.5 text-xs rounded border font-bold ${cat.color}">${cat.label} (${r.persentase}%)</span>
+                                </div>
                             </div>
                             <div class="flex gap-1 no-print">
                                 <button onclick="App.closeModal(); App.showDetail('${this.escapeJsParam(r.id)}')" class="p-1.5 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/50 rounded text-xs" title="Detail">
@@ -2887,6 +2943,8 @@
                         </div>
                     `;
                 });
+                
+                reportsHtml += `</div>`;
 
                 const modalTitle = document.getElementById('detail-modal-title');
                 const modalContent = document.getElementById('modal-content');
